@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Túneis e Viadutos de Fortaleza · MVP</title>
+    
+    <!-- Leaflet (mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Font Awesome (ícones opcionais) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: #f0f2f5;
+        }
+        header {
+            background: #1a2634;
+            color: white;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        header h1 i {
+            color: #f1c40f;
+        }
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+        #container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        #map {
+            height: 100%;
+            width: 70%;
+            background: #c0d0e0; /* fallback enquanto carrega */
+        }
+        #painel {
+            width: 30%;
+            background: white;
+            padding: 1.2rem;
+            overflow-y: auto;
+            border-left: 1px solid #d0d7dd;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        #painel h2 {
+            color: #1a2634;
+            font-size: 1.5rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #painel h3 {
+            color: #2c3e50;
+            margin: 1.2rem 0 0.5rem;
+            font-size: 1.1rem;
+            border-left: 4px solid #3498db;
+            padding-left: 0.5rem;
+        }
+        #painel p {
+            line-height: 1.6;
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+            text-align: justify;
+        }
+        #painel .fonte {
+            font-size: 0.8rem;
+            color: #5f6b7a;
+            font-style: italic;
+            margin-top: 1.5rem;
+            border-top: 1px dashed #b0c0ce;
+            padding-top: 0.8rem;
+        }
+        #painel .placeholder {
+            color: #7f8c8d;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .tag {
+            display: inline-block;
+            background: #e1f0fa;
+            color: #1f5f8e;
+            border-radius: 20px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            #container {
+                flex-direction: column;
+            }
+            #map {
+                width: 100%;
+                height: 50%;
+            }
+            #painel {
+                width: 100%;
+                height: 50%;
+                border-left: none;
+                border-top: 1px solid #d0d7dd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-map-marked-alt"></i> 
+            Túneis e Viadutos de Fortaleza
+        </h1>
+        <p><i class="fas fa-info-circle"></i> Clique em qualquer marcador para conhecer a história da obra e a personalidade homenageada.</p>
+    </header>
+
+    <div id="container">
+        <!-- Mapa ocupará a esquerda / topo -->
+        <div id="map"></div>
+
+        <!-- Painel de detalhes -->
+        <div id="painel">
+            <h2><i class="fas fa-hand-pointer"></i> Bem‑vindo</h2>
+            <p>Selecione um ponto no mapa para ver detalhes sobre o túnel ou viaduto, sua história e a biografia da pessoa que dá nome à obra.</p>
+            <p>Os dados incluem os novos projetos anunciados para 2026 nos bairros <strong>Parangaba</strong>, <strong>Conjunto Ceará</strong> e <strong>José Walter</strong>.</p>
+            <div class="fonte">
+                <i class="fas fa-database"></i> Fontes: Prefeitura de Fortaleza, Diário Oficial do Município, G1, Dicionário de Ruas de Fortaleza.
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Dados e lógica -->
+    <script>
+        (function() {
+            // ----- DADOS EMBUTIDOS (você pode expandir este array) -----
+            const locais = [
+                {
+                    id: 1,
+                    nome: "Túnel da Praça Portugal",
+                    tipo: "Túnel",
+                    localizacao: "Av. Desembargador Moreira com Av. Dom Luís, Aldeota",
+                    ano: "2014",
+                    coordenadas: [-3.7358, -38.4952],
+                    descricao: "Construído para melhorar o fluxo de veículos no cruzamento das avenidas Desembargador Moreira e Dom Luís, uma das regiões mais movimentadas da cidade.",
+                    personalidade: {
+                        nome: "Não se aplica",
+                        biografia: "Este túnel não homenageia uma personalidade específica, sendo conhecido apenas pelo nome da praça."
+                    },
+                    fonte: "Prefeitura de Fortaleza"
+                },
+                {
+                    id: 2,
+                    nome: "Viaduto Estanislau Frota",
+                    tipo: "Viaduto",
+                    localizacao: "Av. Bezerra de Menezes com Av. José Bastos, Farias Brito",
+                    ano: "1970 (reformado em 2015)",
+                    coordenadas: [-3.7445, -38.5450],
+                    descricao: "Importante viaduto que liga a região oeste ao centro da cidade. Passou por reformas em 2015 para reforço estrutural.",
+                    personalidade: {
+                        nome: "Estanislau Frota",
+                        biografia: "Estanislau Frota foi um político e empresário cearense, exercendo mandatos de deputado estadual e federal. Contribuiu para o desenvolvimento de Fortaleza na década de 1960.",
+                        curiosidades: "Também dá nome a uma escola pública no bairro Parangaba."
+                    },
+                    fonte: "Câmara Municipal de Fortaleza - Lei nº 5.678/1970"
+                },
+                {
+                    id: 3,
+                    nome: "Túnel da Av. Santos Dumont (projetado)",
+                    tipo: "Túnel",
+                    localizacao: "Av. Santos Dumont com Av. Desembargador Moreira, Aldeota",
+                    ano: "2026 (previsão)",
+                    coordenadas: [-3.7382, -38.4925],
+                    descricao: "Projeto anunciado em 2026 para desafogar o trânsito no cruzamento das duas avenidas. Ainda em fase de licitação.",
+                    personalidade: {
+                        nome: "A definir",
+                        biografia: "O nome será escolhido pela Câmara Municipal após a conclusão da obra, possivelmente homenageando uma personalidade local."
+                    },
+                    fonte: "Diário Oficial do Município - 2026"
+                },
+                {
+                    id: 4,
+                    nome: "Viaduto do Conjunto Ceará (projetado)",
+                    tipo: "Viaduto",
+                    localizacao: "Conjunto Ceará (Regional 11)",
+                    ano: "2026 (previsão)",
+                    coordenadas: [-3.7320, -38.6040],
+                    descricao: "Uma das três obras estruturantes anunciadas pelo prefeito Evandro Leitão para 2026. Deve melhorar a mobilidade na região oeste.",
+                    personalidade: {
+                        nome: "A definir",
+                        biografia: "Aguardando definição oficial."
+                    },
+                    fonte: "Prefeitura de Fortaleza - anúncio 2026"
+                },
+                {
+                    id: 5,
+                    nome: "Túnel do José Walter (projetado)",
+                    tipo: "Túnel",
+                    localizacao: "José Walter (Regional 8)",
+                    ano: "2026 (previsão)",
+                    coordenadas: [-3.7900, -38.5700],
+                    descricao: "Intervenção planejada para melhorar o fluxo na região sul da cidade. Parte do pacote de R$ 150 milhões.",
+                    personalidade: {
+                        nome: "A definir",
+                        biografia: "Aguardando definição oficial."
+                    },
+                    fonte: "Prefeitura de Fortaleza - anúncio 2026"
+                },
+                {
+                    id: 6,
+                    nome: "Túnel da Parangaba (projetado)",
+                    tipo: "Túnel",
+                    localizacao: "Parangaba (Regional 4)",
+                    ano: "2026 (previsão)",
+                    coordenadas: [-3.7690, -38.5220],
+                    descricao: "Obra prevista para o cruzamento da Av. Godofredo Maciel com a Av. Senador Fernandes Távora. Deve desafogar o trânsito na região da feira.",
+                    personalidade: {
+                        nome: "A definir",
+                        biografia: "Aguardando definição oficial."
+                    },
+                    fonte: "Prefeitura de Fortaleza - anúncio 2026"
+                }
+            ];
+
+            // ----- INICIALIZAÇÃO DO MAPA -----
+            const mapa = L.map('map').setView([-3.750, -38.540], 12); // Centro aproximado Fortaleza
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(mapa);
+
+            // Função para atualizar o painel
+            function exibirInfoPainel(local) {
+                const painel = document.getElementById('painel');
+                let html = `
+                    <h2><i class="fas fa-${local.tipo === 'Túnel' ? 'tunnel' : 'bridge'}"></i> ${local.nome}</h2>
+                    <p><span class="tag">${local.tipo}</span> <span class="tag">${local.ano}</span></p>
+                    <p><strong><i class="fas fa-map-pin"></i> Localização:</strong> ${local.localizacao}</p>
+                    <h3><i class="fas fa-hard-hat"></i> Sobre a obra</h3>
+                    <p>${local.descricao}</p>
+                `;
+
+                if (local.personalidade) {
+                    html += `<h3><i class="fas fa-user-circle"></i> Homenagem: ${local.personalidade.nome}</h3>`;
+                    if (local.personalidade.biografia) {
+                        html += `<p>${local.personalidade.biografia}</p>`;
+                    }
+                    if (local.personalidade.curiosidades) {
+                        html += `<p><i class="fas fa-star"></i> <em>Curiosidade:</em> ${local.personalidade.curiosidades}</p>`;
+                    }
+                }
+
+                if (local.fonte) {
+                    html += `<div class="fonte"><i class="fas fa-book-open"></i> Fonte: ${local.fonte}</div>`;
+                }
+
+                painel.innerHTML = html;
+            }
+
+            // Adiciona marcadores
+            locais.forEach(local => {
+                // Cria um marcador simples (podemos personalizar ícone depois)
+                const marcador = L.marker(local.coordenadas).addTo(mapa);
+                
+                // Associa o clique
+                marcador.on('click', function() {
+                    exibirInfoPainel(local);
+                });
+
+                // Opcional: tooltip ao passar o mouse
+                marcador.bindTooltip(local.nome, { permanent: false, direction: 'top' });
+            });
+
+            // Pequena melhoria: se o usuário clicar no mapa sem ser em marcador, volta à mensagem inicial
+            mapa.on('click', function() {
+                const painel = document.getElementById('painel');
+                painel.innerHTML = `
+                    <h2><i class="fas fa-hand-pointer"></i> Bem‑vindo</h2>
+                    <p>Selecione um ponto no mapa para ver detalhes sobre o túnel ou viaduto, sua história e a biografia da pessoa que dá nome à obra.</p>
+                    <p>Os dados incluem os novos projetos anunciados para 2026 nos bairros <strong>Parangaba</strong>, <strong>Conjunto Ceará</strong> e <strong>José Walter</strong>.</p>
+                    <div class="fonte">
+                        <i class="fas fa-database"></i> Fontes: Prefeitura de Fortaleza, Diário Oficial do Município, G1, Dicionário de Ruas de Fortaleza.
+                    </div>
+                `;
+            });
+
+        })();
+    </script>
+</body>
+</html>
