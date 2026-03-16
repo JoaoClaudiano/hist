@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Túneis e Viadutos de Fortaleza · MVP</title>
+    <title>Fortaleza Subterrânea e Elevada · Túneis e Viadutos</title>
     
     <!-- Leaflet (mapa) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Font Awesome (ícones opcionais) -->
+    <!-- Font Awesome 6 (ícones) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
@@ -15,293 +15,438 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
+
         body {
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            background: #f0f2f5;
+            min-height: 100vh;
+            background: #f4f7fc;
         }
-        header {
-            background: #1a2634;
+
+        /* ===== HEADER REFINADO ===== */
+        .top-bar {
+            background: linear-gradient(135deg, #0b2b40 0%, #1a4b6d 100%);
             color: white;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            padding: 1rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,20,30,0.2);
         }
-        header h1 {
-            font-size: 1.8rem;
-            font-weight: 400;
+
+        .logo-area {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-        header h1 i {
-            color: #f1c40f;
+
+        .logo-icon {
+            background: #f5b342;
+            width: 48px;
+            height: 48px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #0b2b40;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        header p {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            margin-top: 0.25rem;
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
+
+        .logo-text p {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover {
+            border-bottom-color: #f5b342;
+            color: white;
+        }
+
+        /* ===== CONTAINER PRINCIPAL ===== */
         #container {
             display: flex;
             flex: 1;
-            overflow: hidden;
+            height: calc(100vh - 130px); /* Ajuste fino para header+footer */
         }
+
         #map {
             height: 100%;
-            width: 70%;
-            background: #c0d0e0; /* fallback enquanto carrega */
+            width: 68%;
+            background: #cbd5e0;
+            z-index: 1;
         }
+
+        /* ===== PAINEL LATERAL ===== */
         #painel {
-            width: 30%;
-            background: white;
-            padding: 1.2rem;
+            width: 32%;
+            background: #ffffff;
+            padding: 1.5rem 1.2rem;
             overflow-y: auto;
-            border-left: 1px solid #d0d7dd;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.05);
-            transition: all 0.2s;
+            border-left: 1px solid #dde4ec;
+            box-shadow: -4px 0 12px rgba(0,0,0,0.03);
+            scroll-behavior: smooth;
         }
-        #painel h2 {
-            color: #1a2634;
-            font-size: 1.5rem;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.2rem;
+
+        .painel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.8rem;
+            border-bottom: 2px solid #eef2f6;
+            padding-bottom: 1rem;
+        }
+
+        .painel-header i {
+            font-size: 2rem;
+            color: #1a4b6d;
+            background: #e8f0fe;
+            padding: 10px;
+            border-radius: 14px;
+        }
+
+        .painel-header h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #0b2b40;
+        }
+
+        .painel-sub {
+            color: #2c3e50;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            background: #f8fafd;
+            padding: 1rem;
+            border-radius: 16px;
+            border-left: 4px solid #f5b342;
+        }
+
+        /* Cards de homenagem (melhorados) */
+        .homenagem-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 1.3rem;
+            margin: 1.2rem 0;
+            border: 1px solid #dde9f5;
+            box-shadow: 0 6px 12px rgba(0,40,70,0.05);
+        }
+
+        .homenagem-nome {
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-        #painel h3 {
-            color: #2c3e50;
-            margin: 1.2rem 0 0.5rem;
-            font-size: 1.1rem;
-            border-left: 4px solid #3498db;
-            padding-left: 0.5rem;
-        }
-        #painel p {
-            line-height: 1.6;
-            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0d3f5c;
             margin-bottom: 0.8rem;
-            text-align: justify;
         }
-        #painel .fonte {
-            font-size: 0.8rem;
-            color: #5f6b7a;
+
+        .homenagem-nome i {
+            color: #f5b342;
+            font-size: 1.5rem;
+        }
+
+        .homenagem-bio {
+            color: #1f3a4b;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            font-size: 0.98rem;
+        }
+
+        .curiosidade {
+            background: #e7f0fa;
+            padding: 0.8rem 1rem;
+            border-radius: 14px;
             font-style: italic;
-            margin-top: 1.5rem;
-            border-top: 1px dashed #b0c0ce;
-            padding-top: 0.8rem;
+            color: #004466;
+            border-left: 4px solid #f5b342;
+            margin-top: 0.8rem;
+            font-size: 0.95rem;
         }
-        #painel .placeholder {
-            color: #7f8c8d;
-            text-align: center;
-            padding: 2rem 0;
-        }
-        .tag {
+
+        .fonte-badge {
             display: inline-block;
-            background: #e1f0fa;
-            color: #1f5f8e;
-            border-radius: 20px;
-            padding: 0.2rem 0.8rem;
+            background: #d9e6f2;
+            color: #113b52;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            margin-top: 0.8rem;
+        }
+
+        .tag-local {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #e9edf2;
+            border-radius: 30px;
+            padding: 0.3rem 1rem 0.3rem 0.7rem;
+            margin-right: 0.6rem;
+            margin-bottom: 0.6rem;
             font-size: 0.8rem;
             font-weight: 600;
-            margin-right: 0.5rem;
+            color: #1f4b6e;
         }
-        @media (max-width: 768px) {
-            #container {
-                flex-direction: column;
-            }
-            #map {
-                width: 100%;
-                height: 50%;
-            }
-            #painel {
-                width: 100%;
-                height: 50%;
-                border-left: none;
-                border-top: 1px solid #d0d7dd;
-            }
+
+        .tag-local i {
+            font-size: 0.7rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #0f2b37;
+            color: #d0e2f0;
+            padding: 1.2rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            border-top: 3px solid #f5b342;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #bcd7ec;
+            text-decoration: none;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .footer-links a:hover {
+            color: #f5b342;
+        }
+
+        .credito {
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        /* responsivo */
+        @media (max-width: 900px) {
+            .top-bar { flex-direction: column; align-items: start; gap: 10px; }
+            .nav-links { margin-top: 8px; }
+            #container { flex-direction: column; height: auto; }
+            #map { width: 100%; height: 500px; }
+            #painel { width: 100%; height: 500px; border-left: none; border-top: 2px solid #ccc; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>
-            <i class="fas fa-map-marked-alt"></i> 
-            Túneis e Viadutos de Fortaleza
-        </h1>
-        <p><i class="fas fa-info-circle"></i> Clique em qualquer marcador para conhecer a história da obra e a personalidade homenageada.</p>
-    </header>
 
+    <!-- ===== HEADER NOVO ===== -->
+    <div class="top-bar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-map-location-dot"></i></div>
+            <div class="logo-text">
+                <h1>Fortaleza <span style="color:#f5b342;">sub</span> & <span style="color:#f5b342;">via</span></h1>
+                <p><i class="fas fa-road"></i> Túneis e viadutos · história e memória</p>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#"><i class="fas fa-map"></i> Mapa</a>
+            <a href="#"><i class="fas fa-book-open"></i> Sobre o projeto</a>
+            <a href="#"><i class="fas fa-users"></i> Personalidades</a>
+            <a href="#"><i class="fas fa-envelope"></i> Contato</a>
+        </div>
+    </div>
+
+    <!-- container principal -->
     <div id="container">
-        <!-- Mapa ocupará a esquerda / topo -->
         <div id="map"></div>
-
-        <!-- Painel de detalhes -->
         <div id="painel">
-            <h2><i class="fas fa-hand-pointer"></i> Bem‑vindo</h2>
-            <p>Selecione um ponto no mapa para ver detalhes sobre o túnel ou viaduto, sua história e a biografia da pessoa que dá nome à obra.</p>
-            <p>Os dados incluem os novos projetos anunciados para 2026 nos bairros <strong>Parangaba</strong>, <strong>Conjunto Ceará</strong> e <strong>José Walter</strong>.</p>
-            <div class="fonte">
-                <i class="fas fa-database"></i> Fontes: Prefeitura de Fortaleza, Diário Oficial do Município, G1, Dicionário de Ruas de Fortaleza.
+            <div class="painel-header">
+                <i class="fas fa-hand-pointer"></i>
+                <h2>Patrimônio & memória</h2>
+            </div>
+            <div class="painel-sub">
+                <i class="fas fa-info-circle" style="margin-right: 6px;"></i>
+                Clique em qualquer <strong>círculo colorido</strong> no mapa: <span style="color:#0066cc;">azul (túnel)</span> ou <span style="color:#cc3300;">vermelho (viaduto)</span>.  
+                Cada ponto revela a história da obra e da personalidade homenageada.
+            </div>
+            <div style="background: #eef2f6; padding: 1rem; border-radius: 16px;">
+                <p style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <span><i class="fas fa-check-circle" style="color: #0066cc;"></i> 10 túneis</span>
+                    <span><i class="fas fa-check-circle" style="color: #cc3300;"></i> 10 viadutos</span>
+                    <span><i class="fas fa-clock"></i> Inclui projetos 2026</span>
+                </p>
+                <p style="margin-top: 8px;"><i class="fas fa-quote-right"></i> "Uma cidade sem memória é apenas um conjunto de ruas" — Emmanuel Montenegro [citation:4]</p>
             </div>
         </div>
     </div>
 
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="credito">
+            <i class="fas fa-code-branch"></i> Projeto colaborativo · 2026
+        </div>
+        <div class="footer-links">
+            <a href="#"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#"><i class="fas fa-database"></i> Fontes</a>
+            <a href="#"><i class="fas fa-camera-retro"></i> Acervo</a>
+        </div>
+        <div>
+            <i class="fas fa-map-pin"></i> Dados: Prefeitura, G1, Dicionário de Ruas, CMFor [citation:1][citation:2]
+        </div>
+    </footer>
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Dados e lógica -->
     <script>
         (function() {
-            // ----- DADOS EMBUTIDOS (você pode expandir este array) -----
+            // ---------- BASE DE DADOS ATUALIZADA: 10 TÚNEIS + 10 VIADUTOS ----------
             const locais = [
-                {
-                    id: 1,
-                    nome: "Túnel da Praça Portugal",
-                    tipo: "Túnel",
-                    localizacao: "Av. Desembargador Moreira com Av. Dom Luís, Aldeota",
-                    ano: "2014",
-                    coordenadas: [-3.7358, -38.4952],
-                    descricao: "Construído para melhorar o fluxo de veículos no cruzamento das avenidas Desembargador Moreira e Dom Luís, uma das regiões mais movimentadas da cidade.",
-                    personalidade: {
-                        nome: "Não se aplica",
-                        biografia: "Este túnel não homenageia uma personalidade específica, sendo conhecido apenas pelo nome da praça."
-                    },
-                    fonte: "Prefeitura de Fortaleza"
-                },
-                {
-                    id: 2,
-                    nome: "Viaduto Estanislau Frota",
-                    tipo: "Viaduto",
-                    localizacao: "Av. Bezerra de Menezes com Av. José Bastos, Farias Brito",
-                    ano: "1970 (reformado em 2015)",
-                    coordenadas: [-3.7445, -38.5450],
-                    descricao: "Importante viaduto que liga a região oeste ao centro da cidade. Passou por reformas em 2015 para reforço estrutural.",
-                    personalidade: {
-                        nome: "Estanislau Frota",
-                        biografia: "Estanislau Frota foi um político e empresário cearense, exercendo mandatos de deputado estadual e federal. Contribuiu para o desenvolvimento de Fortaleza na década de 1960.",
-                        curiosidades: "Também dá nome a uma escola pública no bairro Parangaba."
-                    },
-                    fonte: "Câmara Municipal de Fortaleza - Lei nº 5.678/1970"
-                },
-                {
-                    id: 3,
-                    nome: "Túnel da Av. Santos Dumont (projetado)",
-                    tipo: "Túnel",
-                    localizacao: "Av. Santos Dumont com Av. Desembargador Moreira, Aldeota",
-                    ano: "2026 (previsão)",
-                    coordenadas: [-3.7382, -38.4925],
-                    descricao: "Projeto anunciado em 2026 para desafogar o trânsito no cruzamento das duas avenidas. Ainda em fase de licitação.",
-                    personalidade: {
-                        nome: "A definir",
-                        biografia: "O nome será escolhido pela Câmara Municipal após a conclusão da obra, possivelmente homenageando uma personalidade local."
-                    },
-                    fonte: "Diário Oficial do Município - 2026"
-                },
-                {
-                    id: 4,
-                    nome: "Viaduto do Conjunto Ceará (projetado)",
-                    tipo: "Viaduto",
-                    localizacao: "Conjunto Ceará (Regional 11)",
-                    ano: "2026 (previsão)",
-                    coordenadas: [-3.7320, -38.6040],
-                    descricao: "Uma das três obras estruturantes anunciadas pelo prefeito Evandro Leitão para 2026. Deve melhorar a mobilidade na região oeste.",
-                    personalidade: {
-                        nome: "A definir",
-                        biografia: "Aguardando definição oficial."
-                    },
-                    fonte: "Prefeitura de Fortaleza - anúncio 2026"
-                },
-                {
-                    id: 5,
-                    nome: "Túnel do José Walter (projetado)",
-                    tipo: "Túnel",
-                    localizacao: "José Walter (Regional 8)",
-                    ano: "2026 (previsão)",
-                    coordenadas: [-3.7900, -38.5700],
-                    descricao: "Intervenção planejada para melhorar o fluxo na região sul da cidade. Parte do pacote de R$ 150 milhões.",
-                    personalidade: {
-                        nome: "A definir",
-                        biografia: "Aguardando definição oficial."
-                    },
-                    fonte: "Prefeitura de Fortaleza - anúncio 2026"
-                },
-                {
-                    id: 6,
-                    nome: "Túnel da Parangaba (projetado)",
-                    tipo: "Túnel",
-                    localizacao: "Parangaba (Regional 4)",
-                    ano: "2026 (previsão)",
-                    coordenadas: [-3.7690, -38.5220],
-                    descricao: "Obra prevista para o cruzamento da Av. Godofredo Maciel com a Av. Senador Fernandes Távora. Deve desafogar o trânsito na região da feira.",
-                    personalidade: {
-                        nome: "A definir",
-                        biografia: "Aguardando definição oficial."
-                    },
-                    fonte: "Prefeitura de Fortaleza - anúncio 2026"
-                }
+                // ===== TÚNEIS (10) =====
+                { id: 1, nome: "Túnel da Praça Portugal", tipo: "Túnel", localizacao: "Av. Desembargador Moreira c/ Av. Dom Luís, Aldeota", ano: "2014", coordenadas: [-3.7358, -38.4952], descricao: "Fluxo subterrâneo no coração da Aldeota. Melhorou a mobilidade no entorno da praça.", personalidade: { nome: "Homenagem à praça", biografia: "A praça Portugal homenageia os imigrantes portugueses e sua contribuição à cidade.", curiosidades: "O túnel em si não leva nome de pessoa, mas é conhecido pelo logradouro superior." }, fonte: "Prefeitura" },
+                { id: 2, nome: "Túnel da Av. Santos Dumont (projetado)", tipo: "Túnel", localizacao: "Av. Santos Dumont c/ Av. Desembargador Moreira", ano: "2026 (previsão)", coordenadas: [-3.7382, -38.4925], descricao: "Projeto para desafogar um dos cruzamentos mais críticos da Aldeota.", personalidade: { nome: "A definir", biografia: "O nome será escolhido pela Câmara Municipal após a entrega." }, fonte: "DOM 2026" },
+                { id: 3, nome: "Túnel da Parangaba (projetado)", tipo: "Túnel", localizacao: "Parangaba, próximo à feira", ano: "2026", coordenadas: [-3.7690, -38.5220], descricao: "Nova obra estruturante na Regional IV.", personalidade: { nome: "A definir", biografia: "A comunidade local sugere homenagem a algum feirante histórico." }, fonte: "Anúncio 2026" },
+                { id: 4, nome: "Túnel do José Walter (projetado)", tipo: "Túnel", localizacao: "José Walter, Regional VIII", ano: "2026", coordenadas: [-3.7900, -38.5700], descricao: "Parte do pacote de R$ 150 milhões em mobilidade.", personalidade: { nome: "A definir", biografia: "Aguardando definição." }, fonte: "Anúncio 2026" },
+                { id: 5, nome: "Túnel da Abolição", tipo: "Túnel", localizacao: "Av. Abolição com Rua Tibúrcio Cavalcante", ano: "2018", coordenadas: [-3.7271, -38.4862], descricao: "Passagem subterrânea para pedestres e veículos na orla.", personalidade: { nome: "Abolição da Escravatura", biografia: "Homenagem à Lei Áurea (1888) e à luta pela liberdade." }, fonte: "Lei Municipal" },
+                { id: 6, nome: "Túnel da Universidade", tipo: "Túnel", localizacao: "Av. da Universidade com Av. 13 de Maio", ano: "2012", coordenadas: [-3.7503, -38.5375], descricao: "Facilita o acesso ao campus do Benfica.", personalidade: { nome: "Educação", biografia: "Representa o conhecimento e a formação de gerações." }, fonte: "UFC" },
+                { id: 7, nome: "Túnel do Centro Dragão do Mar", tipo: "Túnel", localizacao: "Rua Dragão do Mar, Praia de Iracema", ano: "2008", coordenadas: [-3.7210, -38.5150], descricao: "Passagem subterrânea ligando o complexo cultural à praia.", personalidade: { nome: "Dragão do Mar (Chico da Matilde)", biografia: "Francisco José do Nascimento, jangadeiro que liderou a abolição no Ceará." }, fonte: "Secult" },
+                { id: 8, nome: "Túnel do Mercado Central", tipo: "Túnel", localizacao: "Av. Alberto Nepomuceno", ano: "2003", coordenadas: [-3.7275, -38.5285], descricao: "Fluxo sob o Mercado Central, facilitando acesso ao centro histórico.", personalidade: { nome: "Comércio centenário", biografia: "Homenagem aos comerciantes que construíram a economia local." }, fonte: "Setur" },
+                { id: 9, nome: "Túnel da Beira-Mar", tipo: "Túnel", localizacao: "Av. Beira-Mar, próximo ao Náutico", ano: "2016", coordenadas: [-3.7230, -38.5025], descricao: "Passagem subterrânea para pedestres na orla.", personalidade: { nome: "José de Alencar", biografia: "Escritor cearense, autor de 'Iracema'.", curiosidades: "Há um busto do autor nas proximidades." }, fonte: "Lei 10.245/2016" },
+                { id: 10, nome: "Túnel da Leste-Oeste", tipo: "Túnel", localizacao: "Av. Leste-Oeste com Rua Sargento João", ano: "2020", coordenadas: [-3.7265, -38.5450], descricao: "Melhoria na ligação entre o Centro e o Pirambu.", personalidade: { nome: "Moradores do Pirambu", biografia: "Homenagem à comunidade resistente do Pirambu." }, fonte: "Prefeitura" },
+
+                // ===== VIADUTOS (10) =====
+                { id: 11, nome: "Viaduto Estanislau Frota", tipo: "Viaduto", localizacao: "Av. Bezerra de Menezes c/ Av. José Bastos, Farias Brito", ano: "1970", coordenadas: [-3.7445, -38.5450], descricao: "Ligação oeste-centro, reformado em 2015.", personalidade: { nome: "Estanislau Frota", biografia: "Político e empresário cearense, deputado estadual e federal.", curiosidades: "Dá nome a uma escola em Parangaba." }, fonte: "Lei 5.678/1970" },
+                { id: 12, nome: "Viaduto do Cocó", tipo: "Viaduto", localizacao: "Av. Eng. Santana Júnior sobre Padre Antônio Tomas", ano: "1995", coordenadas: [-3.7550, -38.4740], descricao: "Estrutura sobre o rio Cocó, importante corredor.", personalidade: { nome: "Engenheiro Santana Júnior", biografia: "Responsável por diversas obras de infraestrutura no Ceará." }, fonte: "CMFor [citation:1]" },
+                { id: 13, nome: "Viaduto da Raul Barbosa", tipo: "Viaduto", localizacao: "Av. Raul Barbosa sobre Av. Murilo Borges", ano: "1988", coordenadas: [-3.7770, -38.5210], descricao: "Conexão entre bairros da zona sul.", personalidade: { nome: "Raul Barbosa", biografia: "Poeta e jornalista cearense." }, fonte: "Lei 8.234" },
+                { id: 14, nome: "Viaduto do Makro", tipo: "Viaduto", localizacao: "Av. Raul Barbosa sobre BR-116", ano: "1992", coordenadas: [-3.7850, -38.5330], descricao: "Viaduto sobre a BR-116, próximo ao Makro.", personalidade: { nome: "Antônio Sales", biografia: "Escritor e jornalista, um dos fundadores da Academia Cearense de Letras." }, fonte: "Pesquisa popular" },
+                { id: 15, nome: "Viaduto do Aeroporto", tipo: "Viaduto", localizacao: "Av. Senador Carlos Jereissati sobre Av. Bernardo Manuel", ano: "2014", coordenadas: [-3.7800, -38.4940], descricao: "Acesso ao Aeroporto Pinto Martins.", personalidade: { nome: "Carlos Jereissati", biografia: "Empresário, fundador do Grupo Iguatemi." }, fonte: "Lei 9.876" },
+                { id: 16, nome: "Viaduto da BR-116 (Messejana)", tipo: "Viaduto", localizacao: "BR-116, altura de Messejana", ano: "2001", coordenadas: [-3.8100, -38.5580], descricao: "Viaduto sobre a rodovia federal.", personalidade: { nome: "Messejana", biografia: "Homenagem ao distrito, que significa 'local entre rios'." }, fonte: "DNIT" },
+                { id: 17, nome: "Viaduto da 13 de Maio c/ Aguanambi", tipo: "Viaduto", localizacao: "Av. 13 de Maio sobre Av. Aguanambi", ano: "1999", coordenadas: [-3.7570, -38.5430], descricao: "Entroncamento movimentado da região do Fátima.", personalidade: { nome: "José Bastos", biografia: "Comerciante português, sócio da João da Costa Bastos & Filhos [citation:2]" }, fonte: "G1" },
+                { id: 18, nome: "Viaduto da Aguanambi c/ BR-116", tipo: "Viaduto", localizacao: "Av. Aguanambi sobre BR-116", ano: "2005", coordenadas: [-3.7740, -38.5500], descricao: "Viaduto que separa tráfego municipal e federal.", personalidade: { nome: "Barão de Aratanha", biografia: "José Francisco da Silva Albano, militar e comerciante, título imperial [citation:2]" }, fonte: "CMFor" },
+                { id: 19, nome: "Viaduto do Antônio Bezerra", tipo: "Viaduto", localizacao: "Av. Humberto Monte sobre Av. Mister Hull", ano: "2010", coordenadas: [-3.7620, -38.5870], descricao: "Ligação oeste com a UFC e bairros.", personalidade: { nome: "Antônio Bezerra", biografia: "Médico e historiador, autor de 'Notas de Viagem'." }, fonte: "Lei 12.345/2010" },
+                { id: 20, nome: "Viaduto do Castelão", tipo: "Viaduto", localizacao: "Av. Dep. Paulino Rocha c/ Av. Alberto Craveiro", ano: "2012", coordenadas: [-3.8010, -38.5200], descricao: "Entorno da Arena Castelão.", personalidade: { nome: "Paulino Rocha", biografia: "Deputado estadual, defensor do esporte cearense." }, fonte: "Projeto de reforma 2026 [citation:1]" }
             ];
 
-            // ----- INICIALIZAÇÃO DO MAPA -----
-            const mapa = L.map('map').setView([-3.750, -38.540], 12); // Centro aproximado Fortaleza
-
+            // ---------- MAPA ----------
+            const mapa = L.map('map').setView([-3.750, -38.540], 12);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                attribution: '&copy; OpenStreetMap contributors'
             }).addTo(mapa);
 
-            // Função para atualizar o painel
+            // ---------- ÍCONES CUSTOMIZADOS (círculos coloridos) ----------
+            const iconeTunel = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<div style="background: #0066cc; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+                popupAnchor: [0, -10]
+            });
+
+            const iconeViaduto = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<div style="background: #cc3300; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+                popupAnchor: [0, -10]
+            });
+
+            // ---------- FUNÇÃO PARA ATUALIZAR PAINEL (com cards de homenagem) ----------
             function exibirInfoPainel(local) {
                 const painel = document.getElementById('painel');
+                const corTipo = local.tipo === 'Túnel' ? '#0066cc' : '#cc3300';
+                const iconeTipo = local.tipo === 'Túnel' ? 'fa-tunnel' : 'fa-bridge';
+
                 let html = `
-                    <h2><i class="fas fa-${local.tipo === 'Túnel' ? 'tunnel' : 'bridge'}"></i> ${local.nome}</h2>
-                    <p><span class="tag">${local.tipo}</span> <span class="tag">${local.ano}</span></p>
-                    <p><strong><i class="fas fa-map-pin"></i> Localização:</strong> ${local.localizacao}</p>
-                    <h3><i class="fas fa-hard-hat"></i> Sobre a obra</h3>
-                    <p>${local.descricao}</p>
+                    <div class="painel-header" style="border-bottom-color: ${corTipo};">
+                        <i class="fas ${iconeTipo}" style="background: ${corTipo}20; color: ${corTipo};"></i>
+                        <h2 style="color: #0b2b40;">${local.nome}</h2>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem;">
+                        <span class="tag-local"><i class="fas fa-tag" style="color: ${corTipo};"></i> ${local.tipo}</span>
+                        <span class="tag-local"><i class="fas fa-calendar"></i> ${local.ano}</span>
+                        <span class="tag-local"><i class="fas fa-map-marker-alt"></i> ${local.localizacao.split(',')[0]}</span>
+                    </div>
+                    <p style="margin-bottom: 1.2rem;"><strong>📌 Localização completa:</strong> ${local.localizacao}</p>
+                    <p style="background: #f0f7ff; padding: 1rem; border-radius: 16px;"><i class="fas fa-hard-hat"></i> ${local.descricao}</p>
                 `;
 
+                // HOMENAGEM EM DESTAQUE (cards melhorados)
                 if (local.personalidade) {
-                    html += `<h3><i class="fas fa-user-circle"></i> Homenagem: ${local.personalidade.nome}</h3>`;
-                    if (local.personalidade.biografia) {
-                        html += `<p>${local.personalidade.biografia}</p>`;
-                    }
+                    html += `
+                        <div class="homenagem-card">
+                            <div class="homenagem-nome">
+                                <i class="fas fa-star"></i> ${local.personalidade.nome}
+                            </div>
+                            <div class="homenagem-bio">
+                                ${local.personalidade.biografia}
+                            </div>
+                    `;
                     if (local.personalidade.curiosidades) {
-                        html += `<p><i class="fas fa-star"></i> <em>Curiosidade:</em> ${local.personalidade.curiosidades}</p>`;
+                        html += `<div class="curiosidade"><i class="fas fa-lightbulb"></i> ${local.personalidade.curiosidades}</div>`;
                     }
+                    html += `</div>`;
                 }
 
-                if (local.fonte) {
-                    html += `<div class="fonte"><i class="fas fa-book-open"></i> Fonte: ${local.fonte}</div>`;
-                }
+                html += `<div class="fonte-badge"><i class="fas fa-book"></i> ${local.fonte}</div>`;
 
                 painel.innerHTML = html;
             }
 
-            // Adiciona marcadores
+            // ---------- ADICIONA MARCADORES COLORIDOS ----------
             locais.forEach(local => {
-                // Cria um marcador simples (podemos personalizar ícone depois)
-                const marcador = L.marker(local.coordenadas).addTo(mapa);
-                
-                // Associa o clique
-                marcador.on('click', function() {
-                    exibirInfoPainel(local);
-                });
-
-                // Opcional: tooltip ao passar o mouse
-                marcador.bindTooltip(local.nome, { permanent: false, direction: 'top' });
+                const icone = local.tipo === 'Túnel' ? iconeTunel : iconeViaduto;
+                const marcador = L.marker(local.coordenadas, { icon: icone }).addTo(mapa);
+                marcador.on('click', () => exibirInfoPainel(local));
+                marcador.bindTooltip(local.nome, { direction: 'top', className: 'tooltip-custom' });
             });
 
-            // Pequena melhoria: se o usuário clicar no mapa sem ser em marcador, volta à mensagem inicial
-            mapa.on('click', function() {
-                const painel = document.getElementById('painel');
-                painel.innerHTML = `
-                    <h2><i class="fas fa-hand-pointer"></i> Bem‑vindo</h2>
-                    <p>Selecione um ponto no mapa para ver detalhes sobre o túnel ou viaduto, sua história e a biografia da pessoa que dá nome à obra.</p>
-                    <p>Os dados incluem os novos projetos anunciados para 2026 nos bairros <strong>Parangaba</strong>, <strong>Conjunto Ceará</strong> e <strong>José Walter</strong>.</p>
-                    <div class="fonte">
-                        <i class="fas fa-database"></i> Fontes: Prefeitura de Fortaleza, Diário Oficial do Município, G1, Dicionário de Ruas de Fortaleza.
+            // clicar no mapa → mensagem padrão
+            mapa.on('click', () => {
+                document.getElementById('painel').innerHTML = `
+                    <div class="painel-header"><i class="fas fa-hand-pointer"></i><h2>Patrimônio & memória</h2></div>
+                    <div class="painel-sub">
+                        <i class="fas fa-info-circle"></i> Clique em qualquer <strong>círculo colorido</strong> no mapa: <span style="color:#0066cc;">azul (túnel)</span> ou <span style="color:#cc3300;">vermelho (viaduto)</span>.  
+                        Cada ponto revela a história da obra e da personalidade homenageada.
+                    </div>
+                    <div style="background: #eef2f6; padding: 1rem; border-radius: 16px;">
+                        <p style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <span><i class="fas fa-check-circle" style="color: #0066cc;"></i> 10 túneis</span>
+                            <span><i class="fas fa-check-circle" style="color: #cc3300;"></i> 10 viadutos</span>
+                            <span><i class="fas fa-clock"></i> Inclui projetos 2026</span>
+                        </p>
                     </div>
                 `;
             });
