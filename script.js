@@ -23,6 +23,7 @@ async function init() {
     await carregarDados();
     initMap();
     adicionarMarcadores();
+    initBackToTop();
 }
 
 async function carregarDados() {
@@ -166,3 +167,22 @@ function mostrarPainelInicial() {
 
 // Inicia quando a página carregar
 document.addEventListener('DOMContentLoaded', init);
+
+// Botão Voltar ao Topo
+function initBackToTop() {
+    const btnTop = document.getElementById('back-to-top');
+    const painel = document.getElementById('painel');
+    if (!btnTop || !painel) return;
+
+    painel.addEventListener('scroll', function () {
+        if (painel.scrollTop > 300) {
+            btnTop.classList.add('visible');
+        } else {
+            btnTop.classList.remove('visible');
+        }
+    });
+
+    btnTop.addEventListener('click', function () {
+        painel.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}

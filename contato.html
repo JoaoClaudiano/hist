@@ -364,6 +364,40 @@
                 font-size: 2rem;
             }
         }
+
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #1a4b6d;
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
+            z-index: 9999;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #back-to-top:hover {
+            background: #f0b141;
+            color: #0b2b40;
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -510,5 +544,24 @@
         </div>
         <div style="margin-top: 1rem; font-size: 0.8rem;">Conteúdo sob licença Creative Commons · Aberto a colaborações</div>
     </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <button id="back-to-top" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        const btnTop = document.getElementById('back-to-top');
+        if (btnTop) {
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 300) {
+                    btnTop.classList.add('visible');
+                } else {
+                    btnTop.classList.remove('visible');
+                }
+            });
+            btnTop.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+    </script>
 </body>
 </html>
