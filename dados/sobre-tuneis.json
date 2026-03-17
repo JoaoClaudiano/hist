@@ -1,0 +1,84 @@
+{
+    "1": {
+        "descricao": "Inaugurado em 2014, o túnel da Praça Portugal foi uma das principais obras de mobilidade da Copa do Mundo. Possui 280 metros de extensão e flui o tráfego sob a praça, conectando as avenidas Desembargador Moreira e Dom Luís.",
+        "personalidade": {
+            "nome": "Homenagem à imigração portuguesa",
+            "biografia": "A Praça Portugal, inaugurada em 1963, é um símbolo da amizade entre Brasil e Portugal. O nome homenageia os milhares de portugueses que imigraram para o Ceará entre os séculos XIX e XX, contribuindo para o comércio, a indústria e a cultura local.",
+            "curiosidades": "A praça abriga um monumento em homenagem a Luis de Camões. O túnel é conhecido popularmente como 'Buraco da Praça Portugal'."
+        },
+        "fonte": "Prefeitura de Fortaleza / Memorial da Aldeota"
+    },
+    "2": {
+        "descricao": "Projeto estruturante anunciado em 2026 para desafogar o cruzamento mais congestionado da Aldeota. Serão duas galerias subterrâneas com 350 metros cada, permitindo tráfego contínuo na Santos Dumont.",
+        "personalidade": {
+            "nome": "A definir",
+            "biografia": "O nome será escolhido pela Câmara Municipal após a entrega, com possibilidade de homenagear um engenheiro ou urbanista."
+        },
+        "fonte": "DOM 2026"
+    },
+    "3": {
+        "descricao": "Parte do pacote de R$ 150 milhões, este túnel visa desafogar o entorno da feira da Parangaba, uma das maiores da cidade. Terá 200 metros e conectará os dois lados da avenida.",
+        "personalidade": {
+            "nome": "A definir",
+            "biografia": "Há movimento popular para que o túnel receba o nome de 'Mestre Zé Maria', famoso artesão da feira."
+        },
+        "fonte": "Anúncio 2026"
+    },
+    "4": {
+        "descricao": "Intervenção planejada para melhorar o fluxo na confluência das avenidas principais do bairro planejado José Walter.",
+        "personalidade": {
+            "nome": "José Walter",
+            "biografia": "José Walter (1918-1977) foi engenheiro e político, governador do Ceará entre 1971 e 1975. Criou o Banco do Estado do Ceará e idealizou o bairro que leva seu nome, um dos primeiros conjuntos habitacionais do Norte/Nordeste."
+        },
+        "fonte": "Lei Estadual / Anúncio"
+    },
+    "5": {
+        "descricao": "Passagem subterrânea para pedestres e veículos na orla. Melhorou a travessia entre o calçadão e a rua dos bares.",
+        "personalidade": {
+            "nome": "Abolição da Escravatura",
+            "biografia": "O nome remete à Lei Áurea (1888) e à participação cearense no movimento abolicionista. O Ceará foi a primeira província a libertar todos os escravos, em 1884, liderado por figuras como Dragão do Mar."
+        },
+        "fonte": "Lei Municipal 10.876/2018"
+    },
+    "6": {
+        "descricao": "Passagem subterrânea que facilita o acesso ao campus do Benfica (UFC) e ao Instituto de Educação do Ceará.",
+        "personalidade": {
+            "nome": "Educação Pública",
+            "biografia": "Homenagem simbólica ao ensino público e aos professores que formaram gerações no Ceará."
+        },
+        "fonte": "UFC / DER"
+    },
+    "7": {
+        "descricao": "Ligação subterrânea entre o complexo cultural e a avenida Beira-Mar. Abriga exposições de arte urbana.",
+        "personalidade": {
+            "nome": "Dragão do Mar (Chico da Matilde)",
+            "biografia": "Francisco José do Nascimento (1839-1914), jangadeiro e prático, liderou em 1881 a recusa em transportar escravos para navios negreiros no Porto de Fortaleza, ato decisivo para a abolição no Ceará. Tornou-se herói nacional."
+        },
+        "fonte": "Secult"
+    },
+    "8": {
+        "descricao": "Passagem sob o Mercado Central, ligando a rua Pedro Borges à avenida Alberto Nepomuceno.",
+        "personalidade": {
+            "nome": "Comércio Centenário",
+            "biografia": "Homenagem aos comerciantes que construíram a economia da cidade, desde os antigos mascates até os lojistas atuais."
+        },
+        "fonte": "Setur"
+    },
+    "9": {
+        "descricao": "Passagem subterrânea exclusiva para pedestres, ligando o calçadão à faixa de areia em frente ao Náutico.",
+        "personalidade": {
+            "nome": "José de Alencar",
+            "biografia": "Escritor cearense (1829-1877), patrono da cadeira 23 da Academia Brasileira de Letras. Autor de 'Iracema', 'O Guarani' e 'Senhora'. É um dos maiores nomes do romantismo brasileiro.",
+            "curiosidades": "Há um busto do autor no calçadão, próximo ao túnel."
+        },
+        "fonte": "Lei 10.245/2016"
+    },
+    "10": {
+        "descricao": "Melhoria na ligação entre o Centro e o bairro Pirambu, reduzindo acidentes no cruzamento.",
+        "personalidade": {
+            "nome": "Moradores do Pirambu",
+            "biografia": "Homenagem à comunidade do Pirambu, uma das áreas de ocupação mais antigas e resistentes de Fortaleza, que lutou por moradia e infraestrutura."
+        },
+        "fonte": "Prefeitura"
+    }
+}
