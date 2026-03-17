@@ -1,0 +1,12 @@
+[
+    { "id": 11, "nome": "Viaduto Estanislau Frota", "localizacao": "Av. Bezerra de Menezes com Av. José Bastos, Farias Brito", "ano": "1970", "coordenadas": [-3.7445, -38.5450] },
+    { "id": 12, "nome": "Viaduto do Cocó", "localizacao": "Av. Eng. Santana Júnior sobre Av. Padre Antônio Tomás", "ano": "1995", "coordenadas": [-3.7550, -38.4740] },
+    { "id": 13, "nome": "Viaduto da Raul Barbosa", "localizacao": "Av. Raul Barbosa sobre Av. Murilo Borges", "ano": "1988", "coordenadas": [-3.7770, -38.5210] },
+    { "id": 14, "nome": "Viaduto do Makro", "localizacao": "Av. Raul Barbosa sobre BR-116", "ano": "1992", "coordenadas": [-3.7850, -38.5330] },
+    { "id": 15, "nome": "Viaduto do Aeroporto", "localizacao": "Av. Senador Carlos Jereissati sobre Av. Bernardo Manuel", "ano": "2014", "coordenadas": [-3.7800, -38.4940] },
+    { "id": 16, "nome": "Viaduto da BR-116 (Messejana)", "localizacao": "BR-116, altura de Messejana", "ano": "2001", "coordenadas": [-3.8100, -38.5580] },
+    { "id": 17, "nome": "Viaduto da 13 de Maio c/ Aguanambi", "localizacao": "Av. 13 de Maio sobre Av. Aguanambi", "ano": "1999", "coordenadas": [-3.7570, -38.5430] },
+    { "id": 18, "nome": "Viaduto da Aguanambi c/ BR-116", "localizacao": "Av. Aguanambi sobre BR-116", "ano": "2005", "coordenadas": [-3.7740, -38.5500] },
+    { "id": 19, "nome": "Viaduto do Antônio Bezerra", "localizacao": "Av. Humberto Monte sobre Av. Mister Hull", "ano": "2010", "coordenadas": [-3.7620, -38.5870] },
+    { "id": 20, "nome": "Viaduto do Castelão", "localizacao": "Av. Dep. Paulino Rocha com Av. Alberto Craveiro", "ano": "2012", "coordenadas": [-3.8010, -38.5200] }
+]
