@@ -1,0 +1,83 @@
+{
+    "11": {
+        "descricao": "Um dos viadutos mais antigos da cidade, liga o Centro ao oeste. Passou por reforço estrutural em 2015.",
+        "personalidade": {
+            "nome": "Estanislau Frota",
+            "biografia": "Estanislau Frota (1903-1975) foi advogado, jornalista e político. Deputado estadual por três mandatos e federal por dois, atuou na comissão de transportes da Câmara, sendo um dos defensores da construção da Via Férrea de Sobral.",
+            "curiosidades": "Dá nome a uma escola no bairro Parangaba."
+        },
+        "fonte": "Lei 5.678/1970"
+    },
+    "12": {
+        "descricao": "Viaduto sobre o rio Cocó, importante corredor entre a Aldeota e a zona sul.",
+        "personalidade": {
+            "nome": "Engenheiro Santana Júnior",
+            "biografia": "Francisco de Paula Santana Júnior (1915-1988), engenheiro civil, foi diretor do DER-CE e responsável pela pavimentação de centenas de quilômetros de rodovias estaduais."
+        },
+        "fonte": "CMFor"
+    },
+    "13": {
+        "descricao": "Conexão entre bairros da zona sul, próximo ao fórum Clóvis Beviláqua.",
+        "personalidade": {
+            "nome": "Raul Barbosa",
+            "biografia": "Raul Barbosa (1911-1985) foi poeta, jornalista e cronista. Membro da Academia Cearense de Letras, escrevia sobre o cotidiano de Fortaleza com sensibilidade e humor."
+        },
+        "fonte": "Lei 8.234"
+    },
+    "14": {
+        "descricao": "Viaduto sobre a BR-116, facilitando o acesso ao bairro Alto da Balança.",
+        "personalidade": {
+            "nome": "Antônio Sales",
+            "biografia": "Antônio Sales (1868-1940), escritor e jornalista, fundador da Padaria Espiritual (1892-1898), movimento que revolucionou a cultura cearense. Autor de 'Aves de Arribação'."
+        },
+        "fonte": "Pesquisa popular"
+    },
+    "15": {
+        "descricao": "Viaduto de acesso ao Aeroporto Pinto Martins, parte das melhorias para a Copa.",
+        "personalidade": {
+            "nome": "Carlos Jereissati",
+            "biografia": "Carlos Jereissati (1926-2005), empresário, fundador do Grupo Iguatemi, que construiu o primeiro shopping center do Nordeste em Fortaleza. Foi um dos maiores empreendedores do estado."
+        },
+        "fonte": "Lei 9.876"
+    },
+    "16": {
+        "descricao": "Viaduto sobre a rodovia federal, próximo ao distrito de Messejana.",
+        "personalidade": {
+            "nome": "Messejana",
+            "biografia": "Messejana, fundada em 1726 como vila, é um dos núcleos históricos de Fortaleza. O nome vem do tupi 'Messe-ana', que significa 'local entre rios'. Foi incorporada à capital em 1921."
+        },
+        "fonte": "DNIT"
+    },
+    "17": {
+        "descricao": "Entroncamento movimentado da região do Fátima, liga o Centro à Parangaba.",
+        "personalidade": {
+            "nome": "José Bastos",
+            "biografia": "José Bastos (1875-1942), comerciante português, sócio da tradicional casa comercial João da Costa Bastos & Filhos, que abastecia o interior do estado."
+        },
+        "fonte": "G1"
+    },
+    "18": {
+        "descricao": "Viaduto que separa o tráfego municipal do federal.",
+        "personalidade": {
+            "nome": "Barão de Aratanha",
+            "biografia": "José Francisco da Silva Albano (1825-1908), comerciante e militar, recebeu o título de Barão de Aratanha do Império. Foi provedor da Santa Casa de Misericórdia."
+        },
+        "fonte": "CMFor"
+    },
+    "19": {
+        "descricao": "Ligação oeste com a UFC e bairros como Parquelândia.",
+        "personalidade": {
+            "nome": "Antônio Bezerra",
+            "biografia": "Antônio Bezerra de Menezes (1839-1923), médico e historiador, autor de 'Notas de Viagem' e 'A Pedra Fundamental', obras fundamentais para a historiografia cearense."
+        },
+        "fonte": "Lei 12.345/2010"
+    },
+    "20": {
+        "descricao": "Entorno da Arena Castelão, construído para a Copa de 2014.",
+        "personalidade": {
+            "nome": "Paulino Rocha",
+            "biografia": "Paulino Rocha (1925-2009), deputado estadual por quatro mandatos, defensor do esporte e da cultura cearense. Foi um dos responsáveis pela construção do estádio em 1973."
+        },
+        "fonte": "Projeto de reforma 2026"
+    }
+}
