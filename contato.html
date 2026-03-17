@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato · Fortaleza Subterrânea e Elevada</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary: #1a4b6d;
+            --accent: #f0b141;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #0b2b40;
+            --text-secondary: #4a5568;
+            --border: #e2e8f0;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .top-bar {
+            background: linear-gradient(145deg, #0a2e42, #1b4f6e);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background: var(--accent);
+            width: 48px;
+            height: 48px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #0b2b40;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .destaque {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+            padding: 6px 0;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.ativo {
+            border-bottom-color: var(--accent);
+            color: white;
+        }
+
+        /* Conteúdo principal */
+        .container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            flex: 1;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-info {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-info h3 i {
+            color: var(--accent);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .info-item i {
+            width: 24px;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .info-item a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted transparent;
+            transition: 0.2s;
+        }
+
+        .info-item a:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #eef2f6;
+            border-radius: 40px;
+            color: var(--primary);
+            transition: 0.2s;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Formulário */
+        .contact-form {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .contact-form h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: 0.2s;
+            background: var(--background);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(240,177,65,0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-submit:hover {
+            background: #0d3f5c;
+            transform: scale(1.02);
+        }
+
+        .btn-submit i {
+            font-size: 1rem;
+        }
+
+        .form-notice {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* FAQ simples */
+        .faq-section {
+            margin-top: 3rem;
+        }
+
+        .faq-section h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-item {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .faq-question i {
+            color: var(--accent);
+        }
+
+        .faq-answer {
+            margin-top: 0.8rem;
+            padding-left: 2rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            background: #0f2b37;
+            color: #d0e2f0;
+            padding: 2rem;
+            text-align: center;
+            border-top: 3px solid var(--accent);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #bcd7ec;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                align-items: start;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="top-bar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-map-location-dot"></i></div>
+            <div class="logo-text">
+                <h1>Fortaleza <span class="destaque">sub</span> & <span class="destaque">via</span></h1>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-map"></i> Mapa</a>
+            <a href="sobre.html"><i class="fas fa-book-open"></i> Projeto</a>
+            <a href="#"><i class="fas fa-users"></i> Personalidades</a>
+            <a href="#" class="ativo"><i class="fas fa-envelope"></i> Contato</a>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container">
+        <h1 class="page-title">Fale com a gente</h1>
+        <p class="page-subtitle">Dúvidas, sugestões, contribuições ou correções — sua participação é bem-vinda.</p>
+
+        <div class="contact-grid">
+            <!-- INFORMAÇÕES DE CONTATO -->
+            <div class="contact-info">
+                <h3><i class="fas fa-info-circle"></i> Informações</h3>
+                
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:projeto@fortalezasubvia.com.br">jooclaudiano@gmail.com</a>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>(85) 98765-4321</span>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Fortaleza, Ceará · Brasil</span>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Resposta em até 48h</span>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- FORMULÁRIO DE CONTATO -->
+            <div class="contact-form">
+                <h3><i class="fas fa-paper-plane"></i> Envie mensagem</h3>
+                
+                <form action="mailto:jooclaudiano@gmail.com" method="POST" enctype="text/plain">
+                    <div class="form-group">
+                        <label for="nome">Seu nome</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Seu e-mail</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="assunto">Assunto</label>
+                        <input type="text" id="assunto" name="assunto" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" name="mensagem" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> Enviar
+                    </button>
+                    
+                    <p class="form-notice">
+                        <i class="fas fa-shield-alt"></i> Este formulário usa seu programa de e-mail padrão. Se preferir, escreva diretamente para o endereço ao lado.
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <!-- PERGUNTAS FREQUENTES -->
+        <div class="faq-section">
+            <h3><i class="fas fa-question-circle"></i> Perguntas frequentes</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-right"></i> Posso contribuir com informações técnicas?
+                </div>
+                <div class="faq-answer">
+                    Claro! Se você trabalhou em alguma obra, tem plantas, memoriais descritivos ou conhece detalhes construtivos, entre em contato. Sua contribuição será creditada.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-right"></i> Como corrigir um dado histórico?
+                </div>
+                <div class="faq-answer">
+                    Envie a correção com a fonte confiável (link do Diário Oficial, livro, artigo). Revisaremos e atualizaremos o mais rápido possível.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-right"></i> Posso usar este material em meu trabalho acadêmico?
+                </div>
+                <div class="faq-answer">
+                    Sim! Todo conteúdo está sob licença Creative Commons (CC BY-NC). Basta citar a fonte: "Projeto Fortaleza Subterrânea e Elevada".
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-right"></i> Como posso apoiar o projeto?
+                </div>
+                <div class="faq-answer">
+                    Compartilhando, contribuindo com dados ou fazendo uma doação simbólica (entre em contato para mais informações).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div><i class="fas fa-code-branch"></i> Memorial Urbano · 2026</div>
+        <div class="footer-links">
+            <a href="#"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#"><i class="fas fa-database"></i> Fontes</a>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+        <div style="margin-top: 1rem; font-size: 0.8rem;">Conteúdo sob licença Creative Commons · Aberto a colaborações</div>
+    </footer>
+</body>
+</html>
