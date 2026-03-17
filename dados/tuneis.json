@@ -1,13 +1,21 @@
 [
-    { "id": 1, "nome": "Túnel da Praça Portugal", "localizacao": "Av. Desembargador Moreira com Av. Dom Luís, Aldeota", "ano": "2014", "coordenadas": [-3.7358, -38.4952] },
-    { "id": 2, "nome": "Túnel da Av. Santos Dumont", "localizacao": "Av. Santos Dumont com Av. Desembargador Moreira, Aldeota", "ano": "2026 (previsão)", "coordenadas": [-3.7385, -38.4928] },
-    { "id": 3, "nome": "Túnel da Parangaba", "localizacao": "Av. Godofredo Maciel com Av. Senador Fernandes Távora, Parangaba", "ano": "2026", "coordenadas": [-3.7685, -38.5215] },
-    { "id": 4, "nome": "Túnel do José Walter", "localizacao": "Av. C com Av. D, José Walter", "ano": "2026", "coordenadas": [-3.7905, -38.5710] },
-    { "id": 5, "nome": "Túnel da Abolição", "localizacao": "Av. Abolição com Rua Tibúrcio Cavalcante, Meireles", "ano": "2018", "coordenadas": [-3.7270, -38.4860] },
-    { "id": 6, "nome": "Túnel da Universidade", "localizacao": "Av. da Universidade com Av. 13 de Maio, Benfica", "ano": "2012", "coordenadas": [-3.7500, -38.5370] },
-    { "id": 7, "nome": "Túnel do Centro Dragão do Mar", "localizacao": "Rua Dragão do Mar, Praia de Iracema", "ano": "2008", "coordenadas": [-3.7210, -38.5150] },
-    { "id": 8, "nome": "Túnel do Mercado Central", "localizacao": "Av. Alberto Nepomuceno, Centro", "ano": "2003", "coordenadas": [-3.7272, -38.5288] },
-    { "id": 9, "nome": "Túnel da Beira-Mar", "localizacao": "Av. Beira-Mar, próximo ao Clube Náutico", "ano": "2016", "coordenadas": [-3.7232, -38.5022] },
-    { "id": 10, "nome": "Túnel da Leste-Oeste", "localizacao": "Av. Leste-Oeste com Rua Sargento João, Pirambu", "ano": "2020", "coordenadas": [-3.7260, -38.5455] }
-]
+    { "id": 1, "nome": "Túnel da Praça Portugal", "localizacao": "Av. Desembargador Moreira com Av. Dom Luís, Aldeota", "ano": "2014", "coordenadas": [-3.7316, -38.4966] },
 
+    { "id": 2, "nome": "Túnel da Av. Santos Dumont", "localizacao": "Av. Santos Dumont com Av. Desembargador Moreira, Aldeota", "ano": "2026 (previsão)", "coordenadas": [-3.7327, -38.4953] },
+
+    { "id": 3, "nome": "Túnel da Parangaba", "localizacao": "Av. Godofredo Maciel com Av. Senador Fernandes Távora, Parangaba", "ano": "2026", "coordenadas": [-3.7739, -38.5405] },
+
+    { "id": 4, "nome": "Túnel do José Walter", "localizacao": "Av. C com Av. D, José Walter", "ano": "2026", "coordenadas": [-3.7945, -38.5995] },
+
+    { "id": 5, "nome": "Túnel da Abolição", "localizacao": "Av. Abolição com Rua Tibúrcio Cavalcante, Meireles", "ano": "2018", "coordenadas": [-3.7263, -38.4912] },
+
+    { "id": 6, "nome": "Túnel da Universidade", "localizacao": "Av. da Universidade com Av. 13 de Maio, Benfica", "ano": "2012", "coordenadas": [-3.7447, -38.5376] },
+
+    { "id": 7, "nome": "Túnel do Centro Dragão do Mar", "localizacao": "Rua Dragão do Mar, Praia de Iracema", "ano": "2008", "coordenadas": [-3.7204, -38.5127] },
+
+    { "id": 8, "nome": "Túnel do Mercado Central", "localizacao": "Av. Alberto Nepomuceno, Centro", "ano": "2003", "coordenadas": [-3.7257, -38.5248] },
+
+    { "id": 9, "nome": "Túnel da Beira-Mar", "localizacao": "Av. Beira-Mar, próximo ao Clube Náutico", "ano": "2016", "coordenadas": [-3.7215, -38.5003] },
+
+    { "id": 10, "nome": "Túnel da Leste-Oeste", "localizacao": "Av. Leste-Oeste com Rua Sargento João, Pirambu", "ano": "2020", "coordenadas": [-3.7249, -38.5487] }
+]
