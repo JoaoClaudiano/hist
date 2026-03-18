@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doação via Pix - Fortaleza sub & via</title>
+    <!-- Biblioteca para gerar QR Code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        /* Estilos gerais (apenas para demonstração) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Botão que abre o modal */
+        .btn-doar {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background 0.3s;
+        }
+        .btn-doar:hover {
+            background: #218838;
+        }
+
+        /* Modal (popup) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-conteudo {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: aparecer 0.3s ease-out;
+        }
+
+        @keyframes aparecer {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 {
+            color: #333;
+            margin-top: 0;
+            font-size: 24px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .chave-pix {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 18px;
+            word-break: break-all;
+            margin: 20px 0;
+            border: 1px dashed #28a745;
+        }
+
+        #qrcode {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-copiar {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-copiar:hover {
+            background: #0056b3;
+        }
+        .btn-copiar.copiado {
+            background: #28a745;
+        }
+
+        .btn-fechar {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        .btn-fechar:hover {
+            background: #5a6268;
+        }
+
+        .instrucao {
+            color: #555;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .aviso {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão para abrir o modal -->
+    <button class="btn-doar" onclick="abrirModal()">💖 Doar via Pix</button>
+
+    <!-- Modal de doação -->
+    <div id="modalDoacao" class="modal">
+        <div class="modal-conteudo">
+            <h2>💚 Doação via Pix</h2>
+            <p class="instrucao">Ajude a manter o projeto <strong>Fortaleza sub & via</strong> vivo! Escaneie o QR Code ou copie a chave abaixo:</p>
+            
+            <div class="chave-pix" id="chavePix">jovclaudiano@gmail.com</div>
+            
+            <!-- QR Code será gerado aqui -->
+            <div id="qrcode"></div>
+            
+            <button class="btn-copiar" id="btnCopiar" onclick="copiarChave()">
+                📋 Copiar chave Pix
+            </button>
+            
+            <button class="btn-fechar" onclick="fecharModal()">Fechar</button>
+            
+            <div class="aviso">
+                ⚡ Após o pagamento, o valor será creditado diretamente na conta do criador. 
+                Sua contribuição faz a diferença!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos
+        const modal = document.getElementById('modalDoacao');
+        const chave = 'jovclaudiano@gmail.com';
+        let qrcodeGerado = false;
+
+        // Abrir modal
+        function abrirModal() {
+            modal.style.display = 'flex';
+            if (!qrcodeGerado) {
+                // Gerar QR Code com a chave Pix
+                new QRCode(document.getElementById('qrcode'), {
+                    text: chave,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                qrcodeGerado = true;
+            }
+        }
+
+        // Fechar modal
+        function fecharModal() {
+            modal.style.display = 'none';
+        }
+
+        // Copiar chave para área de transferência
+        async function copiarChave() {
+            const botao = document.getElementById('btnCopiar');
+            try {
+                await navigator.clipboard.writeText(chave);
+                botao.classList.add('copiado');
+                botao.innerHTML = '✅ Chave copiada!';
+                setTimeout(() => {
+                    botao.classList.remove('copiado');
+                    botao.innerHTML = '📋 Copiar chave Pix';
+                }, 2000);
+            } catch (err) {
+                alert('Não foi possível copiar. Selecione e copie manualmente.');
+            }
+        }
+
+        // Fechar modal clicando fora do conteúdo
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                fecharModal();
+            }
+        }
+
+        // Fechar com tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'flex') {
+                fecharModal();
+            }
+        });
+    </script>
+</body>
+</html>
