@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalidades · Fortaleza sub &amp; via</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        :root {
+            --primary: #1a4b6d;
+            --accent: #f0b141;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #0b2b40;
+            --text-secondary: #4a5568;
+            --border: #e2e8f0;
+        }
+
+        body { background: var(--background); color: var(--text-primary); line-height: 1.6; }
+
+        /* Header */
+        .top-bar {
+            background: linear-gradient(145deg, #0a2e42, #1b4f6e);
+            color: white; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 1rem;
+        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-icon {
+            background: var(--accent); width: 48px; height: 48px;
+            border-radius: 30px; display: flex; align-items: center;
+            justify-content: center; font-size: 24px; color: #0b2b40;
+        }
+        .logo-text h1 { font-size: 1.8rem; font-weight: 600; }
+        .destaque { color: var(--accent); }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a {
+            color: rgba(255,255,255,0.9); text-decoration: none;
+            display: flex; align-items: center; gap: 6px;
+            transition: 0.2s; border-bottom: 2px solid transparent; padding: 6px 0;
+        }
+        .nav-links a:hover, .nav-links a.ativo { border-bottom-color: var(--accent); color: white; }
+
+        /* Hero */
+        .hero {
+            text-align: center; padding: 3rem 2rem 2rem;
+            background: linear-gradient(180deg, #e8f0f8 0%, var(--background) 100%);
+        }
+        .hero h2 { font-size: 2.2rem; color: var(--primary); margin-bottom: 0.8rem; }
+        .hero p { color: var(--text-secondary); max-width: 650px; margin: 0 auto; font-size: 1.05rem; }
+
+        /* Grid */
+        .container { max-width: 1100px; margin: 2.5rem auto; padding: 0 2rem; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface); border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+            display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.1); }
+
+        .card-top {
+            background: linear-gradient(135deg, var(--primary), #0f3b55);
+            padding: 1.5rem; text-align: center; color: white;
+        }
+        .avatar {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; margin: 0 auto 0.8rem;
+            border: 3px solid var(--accent);
+        }
+        .card-top h3 { font-size: 1.2rem; margin-bottom: 0.2rem; }
+        .card-top .datas { font-size: 0.85rem; opacity: 0.85; }
+        .card-top .frase { font-size: 0.8rem; font-style: italic; opacity: 0.9; margin-top: 0.4rem; }
+
+        .card-body { padding: 1.2rem; flex: 1; }
+        .card-body p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; }
+
+        .btn-ver {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--primary); color: white;
+            text-decoration: none; padding: 0.6rem 1.2rem;
+            border-radius: 30px; font-size: 0.85rem; font-weight: 500;
+            transition: 0.2s;
+        }
+        .btn-ver:hover { background: #0d3f5c; }
+
+        /* Footer */
+        footer {
+            background: #0f2b37; color: #d0e2f0;
+            padding: 1.5rem 2rem; text-align: center;
+            border-top: 3px solid var(--accent); margin-top: 3rem; font-size: 0.85rem;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-top: 0.8rem; flex-wrap: wrap; }
+        .footer-links a { color: #bcd7ec; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+        .footer-links a:hover { color: var(--accent); }
+
+        /* Back to top */
+        #back-to-top {
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: #1a4b6d; color: white; border: none;
+            width: 48px; height: 48px; border-radius: 50%;
+            font-size: 1.2rem; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.2s; z-index: 9999;
+        }
+        #back-to-top.visible { opacity: 1; visibility: visible; }
+        #back-to-top:hover { background: var(--accent); color: #0b2b40; transform: scale(1.1); }
+
+        @media (max-width: 768px) {
+            .top-bar { flex-direction: column; align-items: flex-start; padding: 1rem; }
+            .nav-links { width: 100%; justify-content: space-around; }
+            .hero h2 { font-size: 1.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="top-bar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-map-location-dot"></i></div>
+            <div class="logo-text">
+                <h1>Fortaleza <span class="destaque">sub</span> &amp; <span class="destaque">via</span></h1>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-map"></i> Mapa</a>
+            <a href="sobre.html"><i class="fas fa-book-open"></i> Projeto</a>
+            <a href="personalidades.html" class="ativo"><i class="fas fa-users"></i> Personalidades</a>
+            <a href="apoio.html">Apoie</a>
+            <a href="contato.html"><i class="fas fa-envelope"></i> Contato</a>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+        <h2><i class="fas fa-users" style="color:var(--accent);"></i> Personalidades</h2>
+        <p>Conheça as figuras históricas que dão nome às obras de mobilidade de Fortaleza — engenheiros, políticos, educadores e heróis do cotidiano.</p>
+    </div>
+
+    <!-- GRADE DE PERSONALIDADES -->
+    <div class="container">
+        <div class="grid">
+
+            <div class="card">
+                <div class="card-top">
+                    <div class="avatar"><i class="fas fa-drafting-compass"></i></div>
+                    <h3>Adolfo Herbster</h3>
+                    <div class="datas">1826 – 1893</div>
+                    <div class="frase">"O engenheiro que desenhou Fortaleza"</div>
+                </div>
+                <div class="card-body">
+                    <p>Engenheiro responsável pelo plano de arruamento de Fortaleza, criando os "boulevards" que definem a cidade até hoje.</p>
+                    <a href="personalidades/adolfo-herbster.html" class="btn-ver"><i class="fas fa-book-open"></i> Ler biografia</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-top">
+                    <div class="avatar"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Antônio Martins Filho</h3>
+                    <div class="datas">1905 – 2002</div>
+                    <div class="frase">"O reitor dos reitores"</div>
+                </div>
+                <div class="card-body">
+                    <p>Fundador e primeiro reitor da Universidade Federal do Ceará (UFC), pioneiro da educação superior no Nordeste.</p>
+                    <a href="personalidades/antonio-martins-filho.html" class="btn-ver"><i class="fas fa-book-open"></i> Ler biografia</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-top">
+                    <div class="avatar"><i class="fas fa-scroll"></i></div>
+                    <h3>Guilherme Studart</h3>
+                    <div class="datas">1856 – 1938</div>
+                    <div class="frase">Barão de Studart · historiador e médico</div>
+                </div>
+                <div class="card-body">
+                    <p>Médico e historiador, autor de obras fundamentais para a historiografia cearense, recebeu o título de Barão do Império.</p>
+                    <a href="personalidades/barao-studart.html" class="btn-ver"><i class="fas fa-book-open"></i> Ler biografia</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-top">
+                    <div class="avatar"><i class="fas fa-bus"></i></div>
+                    <h3>Carlos Albuquerque Lima</h3>
+                    <div class="datas">1916 – 1999</div>
+                    <div class="frase">"Pioneiro do transporte urbano em Fortaleza"</div>
+                </div>
+                <div class="card-body">
+                    <p>Empresário e gestor público que modernizou a infraestrutura de transporte coletivo na capital cearense.</p>
+                    <a href="personalidades/carlos-albuquerque-lima.html" class="btn-ver"><i class="fas fa-book-open"></i> Ler biografia</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-top">
+                    <div class="avatar"><i class="fas fa-theater-masks"></i></div>
+                    <h3>Celina Queiroz</h3>
+                    <div class="datas">1952 – 2013</div>
+                    <div class="frase">"A dama da cultura do Ceará"</div>
+                </div>
+                <div class="card-body">
+                    <p>Gestora cultural e política, responsável por importantes iniciativas de preservação do patrimônio histórico cearense.</p>
+                    <a href="personalidades/celina-queiroz.html" class="btn-ver"><i class="fas fa-book-open"></i> Ler biografia</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-top">
+                    <div class="avatar"><i class="fas fa-radio"></i></div>
+                    <h3>José Jatahy</h3>
+                    <div class="datas">1910 – ?</div>
+                    <div class="frase">"A voz pioneira do rádio cearense"</div>
+                </div>
+                <div class="card-body">
+                    <p>Radialista e comunicador que ajudou a conectar o Ceará através das ondas do rádio nas décadas de 1930 e 1940.</p>
+                    <a href="personalidades/jose-jatahy.html" class="btn-ver"><i class="fas fa-book-open"></i> Ler biografia</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-top">
+                    <div class="avatar"><i class="fas fa-city"></i></div>
+                    <h3>Juraci Magalhães</h3>
+                    <div class="datas">1932 – 2009</div>
+                    <div class="frase">"O prefeito que transformou Fortaleza"</div>
+                </div>
+                <div class="card-body">
+                    <p>Prefeito de Fortaleza que impulsionou a modernização da cidade, com obras de infraestrutura e urbanização de grande impacto.</p>
+                    <a href="personalidades/juraci-magalhaes.html" class="btn-ver"><i class="fas fa-book-open"></i> Ler biografia</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-top">
+                    <div class="avatar"><i class="fas fa-industry"></i></div>
+                    <h3>Virgílio Távora</h3>
+                    <div class="datas">1919 – 1988</div>
+                    <div class="frase">"O governador que industrializou o Ceará"</div>
+                </div>
+                <div class="card-body">
+                    <p>Governador do Ceará por dois mandatos, responsável pela criação do Distrito Industrial de Fortaleza e pela abertura de rodovias estaduais.</p>
+                    <a href="personalidades/virgilio-tavora.html" class="btn-ver"><i class="fas fa-book-open"></i> Ler biografia</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div><i class="fas fa-code-branch"></i> Memorial Urbano · 2026</div>
+        <div class="footer-links">
+            <a href="#"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#"><i class="fas fa-database"></i> Fontes</a>
+            <a href="apoio.html">💖 Apoie o projeto</a>
+        </div>
+        <div style="margin-top: 0.8rem; font-size: 0.8rem;">Conteúdo sob licença Creative Commons · Aberto a colaborações</div>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <button id="back-to-top" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        const btnTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => btnTop.classList.toggle('visible', window.scrollY > 300));
+        btnTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+</body>
+</html>

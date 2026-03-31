@@ -1,5 +1,5 @@
 [
-    { "id": 11, "nome": "Viaduto Estanislau Frota", "localizacao": "Av. Bezerra de Menezes com Av. José Bastos, Farias Brito", "ano": "1970", "coordenadas": [-3.7448, -38.5532] },
+    { "id": 11, "nome": "Viaduto Estanislau Frota", "localizacao": "Av. Bezerra de Menezes com Av. José Bastos, Benfica", "ano": "1970", "coordenadas": [-3.7448, -38.5532] },
 
     { "id": 12, "nome": "Viaduto do Cocó", "localizacao": "Av. Eng. Santana Júnior sobre Av. Padre Antônio Tomás", "ano": "1995", "coordenadas": [-3.7542, -38.4895] },
 
@@ -17,5 +17,15 @@
 
     { "id": 19, "nome": "Viaduto do Antônio Bezerra", "localizacao": "Av. Humberto Monte sobre Av. Mister Hull", "ano": "2010", "coordenadas": [-3.7615, -38.5898] },
 
-    { "id": 20, "nome": "Viaduto do Castelão", "localizacao": "Av. Dep. Paulino Rocha com Av. Alberto Craveiro", "ano": "2012", "coordenadas": [-3.8002, -38.5216] }
+    { "id": 20, "nome": "Viaduto do Castelão", "localizacao": "Av. Dep. Paulino Rocha com Av. Alberto Craveiro", "ano": "2012", "coordenadas": [-3.8002, -38.5216] },
+
+    { "id": 21, "nome": "Viaduto Waldemar Alcântara", "localizacao": "Av. Bezerra de Menezes sobre Av. Francisco Sá (Leste-Oeste), Parquelândia", "ano": "1975", "coordenadas": [-3.7518, -38.5790] },
+
+    { "id": 22, "nome": "Viaduto da Av. Dedé Brasil", "localizacao": "Av. Dedé Brasil sobre BR-116, Parangaba", "ano": "1994", "coordenadas": [-3.7665, -38.5563] },
+
+    { "id": 23, "nome": "Viaduto do HGF", "localizacao": "Av. Borges de Melo sobre Av. 13 de Maio, Rodolfo Teófilo", "ano": "1980", "coordenadas": [-3.7625, -38.5497] },
+
+    { "id": 24, "nome": "Viaduto do Conjunto Ceará", "localizacao": "Av. Mister Hull sobre Av. Ernesto Sabóia, Conjunto Ceará", "ano": "2003", "coordenadas": [-3.7712, -38.6105] },
+
+    { "id": 25, "nome": "Viaduto do Cambeba", "localizacao": "BR-116, altura do bairro Cambeba, zona sul", "ano": "2005", "coordenadas": [-3.8245, -38.5518] }
 ]

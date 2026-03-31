@@ -79,5 +79,49 @@
             "biografia": "Paulino Rocha (1925-2009), deputado estadual por quatro mandatos, defensor do esporte e da cultura cearense. Foi um dos responsáveis pela construção do estádio em 1973."
         },
         "fonte": "Projeto de reforma 2026"
+    },
+    "21": {
+        "descricao": "Um dos viadutos mais antigos e emblemáticos de Fortaleza, o Waldemar Alcântara garante o fluxo contínuo na Av. Bezerra de Menezes sob a Av. Francisco Sá, ligando Parquelândia ao Centro. Passou por reforma estrutural em 2004.",
+        "personalidade": {
+            "nome": "Waldemar de Alcântara",
+            "biografia": "Waldemar de Alcântara (1889–1960), advogado e político cearense, foi deputado estadual e federal pelo Ceará. Destacou-se na defesa de políticas públicas de urbanização e infraestrutura para o interior do estado nas décadas de 1930 e 1940.",
+            "curiosidades": "O viaduto é ponto de referência para moradores da zona oeste que chegam ao centro via Bezerra de Menezes."
+        },
+        "fonte": "CMFor / DER-CE"
+    },
+    "22": {
+        "descricao": "Passagem elevada que separa o tráfego municipal da rodovia federal na entrada de Parangaba pela Av. Dedé Brasil, eliminando um dos cruzamentos mais congestionados da região.",
+        "personalidade": {
+            "nome": "Dedé Brasil",
+            "biografia": "Eudécio Américo de Lima Araújo, o 'Dedé Brasil' (1932–2001), foi vereador e deputado estadual pelo Ceará. Defensor da mobilidade urbana e das comunidades periféricas, deixou seu nome em uma das avenidas de maior fluxo de Fortaleza."
+        },
+        "fonte": "Lei Municipal / DER-CE"
+    },
+    "23": {
+        "descricao": "Viaduto construído para melhorar o acesso ao Hospital Geral de Fortaleza e à região do Rodolfo Teófilo, separando os fluxos da Av. Borges de Melo e da Av. 13 de Maio em um dos entroncamentos mais movimentados da cidade.",
+        "personalidade": {
+            "nome": "Hospital Geral de Fortaleza (HGF)",
+            "biografia": "O HGF, inaugurado em 1975, é o maior hospital público do Nordeste. Referência em cirurgias de alta complexidade, traumas e urgências, atende pacientes de todo o Ceará e estados vizinhos.",
+            "curiosidades": "O complexo hospitalar foi construído às margens do projeto de expansão da Av. Borges de Melo, exigindo obras de mobilidade em seu entorno."
+        },
+        "fonte": "SEINF / Prefeitura de Fortaleza"
+    },
+    "24": {
+        "descricao": "Estrutura elevada que serve o Conjunto Ceará, um dos maiores conjuntos habitacionais do Brasil, permitindo o cruzamento da Av. Mister Hull sem interferência no tráfego local e conectando os bairros do extremo oeste ao anel viário.",
+        "personalidade": {
+            "nome": "Conjunto Ceará",
+            "biografia": "O Conjunto Ceará foi construído entre 1970 e 1975 pelo BNH como um dos maiores projetos habitacionais do Brasil, destinado às famílias de baixa renda do oeste de Fortaleza. Hoje é o bairro mais populoso da capital, com mais de 100 mil habitantes.",
+            "curiosidades": "O bairro surgiu num antigo sítio agrícola e cresceu rapidamente, gerando demanda por obras viárias de grande porte."
+        },
+        "fonte": "COHAB-CE / Prefeitura de Fortaleza"
+    },
+    "25": {
+        "descricao": "Viaduto na BR-116 que dá acesso ao bairro Cambeba, na zona sul de Fortaleza, facilitando a integração entre a rodovia federal e os bairros residenciais que cresceram ao longo do eixo sul da cidade.",
+        "personalidade": {
+            "nome": "Cambeba",
+            "biografia": "O nome Cambeba, de origem indígena, refere-se a um povo nativo que habitou a região. O bairro, incorporado ao município na segunda metade do século XX, cresceu ao longo da BR-116 e hoje abriga condomínios, comércio e importantes equipamentos públicos.",
+            "curiosidades": "A palavra 'Cambeba' na língua tupi significa 'cabeça chata', referência a um costume da tribo que habitava a região."
+        },
+        "fonte": "DNIT / Prefeitura de Fortaleza"
     }
 }
