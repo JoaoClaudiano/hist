@@ -426,3 +426,223 @@ footer {
     color: #0b2b40;
     transform: scale(1.1);
 }
+
+/* ===== BOTÃO VERIFICAÇÃO ===== */
+.btn-verificar {
+    background: transparent;
+    color: rgba(255,255,255,0.9);
+    border: 1.5px solid rgba(255,255,255,0.35);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.btn-verificar:hover {
+    background: rgba(240,177,65,0.2);
+    border-color: #f0b141;
+    color: white;
+}
+
+.btn-verificar.ativo {
+    background: #f0b141;
+    border-color: #f0b141;
+    color: #0b2b40;
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .btn-verificar {
+        font-size: 1rem;
+        padding: 5px 14px;
+    }
+}
+
+/* ===== FORM DE VERIFICAÇÃO (POPUP) ===== */
+.verificacao-form {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 240px;
+}
+
+.verificacao-titulo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0b2b40;
+    border-bottom: 2px solid #f0b141;
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.verificacao-form label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #1a4b6d;
+    margin-top: 4px;
+}
+
+.verificacao-form input,
+.verificacao-form select {
+    border: 1.5px solid #cbd5e0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    outline: none;
+    transition: 0.2s;
+}
+
+.verificacao-form input:focus,
+.verificacao-form select:focus {
+    border-color: #1a4b6d;
+}
+
+.verificacao-acoes {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-salvar-verif {
+    background: #e8a000;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+    font-family: inherit;
+    transition: 0.2s;
+}
+
+.btn-salvar-verif:hover {
+    background: #c87800;
+}
+
+.btn-cancelar-verif {
+    background: #eef2f6;
+    color: #1a4b6d;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.2s;
+}
+
+.btn-cancelar-verif:hover {
+    background: #dde4ec;
+}
+
+/* Link OpenStreetMap */
+.link-osm {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    color: #0066aa;
+    text-decoration: none;
+    margin-top: 6px;
+    padding: 4px 8px;
+    background: #e8f4ff;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.link-osm:hover {
+    background: #d0e8ff;
+    color: #004488;
+}
+
+/* ===== CARDS DE SUGESTÃO NO PAINEL ===== */
+.sugestao-card {
+    background: #fffdf0;
+    border: 1.5px solid #f0d878;
+    border-radius: 16px;
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.sugestao-nome {
+    font-weight: 700;
+    color: #0b2b40;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.sugestao-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.78rem;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.sugestao-nota {
+    font-size: 0.85rem;
+    color: #444;
+    font-style: italic;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: #fff;
+    border-radius: 8px;
+    border-left: 3px solid #e8a000;
+}
+
+.btn-ir-marcador {
+    background: #1a4b6d;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: inherit;
+    transition: 0.2s;
+    flex: 1;
+    justify-content: center;
+}
+
+.btn-ir-marcador:hover {
+    background: #0d3f5c;
+}
+
+.btn-remover-sugestao {
+    background: #fee2e2;
+    color: #cc2200;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.2s;
+}
+
+.btn-remover-sugestao:hover {
+    background: #fecaca;
+}
