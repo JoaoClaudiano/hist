@@ -49,22 +49,6 @@
         },
         "fonte": "UFC / DER"
     },
-    "7": {
-        "descricao": "Ligação subterrânea entre o complexo cultural e a avenida Beira-Mar. Abriga exposições de arte urbana.",
-        "personalidade": {
-            "nome": "Dragão do Mar (Chico da Matilde)",
-            "biografia": "Francisco José do Nascimento (1839-1914), jangadeiro e prático, liderou em 1881 a recusa em transportar escravos para navios negreiros no Porto de Fortaleza, ato decisivo para a abolição no Ceará. Tornou-se herói nacional."
-        },
-        "fonte": "Secult"
-    },
-    "8": {
-        "descricao": "Passagem sob o Mercado Central, ligando a rua Pedro Borges à avenida Alberto Nepomuceno.",
-        "personalidade": {
-            "nome": "Comércio Centenário",
-            "biografia": "Homenagem aos comerciantes que construíram a economia da cidade, desde os antigos mascates até os lojistas atuais."
-        },
-        "fonte": "Setur"
-    },
     "9": {
         "descricao": "Passagem subterrânea exclusiva para pedestres, ligando o calçadão à faixa de areia em frente ao Náutico.",
         "personalidade": {

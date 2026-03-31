@@ -11,10 +11,6 @@
 
     { "id": 6, "nome": "Túnel da Universidade", "localizacao": "Av. da Universidade com Av. 13 de Maio, Benfica", "ano": "2012", "coordenadas": [-3.7447, -38.5376] },
 
-    { "id": 7, "nome": "Túnel do Centro Dragão do Mar", "localizacao": "Rua Dragão do Mar, Praia de Iracema", "ano": "2008", "coordenadas": [-3.7204, -38.5127] },
-
-    { "id": 8, "nome": "Túnel do Mercado Central", "localizacao": "Av. Alberto Nepomuceno, Centro", "ano": "2003", "coordenadas": [-3.7257, -38.5248] },
-
     { "id": 9, "nome": "Túnel da Beira-Mar", "localizacao": "Av. Beira-Mar, próximo ao Clube Náutico", "ano": "2016", "coordenadas": [-3.7215, -38.5003] },
 
     { "id": 10, "nome": "Túnel da Leste-Oeste", "localizacao": "Av. Leste-Oeste com Rua Sargento João, Pirambu", "ano": "2020", "coordenadas": [-3.7249, -38.5487] }
