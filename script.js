@@ -5,6 +5,25 @@ let viadutos = [];
 let detalhesTuneis = {};
 let detalhesViadutos = {};
 
+// ==================== MODO VERIFICAÇÃO ====================
+let modoVerificacao = false;
+let pendingLatlng = null;
+let sugestoes = JSON.parse(localStorage.getItem('sugestoes-estruturas') || '[]');
+let marcadoresSugestao = [];
+
+function gerarId() {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
+
+function escapeHtml(texto) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(texto));
+    return div.innerHTML;
+}
+
 // Ícones
 const iconeTunel = L.divIcon({
     className: 'custom-div-icon',
@@ -18,11 +37,18 @@ const iconeViaduto = L.divIcon({
     iconSize: [20, 20], iconAnchor: [10, 10]
 });
 
+const iconeSugestao = L.divIcon({
+    className: 'custom-div-icon',
+    html: '<div style="background: #e8a000; width: 22px; height: 22px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:13px; line-height:1;">?</div>',
+    iconSize: [22, 22], iconAnchor: [11, 11]
+});
+
 // Inicialização
 async function init() {
     await carregarDados();
     initMap();
     adicionarMarcadores();
+    carregarSugestoesDoStorage();
     initBackToTop();
 }
 
@@ -58,7 +84,13 @@ function initMap() {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(mapa);
 
-    mapa.on('click', mostrarPainelInicial);
+    mapa.on('click', function(e) {
+        if (modoVerificacao) {
+            abrirFormularioVerificacao(e.latlng);
+        } else {
+            mostrarPainelInicial();
+        }
+    });
 }
 
 function adicionarMarcadores() {
@@ -167,6 +199,211 @@ function mostrarPainelInicial() {
 
 // Inicia quando a página carregar
 document.addEventListener('DOMContentLoaded', init);
+
+// ==================== FUNÇÕES DE VERIFICAÇÃO ====================
+
+window.toggleModoVerificacao = function() {
+    modoVerificacao = !modoVerificacao;
+    const btn = document.getElementById('btn-verificar');
+    if (modoVerificacao) {
+        btn.classList.add('ativo');
+        btn.innerHTML = '<i class="fas fa-times"></i> Cancelar';
+        mapa.getContainer().style.cursor = 'crosshair';
+    } else {
+        btn.classList.remove('ativo');
+        btn.innerHTML = '<i class="fas fa-map-pin"></i> Indicar estrutura';
+        mapa.getContainer().style.cursor = '';
+        mapa.closePopup();
+    }
+};
+
+function abrirFormularioVerificacao(latlng) {
+    pendingLatlng = latlng;
+    const osmUrl = `https://www.openstreetmap.org/#map=18/${latlng.lat.toFixed(5)}/${latlng.lng.toFixed(5)}`;
+    const content = `
+        <div class="verificacao-form">
+            <div class="verificacao-titulo"><i class="fas fa-map-pin"></i> Indicar estrutura</div>
+            <label>Nome da estrutura*</label>
+            <input type="text" id="verif-nome" placeholder="Ex: Viaduto Castelo Branco" maxlength="100">
+            <label>Tipo*</label>
+            <select id="verif-tipo">
+                <option value="viaduto">Viaduto</option>
+                <option value="tunel">Túnel</option>
+            </select>
+            <label>Observação (opcional)</label>
+            <input type="text" id="verif-nota" placeholder="Ex: estrutura demolida, incompleta..." maxlength="200">
+            <a class="link-osm" href="${osmUrl}" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt"></i> Verificar localização no OpenStreetMap
+            </a>
+            <div class="verificacao-acoes">
+                <button class="btn-salvar-verif" onclick="window.salvarSugestao()">
+                    <i class="fas fa-check"></i> Salvar
+                </button>
+                <button class="btn-cancelar-verif" onclick="window.fecharVerificacao()">Cancelar</button>
+            </div>
+        </div>
+    `;
+    L.popup({ className: 'popup-verificacao', minWidth: 260, maxWidth: 300 })
+        .setLatLng(latlng)
+        .setContent(content)
+        .openOn(mapa);
+}
+
+window.fecharVerificacao = function() {
+    mapa.closePopup();
+};
+
+window.salvarSugestao = function() {
+    if (!pendingLatlng) return;
+    const nomeInput = document.getElementById('verif-nome');
+    const nome = nomeInput ? nomeInput.value.trim() : '';
+    const tipo = document.getElementById('verif-tipo') ? document.getElementById('verif-tipo').value : 'viaduto';
+    const nota = document.getElementById('verif-nota') ? document.getElementById('verif-nota').value.trim() : '';
+
+    if (!nome) {
+        if (nomeInput) nomeInput.style.border = '2px solid #cc2200';
+        return;
+    }
+
+    const sugestao = {
+        id: gerarId(),
+        nome,
+        tipo,
+        nota,
+        lat: pendingLatlng.lat,
+        lng: pendingLatlng.lng,
+        data: new Date().toLocaleDateString('pt-BR')
+    };
+    pendingLatlng = null;
+
+    sugestoes.push(sugestao);
+    localStorage.setItem('sugestoes-estruturas', JSON.stringify(sugestoes));
+    adicionarMarcadorSugestao(sugestao);
+    mapa.closePopup();
+
+    modoVerificacao = false;
+    const btn = document.getElementById('btn-verificar');
+    btn.classList.remove('ativo');
+    btn.innerHTML = '<i class="fas fa-map-pin"></i> Indicar estrutura';
+    mapa.getContainer().style.cursor = '';
+
+    mostrarSugestoes();
+};
+
+function adicionarMarcadorSugestao(sugestao) {
+    const osmUrl = `https://www.openstreetmap.org/#map=18/${sugestao.lat.toFixed(5)}/${sugestao.lng.toFixed(5)}`;
+    const nomeSeguro = escapeHtml(sugestao.nome);
+    const notaSegura = escapeHtml(sugestao.nota || '');
+    const tipoLabel = sugestao.tipo === 'viaduto' ? 'Viaduto' : 'Túnel';
+
+    const marcador = L.marker([sugestao.lat, sugestao.lng], { icon: iconeSugestao }).addTo(mapa);
+    marcador.bindTooltip(`${nomeSeguro} (indicação)`, { direction: 'top' });
+    marcador.bindPopup(`
+        <div class="custom-popup">
+            <div class="popup-titulo">${nomeSeguro}</div>
+            <span class="popup-tipo">Indicação · ${tipoLabel}</span>
+            ${notaSegura ? `<p style="margin: 6px 0; font-size: 0.85rem;">${notaSegura}</p>` : ''}
+            <p style="font-size: 0.75rem; color: #666; margin-top: 6px;">Indicado em ${escapeHtml(sugestao.data)}</p>
+            <a class="link-osm" href="${osmUrl}" target="_blank" rel="noopener" style="display:block; margin: 6px 0;">
+                <i class="fas fa-external-link-alt"></i> Ver no OpenStreetMap
+            </a>
+            <button class="popup-botao" style="background:#cc4400;" onclick="window.removerSugestao('${sugestao.id}')">
+                <i class="fas fa-trash"></i> Remover indicação
+            </button>
+        </div>
+    `, { className: 'custom-popup', minWidth: 220 });
+    marcadoresSugestao.push({ id: sugestao.id, marcador });
+}
+
+window.removerSugestao = function(id) {
+    sugestoes = sugestoes.filter(s => s.id !== id);
+    localStorage.setItem('sugestoes-estruturas', JSON.stringify(sugestoes));
+
+    const idx = marcadoresSugestao.findIndex(m => m.id === id);
+    if (idx !== -1) {
+        mapa.removeLayer(marcadoresSugestao[idx].marcador);
+        marcadoresSugestao.splice(idx, 1);
+    }
+    mapa.closePopup();
+    mostrarSugestoes();
+};
+
+window.irParaMarcador = function(lat, lng) {
+    mapa.setView([lat, lng], 17);
+};
+
+window.mostrarSugestoes = mostrarSugestoes;
+
+function mostrarSugestoes() {
+    const painel = document.getElementById('painel');
+    if (sugestoes.length === 0) {
+        mostrarPainelInicial();
+        return;
+    }
+
+    let html = `
+        <div class="painel-header">
+            <i class="fas fa-map-pin" style="color:#e8a000; background:#fff8e8;"></i>
+            <h2>Minhas indicações</h2>
+        </div>
+        <p style="font-size:0.85rem; color:#555; margin-bottom:1rem;">
+            <i class="fas fa-info-circle"></i> Estruturas indicadas por você. Salvas localmente no navegador.
+        </p>
+    `;
+
+    sugestoes.forEach(s => {
+        const nomeSeguro = escapeHtml(s.nome);
+        const notaSegura = escapeHtml(s.nota || '');
+        const tipoLabel = s.tipo === 'viaduto' ? 'Viaduto' : 'Túnel';
+        const osmUrl = `https://www.openstreetmap.org/#map=18/${s.lat.toFixed(5)}/${s.lng.toFixed(5)}`;
+        const idSeguro = escapeHtml(String(s.id));
+
+        html += `
+            <div class="sugestao-card">
+                <div class="sugestao-nome">${nomeSeguro}</div>
+                <div class="sugestao-meta">
+                    <span>🟡 ${tipoLabel}</span>
+                    <span>${escapeHtml(s.data)}</span>
+                </div>
+                ${notaSegura ? `<div class="sugestao-nota">${notaSegura}</div>` : ''}
+                <a class="link-osm" href="${osmUrl}" target="_blank" rel="noopener" style="display:inline-flex; margin-top:6px;">
+                    <i class="fas fa-external-link-alt"></i> Verificar no OpenStreetMap
+                </a>
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                    <button class="btn-ir-marcador" data-lat="${s.lat}" data-lng="${s.lng}">
+                        <i class="fas fa-location-dot"></i> Ver no mapa
+                    </button>
+                    <button class="btn-remover-sugestao" data-id="${idSeguro}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+
+    painel.innerHTML = html;
+
+    painel.querySelectorAll('.btn-ir-marcador').forEach(btn => {
+        btn.addEventListener('click', function() {
+            window.irParaMarcador(parseFloat(this.dataset.lat), parseFloat(this.dataset.lng));
+        });
+    });
+    painel.querySelectorAll('.btn-remover-sugestao').forEach(btn => {
+        btn.addEventListener('click', function() {
+            window.removerSugestao(this.dataset.id);
+        });
+    });
+}
+
+function carregarSugestoesDoStorage() {
+    sugestoes.forEach(s => adicionarMarcadorSugestao(s));
+    if (sugestoes.length > 0) {
+        const btn = document.getElementById('btn-verificar');
+        if (btn) {
+            btn.title = `${sugestoes.length} indicação(ões) salva(s)`;
+        }
+    }
+}
 
 // Botão Voltar ao Topo
 function initBackToTop() {

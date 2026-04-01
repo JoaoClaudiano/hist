@@ -7,7 +7,7 @@
 
     { "id": 14, "nome": "Viaduto do Makro", "localizacao": "Av. Raul Barbosa sobre BR-116", "ano": "1992", "coordenadas": [-3.7842, -38.5305] },
 
-    { "id": 15, "nome": "Viaduto do Aeroporto", "localizacao": "Av. Senador Carlos Jereissati sobre Av. Bernardo Manuel", "ano": "2014", "coordenadas": [-3.7768, -38.5023] },
+    { "id": 15, "nome": "Viaduto do Aeroporto", "localizacao": "Av. Senador Carlos Jereissati sobre Av. Bernardo Manuel", "ano": "2014", "coordenadas": [-3.7786, -38.5268] },
 
     { "id": 16, "nome": "Viaduto da BR-116 (Messejana)", "localizacao": "BR-116, altura de Messejana", "ano": "2001", "coordenadas": [-3.8185, -38.5588] },
 
@@ -20,8 +20,6 @@
     { "id": 20, "nome": "Viaduto do Castelão", "localizacao": "Av. Dep. Paulino Rocha com Av. Alberto Craveiro", "ano": "2012", "coordenadas": [-3.8002, -38.5216] },
 
     { "id": 21, "nome": "Viaduto Waldemar Alcântara", "localizacao": "Av. Bezerra de Menezes sobre Av. Francisco Sá (Leste-Oeste), Parquelândia", "ano": "1975", "coordenadas": [-3.7518, -38.5790] },
-
-    { "id": 22, "nome": "Viaduto da Av. Dedé Brasil", "localizacao": "Av. Dedé Brasil sobre BR-116, Parangaba", "ano": "1994", "coordenadas": [-3.7665, -38.5563] },
 
     { "id": 23, "nome": "Viaduto do HGF", "localizacao": "Av. Borges de Melo sobre Av. 13 de Maio, Rodolfo Teófilo", "ano": "1980", "coordenadas": [-3.7625, -38.5497] },
 
