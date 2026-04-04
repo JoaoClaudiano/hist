@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Personalidades · Fortaleza Sub & Via</title>
+  <meta name="description" content="Conheça as personalidades históricas que dão nome aos túneis, viadutos e pontes de Fortaleza — políticos, engenheiros, educadores e pioneiros cearenses."/>
+  <link rel="stylesheet" href="css/shared.css"/>
+  <style>
+    .page-hero{padding:6rem 2rem 3rem;max-width:1100px;margin:0 auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);padding:4px 13px;border-radius:100px;border:1px solid var(--border-strong);background:var(--surface);margin-bottom:1.5rem}
+    .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--viaduto)}
+    .page-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.8rem,7vw,5.5rem);line-height:.95;letter-spacing:-.03em;margin-bottom:1.5rem}
+    .page-hero h1 em{font-style:italic;color:var(--ink-mid)}
+    .page-hero p.lead{font-size:15px;line-height:1.75;color:var(--ink-mid);max-width:600px}
+    .section+.section{border-top:1px solid var(--border)}
+
+    /* Grid de personalidades */
+    .pers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-top:2rem}
+    .pers-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;text-decoration:none;color:inherit;display:block;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s}
+    .pers-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--viaduto);opacity:0;transition:opacity .2s}
+    .pers-card:hover{transform:translateY(-3px);box-shadow:0 14px 36px -10px rgba(24,20,12,.12);border-color:var(--border-strong)}
+    .pers-card:hover::before{opacity:1}
+    .pers-card .meta{display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap}
+    .pers-card .anos{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--ink-faint);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:2px 8px}
+    .pers-card .tipo{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--viaduto)}
+    .pers-card h2{font-family:'DM Serif Display',serif;font-size:1.4rem;line-height:1.15;color:var(--ink);margin-bottom:.3rem;letter-spacing:-.01em}
+    .pers-card .titulo{font-size:12px;font-style:italic;color:var(--ink-faint);margin-bottom:.85rem}
+    .pers-card .obra{display:flex;align-items:flex-start;gap:8px;padding:.7rem .9rem;background:var(--bg);border:1px solid var(--border);border-radius:9px;margin-bottom:.85rem}
+    .pers-card .obra .olbl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:1px}
+    .pers-card .obra .oval{font-size:12.5px;font-weight:600;color:var(--ink)}
+    .pers-card p.desc{font-size:12.5px;color:var(--ink-mid);line-height:1.65;margin-bottom:1rem}
+    .pers-card .arrow{position:absolute;bottom:1.1rem;right:1.1rem;width:26px;height:26px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:12px;transition:all .18s}
+    .pers-card:hover .arrow{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+    /* Intro de categorias */
+    .cat-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
+    .cat-pill{display:flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:100px;background:var(--surface);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--ink-mid)}
+    .cat-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--viaduto)}
+
+    @media(max-width:768px){.page-hero{padding:5rem 1.2rem 2rem}.pers-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<nav class="site-nav"></nav>
+
+<main class="page-content">
+
+  <div class="page-hero">
+    <span class="eyebrow"><span class="eyebrow-dot"></span>Memória dos nomes</span>
+    <h1>As<br><em>personalidades</em></h1>
+    <p class="lead">Cada túnel, viaduto e ponte de Fortaleza carrega um nome. Por trás de cada nome, uma história. Aqui estão as pessoas que ajudaram a construir o Ceará — e que a cidade homenageou em concreto e aço.</p>
+  </div>
+
+  <section class="section">
+    <div class="section-label">Perfis completos</div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.5rem">
+      <h2 class="section-title">Quem são<br><em>essas pessoas?</em></h2>
+      <p style="font-size:13px;color:var(--ink-faint);max-width:380px">Políticos, engenheiros, educadores, jornalistas e artistas cujos nomes foram dados a estruturas viárias pela Câmara Municipal de Fortaleza.</p>
+    </div>
+    <div class="cat-row">
+      <div class="cat-pill"><span class="dot" style="background:var(--tunel)"></span>Engenheiros &amp; Urbanistas</div>
+      <div class="cat-pill"><span class="dot" style="background:var(--viaduto)"></span>Governadores &amp; Políticos</div>
+      <div class="cat-pill"><span class="dot" style="background:var(--ponte)"></span>Educadores &amp; Acadêmicos</div>
+      <div class="cat-pill"><span class="dot" style="background:#7c3aed"></span>Cultura &amp; Comunicação</div>
+    </div>
+    <div class="pers-grid">
+
+      <a href="personalidades/adolfo-herbster.html" class="pers-card">
+        <div class="meta">
+          <span class="anos">1826 – 1893</span>
+          <span class="tipo">Engenheiro · Urbanista</span>
+        </div>
+        <h2>Adolfo Herbster</h2>
+        <p class="titulo">"O engenheiro que desenhou Fortaleza"</p>
+        <div class="obra">
+          <div><span class="olbl">Legado nas vias</span><span class="oval">Traçado urbano de Fortaleza — boulevards e avenidas</span></div>
+        </div>
+        <p class="desc">Nascido em Recife com ascendência franco-suíça, chegou a Fortaleza em 1855 e passou quase 40 anos moldando a cidade. Seu plano de arruamento, inspirado nos boulevards parisienses, definiu o traçado de bairros inteiros e criou as condições para o crescimento ordenado da capital cearense.</p>
+        <div class="arrow">→</div>
+      </a>
+
+      <a href="personalidades/antonio-martins-filho.html" class="pers-card">
+        <div class="meta">
+          <span class="anos">1905 – 2002</span>
+          <span class="tipo">Educador · Jurista</span>
+        </div>
+        <h2>Antônio Martins Filho</h2>
+        <p class="titulo">"O reitor dos reitores"</p>
+        <div class="obra">
+          <div><span class="olbl">Obra homenageada</span><span class="oval">Viaduto Antônio Martins Filho — Av. Engenheiro Santana Júnior</span></div>
+        </div>
+        <p class="desc">Fundou a Universidade Federal do Ceará (1954) e a UECE (1977), tornando-se o mais importante educador da história do ensino superior cearense. Seu nome foi dado a um viaduto em 2014 por proposta do vereador Evaldo Lima, em reconhecimento à sua contribuição inestimável.</p>
+        <div class="arrow">→</div>
+      </a>
+
+      <a href="personalidades/carlos-albuquerque-lima.html" class="pers-card">
+        <div class="meta">
+          <span class="anos">1916 – 1999</span>
+          <span class="tipo">Empresário · Transporte</span>
+        </div>
+        <h2>Carlos Albuquerque Lima</h2>
+        <p class="titulo">"Pioneiro do transporte urbano em Fortaleza"</p>
+        <div class="obra">
+          <div><span class="olbl">Obra homenageada</span><span class="oval">Viaduto Carlos Albuquerque Lima — eixo da Av. Dedé Brasil</span></div>
+        </div>
+        <p class="desc">Natural de Paracuru (CE), atuou de forma decisiva na estruturação do sistema de transportes coletivos de Fortaleza nas décadas de 1950 a 1970, quando a cidade ainda construía sua malha de ônibus urbanos e definia seus principais corredores viários.</p>
+        <div class="arrow">→</div>
+      </a>
+
+      <a href="personalidades/celina-queiroz.html" class="pers-card">
+        <div class="meta">
+          <span class="anos">1952 – 2013</span>
+          <span class="tipo">Gestora Cultural</span>
+        </div>
+        <h2>Celina Queiroz</h2>
+        <p class="titulo">"A dama da cultura do Ceará"</p>
+        <div class="obra">
+          <div><span class="olbl">Obra homenageada</span><span class="oval">Viaduto Celina Queiroz — Av. Washington Soares</span></div>
+        </div>
+        <p class="desc">Gestora pública e figura central da política cultural cearense, atuou por décadas em cargos de relevância na Secretaria de Cultura do Estado e em instituições de fomento às artes. Deixou um legado de políticas públicas que ampliaram o acesso à cultura em todo o Ceará.</p>
+        <div class="arrow">→</div>
+      </a>
+
+      <a href="personalidades/jose-jatahy.html" class="pers-card">
+        <div class="meta">
+          <span class="anos">1910 – s.d.</span>
+          <span class="tipo">Jornalista · Comunicador</span>
+        </div>
+        <h2>José Jatahy</h2>
+        <p class="titulo">"A voz pioneira do rádio cearense"</p>
+        <div class="obra">
+          <div><span class="olbl">Obra homenageada</span><span class="oval">Viaduto José Jatahy — região central de Fortaleza</span></div>
+        </div>
+        <p class="desc">Nascido em 10 de novembro de 1910 em Fortaleza, José Jatahy foi um dos pioneiros do radiojornalismo no Ceará. Sua voz e sua capacidade de reportar os acontecimentos locais com clareza e alcance popular tornaram-no referência na comunicação nordestina do século XX.</p>
+        <div class="arrow">→</div>
+      </a>
+
+      <a href="personalidades/juraci-magalhaes.html" class="pers-card">
+        <div class="meta">
+          <span class="anos">1932 – 2009</span>
+          <span class="tipo">Prefeito · Político</span>
+        </div>
+        <h2>Juraci Magalhães</h2>
+        <p class="titulo">"O prefeito que transformou Fortaleza"</p>
+        <div class="obra">
+          <div><span class="olbl">Obra homenageada</span><span class="oval">Viaduto Juraci Magalhães — Av. Bezerra de Menezes</span></div>
+        </div>
+        <p class="desc">Nascido em 24 de março de 1932 em Fortaleza, foi prefeito da capital cearense em um período de intensa transformação urbana. Sua gestão deixou marcas profundas na expansão da infraestrutura viária e na modernização de bairros que hoje são referência na cidade.</p>
+        <div class="arrow">→</div>
+      </a>
+
+      <a href="personalidades/virgilio-tavora.html" class="pers-card">
+        <div class="meta">
+          <span class="anos">1919 – 1988</span>
+          <span class="tipo">Governador · Engenheiro</span>
+        </div>
+        <h2>Virgílio Távora</h2>
+        <p class="titulo">"O governador que industrializou o Ceará"</p>
+        <div class="obra">
+          <div><span class="olbl">Obra homenageada</span><span class="oval">Rodovia Governador Virgílio Távora — BR-116 (Fortaleza–Pacajus)</span></div>
+        </div>
+        <p class="desc">Engenheiro e estadista com 40 anos de vida pública, foi governador do Ceará por dois mandatos (1963–1966 e 1979–1982), senador e deputado federal. Idealizou o Distrito Industrial de Maracanaú e implementou o maior programa de industrialização da história cearense.</p>
+        <div class="arrow">→</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="section" style="padding-bottom:4rem">
+    <div class="section-label">Contribua</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap">
+      <div>
+        <h3 style="font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--ink);margin-bottom:.5rem">Conhece outra personalidade?</h3>
+        <p style="font-size:13px;color:var(--ink-faint);max-width:480px;line-height:1.65">Fortaleza tem dezenas de obras com nomes de personalidades ainda não catalogadas. Se você conhece a história de alguma delas, contribua com o projeto.</p>
+      </div>
+      <a href="contato.html" class="btn btn-primary">Enviar informação</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer"></footer>
+<button id="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<script src="js/components.js"></script>
+</body>
+</html>

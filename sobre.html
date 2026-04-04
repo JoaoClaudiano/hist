@@ -1,542 +1,167 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre o Projeto · Fortaleza Subterrânea e Elevada</title>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        :root {
-            --primary: #1a4b6d;
-            --accent: #f0b141;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text-primary: #0b2b40;
-            --text-secondary: #4a5568;
-            --border: #e2e8f0;
-        }
-
-        body {
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        /* Header igual ao do mapa */
-        .top-bar {
-            background: linear-gradient(145deg, #0a2e42, #1b4f6e);
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            background: var(--accent);
-            width: 48px;
-            height: 48px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #0b2b40;
-        }
-
-        .logo-text h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-
-        .destaque {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: rgba(255,255,255,0.9);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-            border-bottom: 2px solid transparent;
-            padding: 6px 0;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.ativo {
-            border-bottom-color: var(--accent);
-            color: white;
-        }
-
-        /* Conteúdo principal */
-        .container {
-            max-width: 1100px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .hero h2 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 4rem 0;
-        }
-
-        .card {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border: 1px solid var(--border);
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            color: var(--accent);
-            margin-bottom: 1.2rem;
-        }
-
-        .card h3 {
-            font-size: 1.4rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .card p {
-            color: var(--text-secondary);
-            margin-bottom: 1.2rem;
-        }
-
-        .card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .card li {
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card li i {
-            color: var(--accent);
-            width: 20px;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            color: var(--primary);
-            margin: 4rem 0 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid var(--accent);
-        }
-
-        .about-text {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 2.5rem;
-            border: 1px solid var(--border);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        .highlight-box {
-            background: #f0f7fd;
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            border-radius: 16px;
-            margin: 2rem 0;
-        }
-
-        .highlight-box strong {
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .team-member {
-            text-align: center;
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .team-member i {
-            font-size: 3rem;
-            color: var(--primary);
-            background: #e8f0fe;
-            padding: 1rem;
-            border-radius: 60px;
-            margin-bottom: 1rem;
-        }
-
-        .team-member h4 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .team-member p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .contribute-box {
-            background: linear-gradient(145deg, var(--primary), #0f3b55);
-            color: white;
-            border-radius: 30px;
-            padding: 3rem;
-            text-align: center;
-            margin: 4rem 0;
-        }
-
-        .contribute-box h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .contribute-box p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .contribute-btn {
-            background: var(--accent);
-            color: var(--primary);
-            border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .contribute-btn:hover {
-            background: #e09c2c;
-            transform: scale(1.02);
-        }
-
-        footer {
-            background: #0f2b37;
-            color: #d0e2f0;
-            padding: 2rem;
-            text-align: center;
-            border-top: 3px solid var(--accent);
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #bcd7ec;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-
-        @media (max-width: 768px) {
-            .top-bar {
-                flex-direction: column;
-                align-items: start;
-                padding: 1rem;
-            }
-            
-            .nav-links {
-                width: 100%;
-                justify-content: space-around;
-            }
-            
-            .hero h2 {
-                font-size: 2rem;
-            }
-            
-            .contribute-box {
-                padding: 2rem 1rem;
-            }
-        }
-
-        /* Back to top button */
-        #back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: #1a4b6d;
-            color: white;
-            border: none;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
-            z-index: 9999;
-        }
-
-        #back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #back-to-top:hover {
-            background: #f0b141;
-            color: #0b2b40;
-            transform: scale(1.1);
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sobre o Projeto · Fortaleza Sub & Via</title>
+  <meta name="description" content="Conheça a origem, os objetivos, a metodologia e a equipe do Memorial Urbano Fortaleza Sub & Via."/>
+  <link rel="stylesheet" href="css/shared.css"/>
+  <style>
+    .page-hero{padding:6rem 2rem 3rem;max-width:1100px;margin:0 auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);padding:4px 13px;border-radius:100px;border:1px solid var(--border-strong);background:var(--surface);margin-bottom:1.5rem}
+    .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--viaduto)}
+    .page-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.8rem,7vw,5.5rem);line-height:.95;letter-spacing:-.03em;margin-bottom:1.5rem}
+    .page-hero h1 em{font-style:italic;color:var(--ink-mid)}
+    .page-hero p.lead{font-size:15px;line-height:1.75;color:var(--ink-mid);max-width:600px}
+    .section+.section{border-top:1px solid var(--border)}
+    .prose p{font-size:14px;color:var(--ink-mid);line-height:1.8;margin-bottom:1.25rem}
+    .prose p:last-child{margin-bottom:0}
+    .prose strong{color:var(--ink);font-weight:600}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+    .obj-list{list-style:none;display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem}
+    .obj-list li{display:flex;align-items:flex-start;gap:12px;font-size:13.5px;color:var(--ink-mid);line-height:1.65}
+    .obj-list .num{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--viaduto);flex-shrink:0;width:22px;margin-top:-1px}
+    .fontes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:1.5rem}
+    .fonte-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:1.1rem}
+    .fonte-card .ico{font-size:1.4rem;margin-bottom:.6rem;display:block}
+    .fonte-card h4{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:.3rem}
+    .fonte-card p{font-size:11.5px;color:var(--ink-faint);line-height:1.55}
+    .timeline{position:relative;padding-left:2rem;margin-top:1.5rem}
+    .timeline::before{content:'';position:absolute;top:0;bottom:0;left:7px;width:1px;background:var(--border-strong)}
+    .tl-item{position:relative;padding:0 0 1.6rem 1.2rem}
+    .tl-item::before{content:'';position:absolute;left:-1.3rem;top:5px;width:10px;height:10px;border-radius:50%;background:var(--viaduto);border:2px solid var(--bg);box-shadow:0 0 0 1px var(--viaduto)}
+    .tl-item .date{font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--viaduto);margin-bottom:.25rem}
+    .tl-item h4{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.2rem}
+    .tl-item p{font-size:12.5px;color:var(--ink-faint);line-height:1.6}
+    .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem;margin-top:1.5rem}
+    .team-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.4rem}
+    .team-card .avatar{width:48px;height:48px;border-radius:10px;background:var(--bg);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink-mid);margin-bottom:.9rem}
+    .team-card h4{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.2rem}
+    .team-card .role{font-size:11.5px;color:var(--viaduto);font-weight:600;letter-spacing:.05em;margin-bottom:.4rem}
+    .team-card p{font-size:12px;color:var(--ink-faint);line-height:1.6}
+    .cta-block{background:var(--ink);border-radius:16px;padding:3rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+    .cta-block h3{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);color:var(--bg);line-height:1.2;margin-bottom:.5rem}
+    .cta-block p{font-size:13px;color:rgba(243,240,232,.65);line-height:1.6;max-width:420px}
+    .cta-btns{display:flex;gap:1rem;flex-wrap:wrap;flex-shrink:0}
+    .cta-btns .btn-primary{background:var(--viaduto);border-color:var(--viaduto);color:#fff}
+    .cta-btns .btn-primary:hover{background:#9a4507;border-color:#9a4507}
+    .cta-btns .btn-secondary{border-color:rgba(243,240,232,.25);color:var(--bg)}
+    .cta-btns .btn-secondary:hover{background:var(--bg);color:var(--ink)}
+    @media(max-width:768px){.two-col{grid-template-columns:1fr}.page-hero{padding:5rem 1.2rem 2rem}.cta-block{padding:2rem 1.4rem}}
+  </style>
 </head>
 <body>
 
-    <!-- HEADER (igual ao mapa) -->
-    <div class="top-bar">
-        <div class="logo-area">
-            <div class="logo-icon"><i class="fas fa-map-location-dot"></i></div>
-            <div class="logo-text">
-                <h1>Fortaleza <span class="destaque">sub</span> & <span class="destaque">via</span></h1>
-            </div>
-        </div>
-        <div class="nav-links">
-            <a href="index.html"><i class="fas fa-map"></i> Mapa</a>
-            <a href="#" class="ativo"><i class="fas fa-book-open"></i> Projeto</a>
-            <a href="personalidades.html"><i class="fas fa-users"></i> Personalidades</a>
-            <a href="contato.html"><i class="fas fa-envelope"></i> Contato</a>
-        </div>
+<nav class="site-nav"></nav>
+
+<main class="page-content">
+
+  <div class="page-hero">
+    <span class="eyebrow"><span class="eyebrow-dot"></span>Memória, Engenharia &amp; Cidade</span>
+    <h1>O projeto<br><em>Sub &amp; Via</em></h1>
+    <p class="lead">Um memorial urbano colaborativo que documenta a história, os aspectos técnicos e as personalidades por trás dos túneis, viadutos e pontes de Fortaleza — estruturas que moldam a cidade e raramente aparecem nos livros.</p>
+  </div>
+
+  <section class="section">
+    <div class="section-label">Origem</div>
+    <div class="two-col">
+      <div><h2 class="section-title">Por que este<br><em>projeto existe?</em></h2></div>
+      <div class="prose">
+        <p><strong>Fortaleza Sub &amp; Via</strong> nasceu de uma pergunta simples feita em aula: <em>"Quem foi Demócrito Dummar?"</em> Nenhum professor soube responder de imediato. A questão era sobre um túnel que todos cruzavam diariamente, mas cuja história era desconhecida.</p>
+        <p>Percebemos que túneis e viadutos — obras de décadas de engenharia, custo de centenas de milhões de reais, carregando o nome de políticos, educadores e engenheiros — existem na cidade de forma quase invisível em termos de memória. Passamos por eles todos os dias sem saber o que significam.</p>
+        <p>Criamos esta plataforma para resolver esse problema: reunir em um único lugar as fichas históricas, técnicas e biográficas de cada Obra de Arte Especial (OAE) catalogada pelo município de Fortaleza.</p>
+      </div>
     </div>
+  </section>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div class="container">
-        
-        <!-- HERO -->
-        <div class="hero">
-            <h2>Memória, engenharia e cidade</h2>
-            <p>Um projeto colaborativo para mapear, documentar e celebrar os túneis e viadutos de Fortaleza — sua história, suas personalidades e seus métodos construtivos.</p>
+  <section class="section">
+    <div class="section-label">Missão</div>
+    <div class="two-col">
+      <div>
+        <h2 class="section-title">Três<br><em>objetivos</em></h2>
+        <ul class="obj-list">
+          <li><span class="num">01</span><div><strong>Documentar a memória</strong> — registrar as biografias, os contextos históricos e as razões que levaram ao batismo de cada obra. Quem eram essas pessoas? Qual sua contribuição para o Ceará?</div></li>
+          <li><span class="num">02</span><div><strong>Registrar os aspectos técnicos</strong> — método construtivo, materiais, dimensões, prazo, construtora, custo estimado e impacto ambiental (carbono incorporado). Um acervo técnico aberto para estudantes e profissionais.</div></li>
+          <li><span class="num">03</span><div><strong>Ser colaborativo</strong> — o projeto é aberto. Qualquer pessoa com informações, correções ou acervos fotográficos pode contribuir. Toda contribuição é creditada.</div></li>
+        </ul>
+      </div>
+      <div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+          <div class="kpi"><span class="num">10+</span><span class="lbl">Túneis mapeados</span></div>
+          <div class="kpi"><span class="num">15+</span><span class="lbl">Viadutos catalogados</span></div>
+          <div class="kpi"><span class="num">7</span><span class="lbl">Biografias completas</span></div>
+          <div class="kpi"><span class="num">4</span><span class="lbl">Abas analíticas/obra</span></div>
         </div>
-
-        <!-- CARDS DE DESTAQUE -->
-        <div class="cards-grid">
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-history"></i></div>
-                <h3>História urbana</h3>
-                <p>Cada obra carrega a memória de uma personalidade ou de um movimento social. Resgatamos quem foram essas pessoas e por que foram homenageadas.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> Biografias completas</li>
-                    <li><i class="fas fa-check-circle"></i> Curiosidades históricas</li>
-                    <li><i class="fas fa-check-circle"></i> Fontes oficiais</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-hard-hat"></i></div>
-                <h3>Engenharia & arquitetura</h3>
-                <p>Para estudantes e profissionais, detalhamos os métodos construtivos, materiais, desafios técnicos e as empresas responsáveis por cada obra.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> Métodos (cut and cover, TBM...)</li>
-                    <li><i class="fas fa-check-circle"></i> Dimensões e materiais</li>
-                    <li><i class="fas fa-check-circle"></i> Construtoras e prazos</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-map-marked-alt"></i></div>
-                <h3>Mapa interativo</h3>
-                <p>Navegue pela cidade e descubra as obras em seu contexto urbano. Cada ponto no mapa revela uma história e dados técnicos.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> 10 túneis + 15 viadutos</li>
-                    <li><i class="fas fa-check-circle"></i> Projetos futuros (2026)</li>
-                    <li><i class="fas fa-check-circle"></i> Fotos e documentos</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- SOBRE O PROJETO (texto detalhado) -->
-        <div class="about-text">
-            <h2 class="section-title">O que é este projeto?</h2>
-            
-            <p><strong>Fortaleza Subterrânea e Elevada</strong> nasceu do desejo de dois estudantes de engenharia civil e arquitetura de entender a cidade para além das aulas teóricas. Percebemos que túneis e viadutos — estruturas tão presentes no dia a dia — são invisíveis em termos de memória: quase ninguém sabe quem deu nome àquela obra, quando foi construída, quais desafios técnicos foram enfrentados.</p>
-            
-            <p>Assim, criamos esta plataforma colaborativa com dois objetivos principais:</p>
-            
-            <ul style="margin: 1.5rem 0 1.5rem 2rem; color: var(--text-secondary);">
-                <li><strong>Documentar a história</strong> das personalidades que dão nome aos logradouros, resgatando biografias, contextos sociais e curiosidades.</li>
-                <li><strong>Registrar os aspectos técnicos</strong> de cada obra: método construtivo, materiais, prazos, construtoras, investimentos — um acervo para estudantes e profissionais da construção civil.</li>
-            </ul>
-
-            <div class="highlight-box">
-                <strong><i class="fas fa-lightbulb"></i> Por que isso importa?</strong>
-                <p style="margin-top: 1rem; font-size: 1rem;">"Uma cidade sem memória é apenas um conjunto de ruas." Conhecer a história por trás das obras nos faz pertencer ao lugar. E para engenheiros e arquitetos, entender como essas estruturas foram construídas é uma aula prática de evolução das técnicas construtivas no Ceará.</p>
-            </div>
-        </div>
-
-        <!-- FONTES E METODOLOGIA -->
-        <h2 class="section-title">Fontes e metodologia</h2>
-        <div style="background: var(--surface); padding: 2rem; border-radius: 20px; border: 1px solid var(--border);">
-            <p>Todo o conteúdo é baseado em:</p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-                <div>
-                    <i class="fas fa-file-contract" style="color: var(--accent); font-size: 1.5rem;"></i>
-                    <h4 style="margin: 0.5rem 0;">Diário Oficial do Município</h4>
-                    <p style="font-size: 0.9rem;">Leis de denominação, contratos de obras</p>
-                </div>
-                <div>
-                    <i class="fas fa-newspaper" style="color: var(--accent); font-size: 1.5rem;"></i>
-                    <h4 style="margin: 0.5rem 0;">G1 Ceará / Diário do Nordeste</h4>
-                    <p style="font-size: 0.9rem;">Reportagens históricas e biografias</p>
-                </div>
-                <div>
-                    <i class="fas fa-graduation-cap" style="color: var(--accent); font-size: 1.5rem;"></i>
-                    <h4 style="margin: 0.5rem 0;">Acervo UFC / Bibliotecas</h4>
-                    <p style="font-size: 0.9rem;">Dissertações, teses e publicações técnicas</p>
-                </div>
-                <div>
-                    <i class="fas fa-building" style="color: var(--accent); font-size: 1.5rem;"></i>
-                    <h4 style="margin: 0.5rem 0;">Sites das construtoras</h4>
-                    <p style="font-size: 0.9rem;">Portfólios e dados de obras realizadas</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- EQUIPE -->
-        <h2 class="section-title">Quem faz</h2>
-        <div class="team-grid">
-            <div class="team-member">
-                <i class="fas fa-user-graduate"></i>
-                <h4>João Silva</h4>
-                <p>Engenharia Civil · UFC</p>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Pesquisa histórica e dados técnicos</p>
-            </div>
-            <div class="team-member">
-                <i class="fas fa-user-graduate"></i>
-                <h4>Maria Oliveira</h4>
-                <p>Arquitetura e Urbanismo · UNIFOR</p>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Design, UX e documentação fotográfica</p>
-            </div>
-            <div class="team-member">
-                <i class="fas fa-user-friends"></i>
-                <h4>Colaboradores</h4>
-                <p>Estudantes, historiadores, engenheiros</p>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Contribuições voluntárias</p>
-            </div>
-        </div>
-
-        <!-- CHAMADA PARA CONTRIBUIÇÃO -->
-        <div class="contribute-box" id="contato">
-            <i class="fas fa-hands-helping" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-            <h3>Quer contribuir?</h3>
-            <p>Você tem informações sobre alguma obra? Trabalhou em alguma construtora? Conhece a história de uma personalidade? Ajude a tornar este acervo mais completo.</p>
-            <a href="mailto:projeto@fortalezasubvia.com.br" class="contribute-btn">
-                <i class="fas fa-envelope"></i> Enviar contribuição
-            </a>
-            <p style="margin-top: 1.5rem; font-size: 0.9rem;">ou entre em contato pelo Instagram <strong>@fortaleza.subvia</strong></p>
-        </div>
+        <div class="callout"><strong>Por que isso importa?</strong><br>"Uma cidade sem memória é apenas um conjunto de ruas." Conhecer a história das obras nos faz pertencer ao lugar. Para engenheiros e arquitetos, entender como foram construídas é uma aula prática de evolução das técnicas construtivas no Ceará.</div>
+      </div>
     </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div><i class="fas fa-code-branch"></i> Memorial Urbano · 2026</div>
-        <div class="footer-links">
-            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-            <a href="#"><i class="fas fa-database"></i> Fontes</a>
-            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+  <section class="section">
+    <div class="section-label">Metodologia</div>
+    <h2 class="section-title" style="margin-bottom:2rem">Fontes &amp; <em>métodos</em></h2>
+    <div class="fontes-grid">
+      <div class="fonte-card"><span class="ico">📜</span><h4>Diário Oficial do Município e do Estado</h4><p>Leis de denominação, contratos de obras, editais de licitação. Fonte primária para dados financeiros e institucionais.</p></div>
+      <div class="fonte-card"><span class="ico">🗺️</span><h4>MAPP-FOR (Prefeitura de Fortaleza)</h4><p>Sistema de Mapeamento de Obras da SEINF/PMF. Coordenadas georreferenciadas e IDs oficiais de cada OAE.</p></div>
+      <div class="fonte-card"><span class="ico">📰</span><h4>Diário do Nordeste &amp; O Povo</h4><p>Reportagens históricas sobre inaugurações, reformas e dados de contexto social. Sempre com verificação de data e autoria.</p></div>
+      <div class="fonte-card"><span class="ico">🎓</span><h4>Acervo UFC, UECE &amp; Bibliotecas</h4><p>Dissertações, teses, artigos técnicos e publicações do repositório da Universidade Federal do Ceará e da UECE.</p></div>
+      <div class="fonte-card"><span class="ico">🏗️</span><h4>SEINFRA-CE / SINAPI</h4><p>Tabelas de composições e custos unitários para estimativas de custo e carbono incorporado (A1–A5). Base paramétrica ±20–30%.</p></div>
+      <div class="fonte-card"><span class="ico">📊</span><h4>ICE v3 (Univ. Bath) + SIDERC</h4><p>Fatores de emissão para concreto e aço, ajustados à matriz energética brasileira pelo CBCS. Escopo ACV A1–A5.</p></div>
+    </div>
+    <p style="margin-top:1.5rem;font-size:12.5px;color:var(--ink-faint);line-height:1.7">Os cálculos de carbono e custos são <strong style="color:var(--ink-mid)">estimativas paramétricas</strong> ±20–30%. Não substituem ACV auditada nem orçamento executivo. Adequados para comparações acadêmicas. Uso permitido sob <a href="licenca.html" style="color:var(--viaduto)">licença Creative Commons</a> com citação.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Histórico</div>
+    <div class="two-col">
+      <div>
+        <h2 class="section-title">Linha do<br><em>tempo</em></h2>
+        <div class="timeline">
+          <div class="tl-item"><div class="date">Março 2024</div><h4>Início da pesquisa</h4><p>Levantamento inicial dos nomes oficiais dos viadutos e túneis via Diário Oficial da CMFor.</p></div>
+          <div class="tl-item"><div class="date">Julho 2024</div><h4>Primeiras fichas biográficas</h4><p>Publicação das primeiras 3 biografias e início do georreferenciamento com dados do MAPP-FOR.</p></div>
+          <div class="tl-item"><div class="date">Novembro 2024</div><h4>Módulo de engenharia</h4><p>Adição das fichas técnicas com método construtivo, dimensões e estimativas de custo por metro linear.</p></div>
+          <div class="tl-item"><div class="date">Fevereiro 2025</div><h4>Análise de carbono incorporado</h4><p>Implementação do cálculo de CO₂e (ICE v3 + SIDERC). Adoção do benchmarking econômico comparativo.</p></div>
+          <div class="tl-item"><div class="date">Abril 2026</div><h4>v6 — Catálogo completo</h4><p>Mapa interativo com 10 túneis, 15+ viadutos e pontes. Indicação CMFor 1030/2025 incorporada.</p></div>
         </div>
-        <div style="margin-top: 1rem; font-size: 0.8rem;">Conteúdo sob licença Creative Commons · Aberto a colaborações</div>
-    </footer>
+      </div>
+      <div class="prose" style="padding-top:.5rem">
+        <p>O projeto evoluiu de uma simples lista de nomes para um catálogo técnico-histórico completo, com quatro camadas de análise para cada obra: ficha histórica, engenharia viária, carbono incorporado e benchmarking econômico.</p>
+        <p>A cada atualização, buscamos incorporar dados mais recentes do MAPP-FOR e das obras em execução — incluindo os 15 viadutos em reforma pela Indicação nº 1030/2025 do vereador Marcelo Tchela.</p>
+        <p>O acervo permanece aberto e em expansão. Se você tem informações sobre obras ainda não catalogadas, entre em <a href="contato.html" style="color:var(--viaduto)">contato</a>.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- Botão Voltar ao Topo -->
-    <button id="back-to-top" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+  <section class="section">
+    <div class="section-label">Quem faz</div>
+    <h2 class="section-title" style="margin-bottom:.75rem">A equipe</h2>
+    <p style="font-size:13px;color:var(--ink-faint);margin-bottom:2rem;max-width:550px">Um grupo de estudantes e colaboradores voluntários de Fortaleza que acredita que a cidade se entende melhor quando sua infraestrutura tem nome e história.</p>
+    <div class="team-grid">
+      <div class="team-card"><div class="avatar">J</div><h4>João Claudiano</h4><div class="role">Fundador &amp; Pesquisa Técnica</div><p>Estudante de Engenharia Civil. Responsável pelo levantamento de dados, georreferenciamento e cálculos de CO₂e.</p></div>
+      <div class="team-card"><div class="avatar">✦</div><h4>Colaboradores</h4><div class="role">Comunidade</div><p>Historiadores, estudantes, engenheiros e moradores que contribuem com dados, fotografias e correções.</p></div>
+      <div class="team-card"><div class="avatar">?</div><h4>Você?</h4><div class="role">Próximo colaborador</div><p>Se você tem informações sobre alguma obra ou personalidade, <a href="contato.html" style="color:var(--viaduto)">entre em contato</a> — sua contribuição será creditada.</p></div>
+    </div>
+  </section>
 
-    <script>
-        const btnTop = document.getElementById('back-to-top');
-        if (btnTop) {
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 300) {
-                    btnTop.classList.add('visible');
-                } else {
-                    btnTop.classList.remove('visible');
-                }
-            });
-            btnTop.addEventListener('click', function () {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
-    </script>
+  <section class="section" style="padding-top:0;padding-bottom:4rem">
+    <div class="cta-block">
+      <div>
+        <h3>Quer contribuir<br>com o projeto?</h3>
+        <p>Você tem plantas, fotos históricas, documentos, ou conhece a história de alguma obra ainda não catalogada? Ajude a tornar este acervo mais completo.</p>
+      </div>
+      <div class="cta-btns">
+        <a href="contato.html" class="btn btn-primary">Enviar contribuição</a>
+        <a href="apoio.html" class="btn btn-secondary">Apoiar financeiramente</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer"></footer>
+<button id="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<script src="js/components.js"></script>
 </body>
 </html>

@@ -1,567 +1,176 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contato · Fortaleza Subterrânea e Elevada</title>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        :root {
-            --primary: #1a4b6d;
-            --accent: #f0b141;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text-primary: #0b2b40;
-            --text-secondary: #4a5568;
-            --border: #e2e8f0;
-        }
-
-        body {
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        .top-bar {
-            background: linear-gradient(145deg, #0a2e42, #1b4f6e);
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            background: var(--accent);
-            width: 48px;
-            height: 48px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #0b2b40;
-        }
-
-        .logo-text h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-
-        .destaque {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: rgba(255,255,255,0.9);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-            border-bottom: 2px solid transparent;
-            padding: 6px 0;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.ativo {
-            border-bottom-color: var(--accent);
-            color: white;
-        }
-
-        /* Conteúdo principal */
-        .container {
-            max-width: 800px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-            flex: 1;
-        }
-
-        .page-title {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            text-align: center;
-        }
-
-        .page-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .contact-info {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .contact-info h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .contact-info h3 i {
-            color: var(--accent);
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.2rem;
-            color: var(--text-secondary);
-        }
-
-        .info-item i {
-            width: 24px;
-            color: var(--accent);
-            font-size: 1.2rem;
-        }
-
-        .info-item a {
-            color: var(--primary);
-            text-decoration: none;
-            border-bottom: 1px dotted transparent;
-            transition: 0.2s;
-        }
-
-        .info-item a:hover {
-            border-bottom-color: var(--accent);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: #eef2f6;
-            border-radius: 40px;
-            color: var(--primary);
-            transition: 0.2s;
-        }
-
-        .social-links a:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        /* Formulário */
-        .contact-form {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .contact-form h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.4rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: 0.2s;
-            background: var(--background);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(240,177,65,0.1);
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .btn-submit {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .btn-submit:hover {
-            background: #0d3f5c;
-            transform: scale(1.02);
-        }
-
-        .btn-submit i {
-            font-size: 1rem;
-        }
-
-        .form-notice {
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        /* FAQ simples */
-        .faq-section {
-            margin-top: 3rem;
-        }
-
-        .faq-section h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .faq-item {
-            background: var(--surface);
-            border-radius: 16px;
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border);
-        }
-
-        .faq-question {
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .faq-question i {
-            color: var(--accent);
-        }
-
-        .faq-answer {
-            margin-top: 0.8rem;
-            padding-left: 2rem;
-            color: var(--text-secondary);
-        }
-
-        footer {
-            background: #0f2b37;
-            color: #d0e2f0;
-            padding: 2rem;
-            text-align: center;
-            border-top: 3px solid var(--accent);
-            margin-top: auto;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #bcd7ec;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-
-        @media (max-width: 768px) {
-            .top-bar {
-                flex-direction: column;
-                align-items: start;
-                padding: 1rem;
-            }
-            
-            .nav-links {
-                width: 100%;
-                justify-content: space-around;
-            }
-            
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .page-title {
-                font-size: 2rem;
-            }
-        }
-
-        /* Back to top button */
-        #back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: #1a4b6d;
-            color: white;
-            border: none;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
-            z-index: 9999;
-        }
-
-        #back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #back-to-top:hover {
-            background: #f0b141;
-            color: #0b2b40;
-            transform: scale(1.1);
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contato · Fortaleza Sub & Via</title>
+  <meta name="description" content="Entre em contato com a equipe do Memorial Urbano Fortaleza Sub & Via — dúvidas, contribuições, correções e parcerias."/>
+  <link rel="stylesheet" href="css/shared.css"/>
+  <style>
+    .page-hero{padding:6rem 2rem 3rem;max-width:1100px;margin:0 auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);padding:4px 13px;border-radius:100px;border:1px solid var(--border-strong);background:var(--surface);margin-bottom:1.5rem}
+    .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--viaduto)}
+    .page-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.8rem,7vw,5.5rem);line-height:.95;letter-spacing:-.03em;margin-bottom:1.5rem}
+    .page-hero h1 em{font-style:italic;color:var(--ink-mid)}
+    .page-hero p.lead{font-size:15px;line-height:1.75;color:var(--ink-mid);max-width:600px}
+    .section+.section{border-top:1px solid var(--border)}
+    .contact-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:2.5rem;align-items:start}
+    .info-block h3{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:1.4rem;line-height:1.2}
+    .contact-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:1.1rem;font-size:13.5px;color:var(--ink-mid)}
+    .contact-row .icon{width:36px;height:36px;border-radius:8px;background:var(--bg);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.95rem}
+    .contact-row .detail{display:flex;flex-direction:column;gap:1px}
+    .contact-row .detail .lbl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint)}
+    .contact-row .detail a{color:var(--ink);text-decoration:none;transition:color .2s}
+    .contact-row .detail a:hover{color:var(--viaduto)}
+    .social-row{display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap}
+    .social-btn{display:flex;align-items:center;gap:7px;padding:.55rem 1rem;border-radius:8px;background:var(--bg);border:1px solid var(--border-strong);font-size:12px;font-weight:600;color:var(--ink-mid);text-decoration:none;transition:all .2s}
+    .social-btn:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+    .form-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:2rem}
+    .form-card h3{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:1.5rem}
+    .form-notice{margin-top:1rem;font-size:11.5px;color:var(--ink-faint);line-height:1.6}
+    .assunto-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem}
+    .assunto-option input[type=radio]{display:none}
+    .assunto-option label{display:flex;align-items:center;gap:8px;padding:.7rem 1rem;border-radius:8px;background:var(--bg);border:1px solid var(--border-strong);font-size:12px;color:var(--ink-mid);cursor:pointer;transition:all .18s;font-weight:500}
+    .assunto-option input[type=radio]:checked+label{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+    .assunto-option label:hover{border-color:var(--ink-mid)}
+    @media(max-width:768px){.contact-layout{grid-template-columns:1fr}.assunto-grid{grid-template-columns:1fr}.page-hero{padding:5rem 1.2rem 2rem}}
+  </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <div class="top-bar">
-        <div class="logo-area">
-            <div class="logo-icon"><i class="fas fa-map-location-dot"></i></div>
-            <div class="logo-text">
-                <h1>Fortaleza <span class="destaque">sub</span> & <span class="destaque">via</span></h1>
+<nav class="site-nav"></nav>
+
+<main class="page-content">
+
+  <div class="page-hero">
+    <span class="eyebrow"><span class="eyebrow-dot"></span>Fale com a gente</span>
+    <h1>Contato &amp;<br><em>colaboração</em></h1>
+    <p class="lead">Dúvidas, contribuições, correções históricas ou propostas de parceria — toda mensagem é lida e respondida em até 48 horas.</p>
+  </div>
+
+  <section class="section">
+    <div class="section-label">Canais de contato</div>
+    <div class="contact-layout">
+
+      <div class="info-block">
+        <h3>Como nos<br>encontrar</h3>
+        <div class="contact-row">
+          <div class="icon">✉️</div>
+          <div class="detail">
+            <span class="lbl">E-mail principal</span>
+            <a href="mailto:jooclaudiano@gmail.com">jooclaudiano@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="icon">📍</div>
+          <div class="detail">
+            <span class="lbl">Localização</span>
+            <span>Fortaleza, Ceará · Brasil</span>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="icon">⏱️</div>
+          <div class="detail">
+            <span class="lbl">Tempo de resposta</span>
+            <span>Até 48 horas úteis</span>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="icon">📋</div>
+          <div class="detail">
+            <span class="lbl">Licença</span>
+            <a href="licenca.html">Creative Commons BY-NC-SA 4.0</a>
+          </div>
+        </div>
+        <div class="social-row">
+          <a href="#" class="social-btn" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Instagram
+          </a>
+          <a href="#" class="social-btn" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </a>
+        </div>
+
+        <div style="margin-top:2rem;padding:1.2rem;background:var(--bg);border:1px solid var(--border);border-radius:11px">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.75rem">O que você pode enviar</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem">
+            <li style="font-size:12.5px;color:var(--ink-mid);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--viaduto);font-size:.8rem;margin-top:2px">›</span> Plantas, memoriais descritivos ou projetos executivos de obras</li>
+            <li style="font-size:12.5px;color:var(--ink-mid);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--viaduto);font-size:.8rem;margin-top:2px">›</span> Fotografias históricas ou atuais de túneis e viadutos</li>
+            <li style="font-size:12.5px;color:var(--ink-mid);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--viaduto);font-size:.8rem;margin-top:2px">›</span> Correções de dados históricos com fonte verificável</li>
+            <li style="font-size:12.5px;color:var(--ink-mid);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--viaduto);font-size:.8rem;margin-top:2px">›</span> Informações sobre obras ainda não catalogadas</li>
+            <li style="font-size:12.5px;color:var(--ink-mid);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--viaduto);font-size:.8rem;margin-top:2px">›</span> Propostas de parceria acadêmica ou institucional</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3>Envie uma mensagem</h3>
+        <form action="mailto:jooclaudiano@gmail.com" method="POST" enctype="text/plain">
+          <div class="form-group">
+            <label for="nome">Seu nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Como prefere ser chamado(a)" required/>
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail para retorno</label>
+            <input type="email" id="email" name="email" placeholder="seu@email.com" required/>
+          </div>
+          <div class="form-group">
+            <label>Assunto</label>
+            <div class="assunto-grid">
+              <div class="assunto-option"><input type="radio" name="assunto" id="a1" value="Contribuição de dados" checked/><label for="a1">📦 Contribuição de dados</label></div>
+              <div class="assunto-option"><input type="radio" name="assunto" id="a2" value="Correção histórica"/><label for="a2">✏️ Correção histórica</label></div>
+              <div class="assunto-option"><input type="radio" name="assunto" id="a3" value="Uso acadêmico"/><label for="a3">🎓 Uso acadêmico</label></div>
+              <div class="assunto-option"><input type="radio" name="assunto" id="a4" value="Parceria"/><label for="a4">🤝 Parceria</label></div>
+              <div class="assunto-option"><input type="radio" name="assunto" id="a5" value="Dúvida geral"/><label for="a5">❓ Dúvida geral</label></div>
+              <div class="assunto-option"><input type="radio" name="assunto" id="a6" value="Outro"/><label for="a6">💬 Outro</label></div>
             </div>
-        </div>
-        <div class="nav-links">
-            <a href="index.html"><i class="fas fa-map"></i> Mapa</a>
-            <a href="sobre.html"><i class="fas fa-book-open"></i> Projeto</a>
-            <a href="personalidades.html"><i class="fas fa-users"></i> Personalidades</a>
-            <a href="#" class="ativo"><i class="fas fa-envelope"></i> Contato</a>
-        </div>
+          </div>
+          <div class="form-group">
+            <label for="msg">Mensagem</label>
+            <textarea id="msg" name="mensagem" placeholder="Descreva sua mensagem com o máximo de detalhes. Se for uma correção, inclua a fonte (link do Diário Oficial, artigo, livro...)." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Enviar mensagem</button>
+          <p class="form-notice">Este formulário usa seu cliente de e-mail padrão. Se preferir, escreva diretamente para <strong>jooclaudiano@gmail.com</strong>. Toda contribuição recebe crédito na página correspondente.</p>
+        </form>
+      </div>
     </div>
+  </section>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div class="container">
-        <h1 class="page-title">Fale com a gente</h1>
-        <p class="page-subtitle">Dúvidas, sugestões, contribuições ou correções — sua participação é bem-vinda.</p>
-
-        <div class="contact-grid">
-            <!-- INFORMAÇÕES DE CONTATO -->
-            <div class="contact-info">
-                <h3><i class="fas fa-info-circle"></i> Informações</h3>
-                
-                <div class="info-item">
-                    <i class="fas fa-envelope"></i>
-                    <a href="mailto:projeto@fortalezasubvia.com.br">jooclaudiano@gmail.com</a>
-                </div>
-                
-                <div class="info-item">
-                    <i class="fas fa-phone-alt"></i>
-                    <span>(85) 98765-4321</span>
-                </div>
-                
-                <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Fortaleza, Ceará · Brasil</span>
-                </div>
-                
-                <div class="info-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Resposta em até 48h</span>
-                </div>
-
-                <div class="social-links">
-                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-
-            <!-- FORMULÁRIO DE CONTATO -->
-            <div class="contact-form">
-                <h3><i class="fas fa-paper-plane"></i> Envie mensagem</h3>
-                
-                <form action="mailto:jooclaudiano@gmail.com" method="POST" enctype="text/plain">
-                    <div class="form-group">
-                        <label for="nome">Seu nome</label>
-                        <input type="text" id="nome" name="nome" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Seu e-mail</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="assunto">Assunto</label>
-                        <input type="text" id="assunto" name="assunto" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="mensagem">Mensagem</label>
-                        <textarea id="mensagem" name="mensagem" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn-submit">
-                        <i class="fas fa-paper-plane"></i> Enviar
-                    </button>
-                    
-                    <p class="form-notice">
-                        <i class="fas fa-shield-alt"></i> Este formulário usa seu programa de e-mail padrão. Se preferir, escreva diretamente para o endereço ao lado.
-                    </p>
-                </form>
-            </div>
-        </div>
-
-        <!-- PERGUNTAS FREQUENTES -->
-        <div class="faq-section">
-            <h3><i class="fas fa-question-circle"></i> Perguntas frequentes</h3>
-            
-            <div class="faq-item">
-                <div class="faq-question">
-                    <i class="fas fa-chevron-right"></i> Posso contribuir com informações técnicas?
-                </div>
-                <div class="faq-answer">
-                    Claro! Se você trabalhou em alguma obra, tem plantas, memoriais descritivos ou conhece detalhes construtivos, entre em contato. Sua contribuição será creditada.
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question">
-                    <i class="fas fa-chevron-right"></i> Como corrigir um dado histórico?
-                </div>
-                <div class="faq-answer">
-                    Envie a correção com a fonte confiável (link do Diário Oficial, livro, artigo). Revisaremos e atualizaremos o mais rápido possível.
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question">
-                    <i class="fas fa-chevron-right"></i> Posso usar este material em meu trabalho acadêmico?
-                </div>
-                <div class="faq-answer">
-                    Sim! Todo conteúdo está sob licença Creative Commons (CC BY-NC). Basta citar a fonte: "Projeto Fortaleza Subterrânea e Elevada".
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question">
-                    <i class="fas fa-chevron-right"></i> Como posso apoiar o projeto?
-                </div>
-                <div class="faq-answer">
-                    Compartilhando, contribuindo com dados ou fazendo uma doação simbólica (entre em contato para mais informações).
-                </div>
-            </div>
-        </div>
+  <section class="section">
+    <div class="section-label">Perguntas frequentes</div>
+    <h2 class="section-title" style="margin-bottom:2rem">Dúvidas <em>comuns</em></h2>
+    <div style="max-width:760px">
+      <div class="faq-item">
+        <div class="faq-q">Posso usar o conteúdo em meu trabalho acadêmico ou monografia?</div>
+        <p class="faq-a">Sim. Todo o conteúdo do projeto está sob licença Creative Commons BY-NC-SA 4.0. Você pode usar, citar e adaptar, desde que atribua a fonte ("Fortaleza Sub &amp; Via — Memorial Urbano, 2026") e mantenha a mesma licença. Uso comercial não é permitido sem autorização prévia.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Encontrei um dado errado. Como corrijo?</div>
+        <p class="faq-a">Envie a correção pelo formulário ao lado indicando: (1) qual obra ou personalidade está errada, (2) qual dado está incorreto, (3) o dado correto e (4) a fonte verificável (link do Diário Oficial, livro publicado, artigo acadêmico). Revisaremos e atualizaremos em até 7 dias úteis, com crédito para você.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Trabalhei em uma das obras catalogadas. Como contribuo com dados técnicos?</div>
+        <p class="faq-a">Ótimo! Entre em contato informando a obra, sua função no projeto e os dados que pode compartilhar (dimensões, método construtivo, materiais, etc.). Não precisamos de documentos confidenciais — qualquer dado que já seja público ou que você possa divulgar livremente é bem-vindo.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Os cálculos de CO₂e e custo são confiáveis?</div>
+        <p class="faq-a">São estimativas paramétricas com margem de ±20–30%, calculadas com os coeficientes SEINFRA-CE 27 e fatores ICE v3 (Universidade de Bath, 2019), ajustados à matriz brasileira pelo SIDERC/CBCS. São adequados para comparações de ordem de grandeza e fins educacionais, mas <strong>não substituem ACV auditada nem orçamento executivo</strong>. Veja a <a href="sobre.html#metodologia" style="color:var(--viaduto)">metodologia completa</a>.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Como faço uma doação ou apoio financeiro?</div>
+        <p class="faq-a">O projeto aceita doações via PIX para ajudar com hospedagem, ferramentas e tempo de pesquisa. Acesse a <a href="apoio.html" style="color:var(--viaduto)">página de apoio</a> para mais detalhes.</p>
+      </div>
     </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div><i class="fas fa-code-branch"></i> Memorial Urbano · 2026</div>
-        <div class="footer-links">
-            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-            <a href="#"><i class="fas fa-database"></i> Fontes</a>
-            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-        </div>
-        <div style="margin-top: 1rem; font-size: 0.8rem;">Conteúdo sob licença Creative Commons · Aberto a colaborações</div>
-    </footer>
+</main>
 
-    <!-- Botão Voltar ao Topo -->
-    <button id="back-to-top" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
-
-    <script>
-        const btnTop = document.getElementById('back-to-top');
-        if (btnTop) {
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 300) {
-                    btnTop.classList.add('visible');
-                } else {
-                    btnTop.classList.remove('visible');
-                }
-            });
-            btnTop.addEventListener('click', function () {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
-    </script>
+<footer class="site-footer"></footer>
+<button id="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<script src="js/components.js"></script>
 </body>
 </html>
