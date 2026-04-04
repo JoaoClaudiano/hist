@@ -1,0 +1,473 @@
+/* ============================================================
+   Fortaleza Sub & Via — Design System Compartilhado
+   Segue o padrão visual do index.html (DM Sans + DM Serif Display)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* ── Tokens ── */
+:root {
+  --bg:           #f3f0e8;
+  --surface:      #fdfcf7;
+  --border:       rgba(50,40,20,.10);
+  --border-strong:rgba(50,40,20,.18);
+  --ink:          #18140c;
+  --ink-mid:      #5a4e38;
+  --ink-faint:    #9e9078;
+  --tunel:        #1d4ed8;
+  --tunel-bg:     #eff6ff;
+  --viaduto:      #b45309;
+  --viaduto-bg:   #fffbeb;
+  --ponte:        #166534;
+  --ponte-bg:     #f0fdf4;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Navegação fixa ── */
+nav.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 60px;
+  background: rgba(243,240,232,.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-mark {
+  width: 34px;
+  height: 34px;
+  background: var(--ink);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg);
+  font-family: 'DM Serif Display', serif;
+  font-size: 12px;
+  letter-spacing: -.5px;
+  flex-shrink: 0;
+}
+
+.nav-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.8rem;
+}
+
+.nav-links a {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  text-decoration: none;
+  transition: color .2s;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-links a:hover,
+.nav-links a.ativo {
+  color: var(--ink);
+  border-bottom-color: var(--viaduto);
+}
+
+/* ── Conteúdo principal ── */
+main.page-content {
+  flex: 1;
+  padding-top: 60px; /* compensa a nav fixa */
+}
+
+/* ── Seções ── */
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Tipografia editorial ── */
+h1, h2.display {
+  font-family: 'DM Serif Display', serif;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+
+h2.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+
+h2.section-title em {
+  font-style: italic;
+  color: var(--ink-mid);
+}
+
+.text-mid { color: var(--ink-mid); }
+.text-faint { color: var(--ink-faint); }
+
+/* ── Cards ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px -10px rgba(24,20,12,.12);
+  border-color: var(--border-strong);
+}
+
+/* ── Blocos de destaque ── */
+.highlight-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+
+.callout {
+  background: var(--viaduto-bg);
+  border: 1px solid rgba(180,83,9,.18);
+  border-radius: 11px;
+  padding: 1.2rem 1.4rem;
+  font-size: 13px;
+  color: #92400e;
+  line-height: 1.65;
+}
+
+/* ── Rodapé ── */
+footer.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  line-height: 1.9;
+}
+
+footer.site-footer strong {
+  color: var(--ink-mid);
+  font-weight: 600;
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .4rem 1.4rem;
+  margin: .75rem 0;
+}
+
+.footer-nav a {
+  color: var(--ink-faint);
+  text-decoration: none;
+  transition: color .2s;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.footer-nav a:hover { color: var(--viaduto); }
+
+/* ── Botão Voltar ao Topo ── */
+#back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: .85rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(24,20,12,.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s, transform .2s;
+  z-index: 9999;
+}
+
+#back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#back-to-top:hover {
+  background: var(--viaduto);
+  transform: scale(1.08);
+}
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.badge-tunel  { background: var(--tunel-bg);  color: var(--tunel);  border: 1px solid rgba(29,78,216,.18); }
+.badge-viaduto{ background: var(--viaduto-bg);color: var(--viaduto);border: 1px solid rgba(180,83,9,.18);  }
+.badge-ponte  { background: var(--ponte-bg);  color: var(--ponte);  border: 1px solid rgba(22,101,52,.18); }
+
+/* ── Formulários ── */
+.form-group { margin-bottom: 1.2rem; }
+
+.form-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: .5rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: .75rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--viaduto);
+  box-shadow: 0 0 0 3px rgba(180,83,9,.1);
+}
+
+.form-group textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+/* ── Botões ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: .75rem 1.75rem;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background .18s, border-color .18s, transform .15s, box-shadow .15s;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.btn-primary:hover {
+  background: var(--viaduto);
+  border-color: var(--viaduto);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.btn-full { width: 100%; justify-content: center; }
+
+/* ── Pill de info ── */
+.info-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+}
+
+.info-pill .lbl {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.info-pill .val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* ── KPI simples ── */
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kpi .num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.kpi .lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ── FAQ simples ── */
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: .75rem;
+}
+
+.faq-item .faq-q {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.faq-item .faq-q::before {
+  content: 'P.';
+  font-family: 'DM Serif Display', serif;
+  font-size: 13px;
+  color: var(--viaduto);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.faq-item .faq-a {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  padding-left: 1.6rem;
+}
+
+/* ── Responsividade ── */
+@media (max-width: 768px) {
+  nav.site-nav {
+    padding: 0 1.2rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .section {
+    padding: 3rem 1.2rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
