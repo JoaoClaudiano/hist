@@ -1,73 +1,854 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Fortaleza · Túneis e Viadutos </title>
-    
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Nosso CSS -->
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Fortaleza Sub & Via — Memorial Urbano</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f3f0e8;--surface:#fdfcf7;--border:rgba(50,40,20,.1);--border-strong:rgba(50,40,20,.18);
+  --ink:#18140c;--ink-mid:#5a4e38;--ink-faint:#9e9078;
+  --tunel:#1d4ed8;--tunel-bg:#eff6ff;--tunel-bdr:rgba(29,78,216,.18);
+  --viaduto:#b45309;--viaduto-bg:#fffbeb;--viaduto-bdr:rgba(180,83,9,.18);
+  --ponte:#166534;--ponte-bg:#f0fdf4;--ponte-bdr:rgba(22,101,52,.18);
+  --exec:#7c3aed;--exec-bg:#f5f3ff;--pend:#64748b;--pend-bg:#f8fafc;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;background:rgba(243,240,232,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-mark{width:34px;height:34px;background:var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--bg);font-family:'DM Serif Display',serif;font-size:12px;letter-spacing:-.5px}
+.nav-title{font-size:13px;font-weight:600}
+.nav-links{display:flex;gap:1.8rem}
+.nav-links a{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-mid);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 2rem 4rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 45% at 82% 18%,rgba(180,83,9,.06) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 18% 82%,rgba(29,78,216,.05) 0%,transparent 60%)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);padding:5px 14px;border-radius:100px;border:1px solid var(--border-strong);background:var(--surface);margin-bottom:2rem}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--viaduto)}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(3.8rem,9.5vw,8.5rem);line-height:.92;letter-spacing:-.03em;margin-bottom:1.5rem}
+h1 em{font-style:italic;color:var(--ink-mid)}
+.hero-desc{max-width:540px;font-size:15px;line-height:1.7;color:var(--ink-mid);margin-bottom:3rem}
+.stats{display:flex;gap:2.5rem;justify-content:center;align-items:center;flex-wrap:wrap}
+.stat-num{font-family:'DM Serif Display',serif;font-size:2.6rem;line-height:1;display:block}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-top:3px}
+.stat-div{width:1px;height:52px;background:var(--border-strong)}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);cursor:pointer;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}55%{transform:translateX(-50%) translateY(7px)}}
+
+.section{padding:0 2rem 6rem;max-width:1440px;margin:0 auto}
+.section-label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:1.5rem;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.map-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.filter-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.btn-filtro{padding:7px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--border);background:var(--surface);color:var(--ink-faint);cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:6px}
+.btn-filtro.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn-filtro .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.map-hint{font-size:11px;color:var(--ink-faint);font-weight:500;display:flex;align-items:center;gap:5px}
+.map-wrap{border-radius:18px;overflow:hidden;border:1px solid var(--border);box-shadow:0 16px 50px -16px rgba(24,20,12,.1);position:relative}
+#map-container{height:600px;width:100%}
+.map-legend{position:absolute;bottom:1.2rem;left:1.2rem;z-index:10;background:rgba(253,252,247,.94);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:11px;padding:11px 16px;display:flex;gap:1.2rem;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mid)}
+.leg-dot{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.8);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+
+.acervo-header,.analise-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;gap:1rem;flex-wrap:wrap}
+.acervo-header h2,.analise-header h2{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.1;letter-spacing:-.02em}
+.acervo-header p,.analise-header p{max-width:380px;font-size:13px;color:var(--ink-mid);line-height:1.6}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .2s;border-radius:14px 14px 0 0}
+.card.tunel::after{background:var(--tunel)}.card.viaduto::after{background:var(--viaduto)}.card.ponte::after{background:var(--ponte)}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 36px -10px rgba(24,20,12,.13);border-color:var(--border-strong)}
+.card:hover::after{opacity:1}
+.card-badges{display:flex;align-items:center;gap:6px;margin-bottom:.65rem;flex-wrap:wrap}
+.badge{font-size:9.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;padding:2.5px 9px;border-radius:100px}
+.badge.tunel{background:var(--tunel-bg);color:var(--tunel);border:1px solid var(--tunel-bdr)}
+.badge.viaduto{background:var(--viaduto-bg);color:var(--viaduto);border:1px solid var(--viaduto-bdr)}
+.badge.ponte{background:var(--ponte-bg);color:var(--ponte);border:1px solid var(--ponte-bdr)}
+.badge.s-ok{background:#f0fdf4;color:#166534;border:1px solid rgba(22,101,52,.15)}
+.badge.s-exec{background:var(--exec-bg);color:var(--exec);border:1px solid rgba(124,58,237,.15)}
+.badge.s-pend{background:var(--pend-bg);color:var(--pend);border:1px solid rgba(100,116,139,.15)}
+.card h3{font-family:'DM Serif Display',serif;font-size:1.1rem;line-height:1.2;margin-bottom:.25rem}
+.card-vulgo{font-size:11.5px;color:var(--ink-faint);font-style:italic;margin-bottom:.85rem}
+.card-meta{display:flex;gap:.9rem;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:.7rem;margin-bottom:.6rem}
+.meta-item{display:flex;flex-direction:column;gap:1px}
+.meta-item .lbl{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint)}
+.meta-item .val{font-size:11.5px;font-weight:600;color:var(--ink)}
+.card-co2{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;background:var(--bg);border:1px solid var(--border);width:fit-content}
+.card-co2 .co2v{font-size:10px;font-weight:700;color:var(--ink-mid)}
+.card-co2 .co2c{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border-radius:4px}
+.clsA{background:#dcfce7;color:#166534}.clsB{background:#fef9c3;color:#854d0e}.clsC{background:#fee2e2;color:#dc2626}
+.card-arrow{position:absolute;bottom:1.1rem;right:1.1rem;width:26px;height:26px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:12px;transition:all .18s}
+.card:hover .card-arrow{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+/* ANÁLISE */
+#analise{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+#analise>.section{padding-top:4rem;padding-bottom:4rem}
+.kpis-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.kpi-s{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.kpi-s .lbl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:4px}
+.kpi-s .num{font-family:'DM Serif Display',serif;font-size:1.9rem;line-height:1;color:var(--ink)}
+.kpi-s .unit{font-size:10px;color:var(--ink-faint);font-weight:500}
+.charts-duo{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+/* KEY FIX: chart-card tem altura explícita e overflow:hidden — Chart.js NÃO pode expandir o container */
+.chart-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:1.4rem;overflow:hidden}
+.chart-card-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mid);margin-bottom:.25rem}
+.chart-card-sub{font-size:11px;color:var(--ink-faint);margin-bottom:1rem;line-height:1.5}
+/* Wrapper com altura FIXA em px — impede o loop de resize */
+.canvas-wrap{position:relative;width:100%;height:240px;overflow:hidden}
+.canvas-wrap canvas{position:absolute;top:0;left:0}
+.analise-nota{font-size:11px;color:var(--ink-faint);line-height:1.7;padding:1rem 1.25rem;background:var(--bg);border:1px solid var(--border);border-radius:10px}
+
+/* METODOLOGIA */
+#metodologia{border-top:1px solid var(--border)}
+#metodologia>.section{padding-top:4rem}
+.met-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+.met-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.6rem}
+.met-card h3{font-family:'DM Serif Display',serif;font-size:1.2rem;line-height:1.2;margin-bottom:.6rem}
+.met-card p{font-size:12.5px;color:var(--ink-mid);line-height:1.75;margin-bottom:.8rem}
+.met-card p:last-child{margin-bottom:0}
+.met-formula{font-family:monospace;font-size:11px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;color:var(--ink);line-height:1.9;margin:.6rem 0;white-space:pre-wrap}
+.met-table{width:100%;border-collapse:collapse;font-size:11.5px;margin:.8rem 0}
+.met-table th{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border)}
+.met-table td{padding:.5rem .6rem;border-bottom:1px solid rgba(50,40,20,.06);color:var(--ink-mid)}
+.met-table tr:last-child td{border-bottom:none}
+.met-table td:first-child{font-weight:600;color:var(--ink)}
+.met-refs{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.met-refs li{font-size:11.5px;color:var(--ink-mid);line-height:1.55;padding-left:1.1rem;position:relative}
+.met-refs li::before{content:'›';position:absolute;left:0;color:var(--ink-faint)}
+.met-warn{background:#fffbeb;border:1px solid rgba(180,83,9,.2);border-radius:10px;padding:.9rem 1rem;font-size:11.5px;color:#92400e;line-height:1.65;margin-top:.8rem}
+.met-warn strong{font-weight:700}
+.met-full{grid-column:1/-1}
+
+/* SIDE PANEL */
+#side-panel{position:fixed;top:0;right:0;bottom:0;width:min(580px,100vw);background:var(--surface);border-left:1px solid var(--border);z-index:500;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);box-shadow:-20px 0 60px -20px rgba(24,20,12,.12)}
+#side-panel.open{transform:translateX(0)}
+.sp-header{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.6rem;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;gap:.75rem;flex-wrap:wrap}
+.sp-badges{display:flex;gap:6px;flex-wrap:wrap}
+.sp-close{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-mid);transition:all .15s;flex-shrink:0}
+.sp-close:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sp-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.sp-tabs::-webkit-scrollbar{display:none}
+.sp-tab{padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:all .15s}
+.sp-tab.active{color:var(--ink);border-bottom-color:var(--ink)}
+.sp-body{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.sp-pane{display:none;padding:1.5rem}
+.sp-pane.active{display:block}
+.sp-name{font-family:'DM Serif Display',serif;font-size:1.75rem;line-height:1.1;letter-spacing:-.02em;margin-bottom:.2rem}
+.sp-vulgo{font-size:12.5px;color:var(--ink-faint);font-style:italic;margin-bottom:1.4rem}
+.sp-dates{display:flex;gap:.5rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.date-pill{flex:1;min-width:130px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
+.date-pill .lbl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:2px}
+.date-pill .val{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.4}
+.sp-sec{margin-bottom:1.4rem}
+.sp-sec-title{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
+.sp-sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.sp-box{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:1rem}
+.sp-g2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.sp-f .lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:2px}
+.sp-f .val{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.4}
+.sp-f .val.green{color:#166534}.sp-f .val.est{color:var(--ink-faint);font-style:italic}
+.sp-method{font-size:12.5px;color:var(--ink-mid);line-height:1.65;margin-bottom:.9rem}
+.sp-homen{background:linear-gradient(135deg,var(--bg) 0%,rgba(180,83,9,.04) 100%);border:1px solid rgba(180,83,9,.14);border-radius:11px;padding:1rem}
+.sp-homen p{font-size:12.5px;color:var(--ink-mid);line-height:1.7;font-style:italic}
+.sp-fonte{font-size:10.5px;color:var(--ink-faint);border-top:1px solid var(--border);padding-top:.8rem;line-height:1.65;margin-top:.9rem}
+.sp-fonte strong{color:var(--ink-mid);font-weight:600}
+.eng-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.9rem}
+.eng-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.85rem}
+.eng-card .lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:4px}
+.eng-card .val{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
+.eng-card .sm{font-size:11.5px}
+.faixas-vis{display:flex;gap:3px;margin-top:6px;height:9px}
+.fx{border-radius:2px;flex:1}.fx.veh{background:#1d4ed8}.fx.sep{flex:.2;background:var(--border-strong)}
+.fund-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--ink-mid);margin-top:4px;line-height:1.3}
+.co2-warn{font-size:10px;background:#fffbeb;border:1px solid rgba(180,83,9,.18);border-radius:8px;padding:.7rem .9rem;color:#92400e;line-height:1.6;margin-bottom:.9rem}
+.co2-hero-box{border-radius:12px;padding:1.1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.co2-hero-box.low{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid rgba(22,101,52,.15)}
+.co2-hero-box.med{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid rgba(180,83,9,.15)}
+.co2-hero-box.high{background:linear-gradient(135deg,#fff1f2,#fee2e2);border:1px solid rgba(220,38,38,.15)}
+.co2-num{font-family:'DM Serif Display',serif;font-size:2.1rem;line-height:1}
+.co2-num.g{color:#166534}.co2-num.o{color:#b45309}.co2-num.r{color:#dc2626}
+.co2-sub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-top:2px}
+.co2-bk{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:.9rem}
+.co2-item{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:.75rem;text-align:center}
+.co2-item .ico{font-size:15px;margin-bottom:3px;display:block}
+.co2-item .lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:2px}
+.co2-item .val{font-size:12px;font-weight:700;color:var(--ink)}
+.co2-equiv-box{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.9rem}
+.co2-equiv-box .ttl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+.equiv-list{display:flex;flex-direction:column;gap:.35rem}
+.equiv-item{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-mid)}
+.equiv-item .ico{font-size:13px;width:20px;text-align:center;flex-shrink:0}
+.co2-nota{font-size:10px;color:var(--ink-faint);line-height:1.65;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--border)}
+.bench-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-bottom:.4rem}
+.bkpi{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.9rem;text-align:center}
+.bkpi.hl{background:var(--ink);border-color:var(--ink)}
+.bkpi .lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:4px}
+.bkpi.hl .lbl{color:rgba(255,255,255,.5)}
+.bkpi .val{font-family:'DM Serif Display',serif;font-size:1.3rem;line-height:1;color:var(--ink)}
+.bkpi.hl .val{color:var(--bg)}
+.bkpi .unit{font-size:9px;color:var(--ink-faint)}
+.bkpi.hl .unit{color:rgba(255,255,255,.4)}
+.bench-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin-bottom:.9rem;text-align:center}
+/* KEY FIX: canvas do side panel — altura FIXA, sem responsive */
+.sp-canvas-wrap{position:relative;width:100%;height:180px;overflow:hidden;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:.8rem;margin-bottom:.9rem}
+.sp-canvas-wrap .chart-lbl{font-size:9.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.6rem}
+.sp-canvas-wrap canvas{position:absolute;bottom:.5rem;left:.5rem}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.mat-box{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.85rem}
+.mat-box .lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:4px}
+.mat-box .val{font-size:14px;font-weight:700;color:var(--ink)}
+.mat-box .unit{font-size:10px;color:var(--ink-faint)}
+.mat-bar{height:5px;border-radius:3px;background:var(--border);margin-top:6px;overflow:hidden}
+.mat-fill{height:100%;border-radius:3px}
+.sinapi-note{font-size:10px;color:var(--ink-faint);line-height:1.65;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)}
+
+#overlay{position:fixed;inset:0;z-index:400;background:rgba(24,20,12,.3);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s}
+#overlay.visible{opacity:1;pointer-events:auto}
+
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:11.5px;color:var(--ink-faint);line-height:1.75}
+footer strong{color:var(--ink-mid);font-weight:600}
+
+.leaflet-container{font-family:'DM Sans',sans-serif}
+.leaflet-tile-pane{filter:sepia(18%) brightness(1.05) contrast(.97)}
+.oae-pin{cursor:pointer;transition:transform .18s cubic-bezier(.2,.9,.4,1.1)}
+.oae-pin:hover{transform:scale(1.45);z-index:9999!important}
+
+@media(max-width:900px){.charts-duo,.met-grid{grid-template-columns:1fr}.met-full{grid-column:1}}
+@media(max-width:768px){
+  nav{padding:0 1.2rem}.nav-links{display:none}
+  .hero{padding:76px 1.2rem 3rem}.stats{gap:1.2rem}
+  .section{padding-left:1.2rem;padding-right:1.2rem}
+  .cards-grid,.met-grid{grid-template-columns:1fr}
+  .sp-g2,.eng-grid,.co2-bk,.bench-kpis,.mat-grid{grid-template-columns:1fr 1fr}
+  .sp-dates{flex-direction:column}
+}
+</style>
 </head>
 <body>
-    <!-- HEADER -->
-    <div class="top-bar">
-        <div class="logo-area">
-            <div class="logo-icon"><i class="fas fa-map-location-dot"></i></div>
-            <div class="logo-text">
-                <h1>Fortaleza <span class="destaque">sub</span> & <span class="destaque">via</span></h1>
-                <p><i class="fas fa-road"></i> Túneis e viadutos · história viva</p>
-            </div>
-        </div>
-        <div class="nav-links">
-            <a href="#"><i class="fas fa-map"></i> Mapa</a>
-            <a href="sobre.html"><i class="fas fa-book-open"></i> Projeto</a>
-            <a href="personalidades.html"><i class="fas fa-users"></i> Personalidades</a>
-            <a href="apoio.html">Apoie</a>
-            <a href="contato.html"><i class="fas fa-envelope"></i> Contato</a>
-            <button id="btn-verificar" class="btn-verificar" onclick="window.toggleModoVerificacao()">
-                <i class="fas fa-map-pin"></i> Indicar estrutura
-            </button>
-        </div>
+
+<nav>
+  <div class="nav-brand"><div class="nav-mark">F|V</div><span class="nav-title">Memorial Urbano · Fortaleza</span></div>
+  <div class="nav-links">
+    <a href="#mapa">Mapa</a><a href="#acervo">Acervo</a>
+    <a href="#analise">Análise</a><a href="#metodologia">Metodologia</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow"><span class="eyebrow-dot"></span>Catálogo Oficial de OAEs — Fortaleza / CE</span>
+  <h1>Fortaleza<br><em>Sub & Via</em></h1>
+  <p class="hero-desc">Mapeamento georreferenciado de Obras de Arte Especiais com camadas de engenharia, estimativas de carbono incorporado (CO₂e) e benchmarking econômico. Coordenadas MAPP-FOR.</p>
+  <div class="stats">
+    <div class="stat"><span class="stat-num" id="count-t">—</span><span class="stat-label">Túneis</span></div>
+    <div class="stat-div"></div>
+    <div class="stat"><span class="stat-num" id="count-v">—</span><span class="stat-label">Viadutos</span></div>
+    <div class="stat-div"></div>
+    <div class="stat"><span class="stat-num" id="count-p">—</span><span class="stat-label">Pontes</span></div>
+  </div>
+  <div class="scroll-hint" onclick="document.getElementById('mapa').scrollIntoView({behavior:'smooth'})">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>Explorar
+  </div>
+</header>
+
+<section id="mapa" class="section">
+  <div class="section-label">Localização Georreferenciada — Coordenadas MAPP-FOR</div>
+  <div class="map-toolbar">
+    <div class="filter-row">
+      <button class="btn-filtro active" data-filtro="todos">Todos</button>
+      <button class="btn-filtro" data-filtro="tunel"><span class="dot" style="background:var(--tunel)"></span>Túneis</button>
+      <button class="btn-filtro" data-filtro="viaduto"><span class="dot" style="background:var(--viaduto)"></span>Viadutos</button>
+      <button class="btn-filtro" data-filtro="ponte"><span class="dot" style="background:var(--ponte)"></span>Pontes</button>
+    </div>
+    <span class="map-hint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>Clique para ficha com 4 abas</span>
+  </div>
+  <div class="map-wrap">
+    <div id="map-container"></div>
+    <div class="map-legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--tunel)"></div>Túnel</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--viaduto)"></div>Viaduto</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--ponte)"></div>Ponte</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--exec);opacity:.8"></div>Em Execução</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--pend);opacity:.65"></div>A Iniciar</div>
+    </div>
+  </div>
+</section>
+
+<section id="acervo" class="section">
+  <div class="section-label">Fichas Técnicas</div>
+  <div class="acervo-header">
+    <h2>Acervo<br>Técnico</h2>
+    <p>Cada card exibe a Classe CO₂e estimada. Clique para a ficha completa com 4 abas analíticas.</p>
+  </div>
+  <div class="cards-grid" id="cards-grid"></div>
+</section>
+
+<div id="analise"><section class="section">
+  <div class="section-label">Análise Estatística Comparativa</div>
+  <div class="analise-header">
+    <h2>Panorama<br>do Inventário</h2>
+    <p>Comparativo gráfico de CO₂e, custo/m e consumo de materiais entre todas as obras catalogadas.</p>
+  </div>
+  <div class="kpis-row" id="analise-kpis"></div>
+  <div class="charts-duo">
+    <div class="chart-card">
+      <div class="chart-card-title">CO₂e por obra (tCO₂e estimado)</div>
+      <div class="chart-card-sub">Emissão incorporada estimada (A1–A5) por extensão e tipo construtivo.</div>
+      <div class="canvas-wrap"><canvas id="ch-co2"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Custo/m linear por obra (R$/m)</div>
+      <div class="chart-card-sub">Dados reais (sólido) e estimativas SEINFRA-CE (translúcido, marcados ★).</div>
+      <div class="canvas-wrap"><canvas id="ch-cost"></canvas></div>
+    </div>
+  </div>
+  <div class="charts-duo">
+    <div class="chart-card">
+      <div class="chart-card-title">CO₂e médio por tipo construtivo</div>
+      <div class="chart-card-sub">Túneis têm maior intensidade por metro — seção celular consome ~3× mais concreto.</div>
+      <div class="canvas-wrap"><canvas id="ch-tipo"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Concreto C35 estimado por obra (m³)</div>
+      <div class="chart-card-sub">Calculado parametricamente com coeficientes SEINFRA-CE 27 (m³/m × extensão).</div>
+      <div class="canvas-wrap"><canvas id="ch-conc"></canvas></div>
+    </div>
+  </div>
+  <p class="analise-nota" id="analise-nota"></p>
+</section></div>
+
+<section id="metodologia" class="section">
+  <div class="section-label">Documentação Técnica</div>
+  <div class="analise-header">
+    <h2>Metodologia<br>& Referências</h2>
+    <p>Fundamentos científicos, coeficientes, limitações e fontes bibliográficas completas.</p>
+  </div>
+  <div class="met-grid">
+    <div class="met-card">
+      <h3>1. Georreferenciamento</h3>
+      <p>Coordenadas extraídas do <strong>MAPP-FOR</strong> — Sistema de Mapeamento de Obras da Prefeitura de Fortaleza — fornecido em formato GeoJSON. Cada obra mantém o ID original do sistema (ex: <code>id_mappfor_2550</code>) para rastreabilidade plena.</p>
+      <p>O Túnel Demócrito Dummar, anterior ao período do MAPP-FOR, teve coordenadas obtidas via Wikimapia e confirmadas pelo endereço oficial da obra.</p>
+    </div>
+    <div class="met-card">
+      <h3>2. Volume de Concreto — Abordagem Paramétrica</h3>
+      <p>Na ausência de projetos executivos públicos, o volume de concreto é estimado por <strong>composições unitárias por metro linear</strong>, com base na Tabela SEINFRA-CE 27/27.1 e em projetos típicos regionais.</p>
+      <div class="met-formula">V_concreto (m³) = coef_tipo (m³/m) × L (m)
+
+Coeficientes adotados:
+  Túnel celular (~7×4 m) : 18,5 m³/m
+  Viaduto (viga prot. + laje): 6,2 m³/m
+  Ponte (vigas + pilares)    : 4,8 m³/m
+
+Taxa de aço CA-50: 120 kg/m³ de concreto
+  Túnel: 2.220 kg/m | Viaduto: 744 kg/m | Ponte: 576 kg/m</div>
+      <div class="met-warn"><strong>⚠️ Precisão:</strong> Estimativas paramétricas com variação ±20–30%. Adequadas para comparações de ordem de grandeza, não para orçamento.</div>
+    </div>
+    <div class="met-card">
+      <h3>3. Carbono Incorporado — ICE v3 / SIDERC</h3>
+      <p>Cálculo seguindo <strong>ACV fases A1–A5</strong> (extração, transporte, fabricação e construção). Operação e fim de vida excluídos.</p>
+      <div class="met-formula">CO₂e = Σ (massa × fator_emissão)
+
+Fatores ICE v3 + SIDERC (kgCO₂e/kg):
+  Concreto C35 (CA) : 0,159  ← ajuste matriz BR
+  Aço CA-50         : 1,46
+  Betume (pavimento): 0,374
+  Energia construção: +12% sobre materiais
+
+CO₂e_conc  = L × coef_cm × 2400 × 0,159
+CO₂e_aco   = L × coef_am × 1,46
+CO₂e_pav   = L × 1,2 × 0,08 × 2400 × 0,374
+CO₂e_const = (soma) × 0,12
+Total (tCO₂e) = soma ÷ 1000</div>
+    </div>
+    <div class="met-card">
+      <h3>4. Benchmarking & Custo N/D</h3>
+      <p>Custo/m linear (R$/m, preços 2023–2024) baseado em SEINFRA-CE tabela 27 e SINAPI:</p>
+      <table class="met-table">
+        <thead><tr><th>Tipo</th><th>Mín.</th><th>Média</th><th>Máx.</th></tr></thead>
+        <tbody>
+          <tr><td>Túnel cut-and-cover</td><td>R$ 95k</td><td>R$ 185k</td><td>R$ 310k</td></tr>
+          <tr><td>Viaduto concreto prot.</td><td>R$ 55k</td><td>R$ 95k</td><td>R$ 180k</td></tr>
+          <tr><td>Ponte concreto armado</td><td>R$ 28k</td><td>R$ 72k</td><td>R$ 140k</td></tr>
+        </tbody>
+      </table>
+      <div class="met-warn"><strong>⚠️ N/D:</strong> Obras sem valor isolado em fontes abertas (partes de corredores) exibem a média do segmento como estimativa, identificada com ★ nos gráficos.</div>
+    </div>
+    <div class="met-card">
+      <h3>5. Classificação CO₂e (A / B / C)</h3>
+      <table class="met-table">
+        <thead><tr><th>Classe</th><th>Total CO₂e</th><th>Perfil</th></tr></thead>
+        <tbody>
+          <tr><td>A — Baixo</td><td>&lt; 4.000 t</td><td>Obras curtas ou estruturas leves</td></tr>
+          <tr><td>B — Médio</td><td>4.000–15.000 t</td><td>Viadutos e pontes de porte médio</td></tr>
+          <tr><td>C — Alto</td><td>&gt; 15.000 t</td><td>Túneis longos ou grandes pontes</td></tr>
+        </tbody>
+      </table>
+      <p>Limiares calibrados ao inventário local de Fortaleza. Não extrapolável para outras regiões sem ajuste de escala.</p>
+    </div>
+    <div class="met-card">
+      <h3>6. Fontes de Dados de Obra</h3>
+      <ul class="met-refs">
+        <li>Prefeitura de Fortaleza — SEINF (notas de imprensa, Diário Oficial, MAPP-FOR)</li>
+        <li>Governo do Estado do Ceará — Seinfra-CE / SOP-CE (relatórios e inaugurações)</li>
+        <li>Câmara Municipal de Fortaleza — Indicação nº 1030/2025 (15 viadutos)</li>
+        <li>Diário do Nordeste e O Povo (reportagens verificadas com datas e valores)</li>
+        <li>Wikimapia, Fortaleza em Fotos, iPatrimônio.org (dados históricos)</li>
+      </ul>
+    </div>
+    <div class="met-card met-full">
+      <h3>7. Referências Bibliográficas</h3>
+      <ul class="met-refs" style="columns:2;gap:2rem">
+        <li>Hammond, G. & Jones, C. (2019). <em>Inventory of Carbon & Energy (ICE) v3.0.</em> University of Bath, UK.</li>
+        <li>IPCC (2022). <em>AR6 — Climate Change: Mitigation (WG3), Ch.11.</em> IPCC, Geneva.</li>
+        <li>SIDERC / CBCS (2021). <em>Indicadores de Desempenho em Resíduo e Carbono.</em> GBC Brasil.</li>
+        <li>SEINFRA-CE (2023). <em>Tabela de Composições e Custos Unitários nº 27/27.1.</em> Fortaleza.</li>
+        <li>SINAPI (2024). <em>Sistema Nacional de Pesquisa de Custos e Índices.</em> CEF / IBGE.</li>
+        <li>Prefeitura de Fortaleza (2024). <em>MAPP-FOR — Sistema de Mapeamento de Obras.</em> SEINF.</li>
+        <li>ABNT NBR 7188 (2013). <em>Carga Móvel Rodoviária em Pontes, Viadutos e Passarelas.</em></li>
+        <li>ABNT NBR 6118 (2023). <em>Projeto de Estruturas de Concreto — Procedimento.</em></li>
+        <li>EN 15804 (2022). <em>Sustainability of Construction Works — EPDs.</em> CEN, Bruxelas.</li>
+        <li>Governo CE / Seinfra-CE (2012–2024). <em>Notas de inauguração de OAEs.</em> Fortaleza.</li>
+        <li>Diário do Nordeste / O Povo (2012–2026). <em>Reportagens sobre infraestrutura viária.</em></li>
+        <li>CMFor (2025). <em>Indicação 1030/2025 — Reforma de 15 Viadutos.</em> Ver. Marcelo Tchela.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>Fortaleza Sub & Via v6 — Memorial Urbano</strong><br>
+  Coordenadas: MAPP-FOR · Dados: Seinfra-CE · SOP-CE · SEINF · Diário do Nordeste · O Povo<br>
+  CO₂e: ICE v3 (Univ. Bath) + SIDERC / IPCC AR6 · Custos: SEINFRA-CE tab.27 · SINAPI 2024<br>
+  Estimativas paramétricas ±20–30%. Não substitui ACV auditada. Última revisão: Abril 2026.
+</footer>
+
+<!-- SIDE PANEL -->
+<aside id="side-panel" role="dialog" aria-modal="true">
+  <div class="sp-header">
+    <div class="sp-badges" id="sp-badges"></div>
+    <button class="sp-close" onclick="fecharPainel()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="sp-tabs">
+    <button class="sp-tab active" data-tab="ficha">📋 Ficha</button>
+    <button class="sp-tab" data-tab="eng">⚙️ Engenharia</button>
+    <button class="sp-tab" data-tab="eco">🌿 CO₂e</button>
+    <button class="sp-tab" data-tab="bench">📊 Benchmark</button>
+  </div>
+  <div class="sp-body">
+    <div class="sp-pane active" id="pane-ficha">
+      <h2 id="sp-name" class="sp-name">—</h2>
+      <p id="sp-vulgo" class="sp-vulgo">—</p>
+      <div id="sp-dates" class="sp-dates"></div>
+      <div class="sp-sec"><div class="sp-sec-title">Método Construtivo</div><div class="sp-box"><p id="sp-metodo" class="sp-method">—</p></div></div>
+      <div class="sp-sec"><div class="sp-sec-title">Execução & Financeiro</div><div class="sp-box"><div class="sp-g2">
+        <div class="sp-f"><span class="lbl">Extensão</span><span id="sp-ext" class="val">—</span></div>
+        <div class="sp-f"><span class="lbl">Construtora / Executor</span><span id="sp-const" class="val">—</span></div>
+        <div class="sp-f"><span class="lbl">Custo da Obra</span><span id="sp-custo" class="val green">—</span></div>
+        <div class="sp-f"><span class="lbl">Bairro / Regional</span><span id="sp-bairro" class="val">—</span></div>
+        <div class="sp-f" style="grid-column:1/-1"><span class="lbl">ID MAPP-FOR</span><span id="sp-mappid" class="val" style="font-family:monospace;font-size:11px">—</span></div>
+      </div></div></div>
+      <div class="sp-sec"><div class="sp-sec-title">Memória & Homenagem</div><div class="sp-homen"><p id="sp-homen">—</p></div></div>
+      <div class="sp-fonte" id="sp-fonte"><strong>Fonte:</strong> —</div>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div id="container">
-        <div id="map"></div>
-        <div id="painel">
-            <div class="painel-header">
-                <i class="fas fa-hand-pointer"></i>
-                <h2>Memória das obras</h2>
-            </div>
-            <div class="painel-intro">
-                <p><i class="fas fa-info-circle" style="color:#1a4b6d;"></i> Clique nos <strong>círculos coloridos</strong> do mapa: <span class="tunel-destaque">azul (túnel)</span> ou <span class="viaduto-destaque">vermelho (viaduto)</span>. Um popup aparecerá com um resumo; para ver a história completa, clique em "Ler história completa".</p>
-            </div>
-            <div class="painel-stats">
-                <p><i class="fas fa-database"></i> Carregando dados...</p>
-            </div>
-        </div>
+    <div class="sp-pane" id="pane-eng">
+      <div class="sp-sec"><div class="sp-sec-title">Geometria Viária</div><div class="eng-grid">
+        <div class="eng-card"><span class="lbl">Gabarito Vertical</span><span class="val" id="eg-gab">—</span></div>
+        <div class="eng-card"><span class="lbl">Faixas / Sentido</span><span class="val" id="eg-fxt">—</span><div class="faixas-vis" id="eg-fxv"></div></div>
+        <div class="eng-card"><span class="lbl">Total de Faixas</span><span class="val" id="eg-ftot">—</span></div>
+        <div class="eng-card"><span class="lbl">Ciclovia / Passeio</span><span class="val sm" id="eg-ciclo">—</span></div>
+      </div></div>
+      <div class="sp-sec"><div class="sp-sec-title">Sistema de Drenagem</div><div class="sp-box"><div class="sp-g2">
+        <div class="sp-f"><span class="lbl">Tipo</span><span class="val" id="eg-drt">—</span></div>
+        <div class="sp-f"><span class="lbl">Sistema</span><span class="val" id="eg-drs">—</span></div>
+        <div class="sp-f" style="grid-column:1/-1"><span class="lbl">Especificação Hidrossanitária</span><span class="val sm" id="eg-drsp">—</span></div>
+      </div></div></div>
+      <div class="sp-sec"><div class="sp-sec-title" id="eg-fund-title">Tipo de Fundação</div><div class="sp-box"><div class="sp-g2">
+        <div class="sp-f"><span class="lbl">Sistema</span><div id="eg-fund-tag"></div></div>
+        <div class="sp-f"><span class="lbl">Profundidade Est.</span><span class="val" id="eg-fp">—</span></div>
+        <div class="sp-f" style="grid-column:1/-1"><span class="lbl">Observação Geotécnica</span><span class="val sm" id="eg-fo">—</span></div>
+      </div></div></div>
     </div>
 
-    <!-- FOOTER -->
-    <footer>
-        <div><i class="fas fa-code-branch"></i> Memorial Urbano · 2026</div>
-        <div class="footer-links">
-            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-            <a href="#"><i class="fas fa-database"></i> Fontes</a>
-            <p><a href="apoio.html">💖 Apoie o projeto com Pix</a></p>
+    <div class="sp-pane" id="pane-eco">
+      <div class="co2-warn">⚠️ <strong>Estimativa paramétrica</strong> — Volume calculado por coef. SEINFRA-CE 27 (m³/m × extensão). Variação ±20–30%.</div>
+      <div id="co2-hero-wrap"></div>
+      <div class="sp-sec"><div class="sp-sec-title">Decomposição da Emissão</div><div class="co2-bk" id="co2-bk"></div></div>
+      <div class="sp-sec"><div class="sp-sec-title">Volume de Materiais (Paramétrico)</div><div class="sp-box"><div class="sp-g2">
+        <div class="sp-f"><span class="lbl">Concreto C35 estimado</span><span class="val" id="co2-cv">—</span></div>
+        <div class="sp-f"><span class="lbl">Aço CA-50 estimado</span><span class="val" id="co2-am">—</span></div>
+        <div class="sp-f"><span class="lbl">Coef. m³/m (tipo)</span><span class="val est" id="co2-coef">—</span></div>
+        <div class="sp-f"><span class="lbl">Extensão usada</span><span class="val" id="co2-ext">—</span></div>
+      </div></div></div>
+      <div class="sp-sec"><div class="sp-sec-title">Equivalências Climáticas</div>
+        <div class="co2-equiv-box"><span class="ttl">O carbono incorporado estimado equivale a:</span><div class="equiv-list" id="co2-equiv"></div></div>
+      </div>
+      <p class="co2-nota">Fatores ICE v3 (Hammond & Jones, Univ. Bath, 2019) adaptados à matriz energética brasileira (SIDERC/CBCS 2021). Escopo A1–A5. Exclui operação e fim de vida.</p>
+    </div>
+
+    <div class="sp-pane" id="pane-bench">
+      <div class="sp-sec"><div class="sp-sec-title">Indicadores de Custo</div>
+        <div class="bench-kpis" id="bench-kpis"></div>
+        <p class="bench-note" id="bench-note"></p>
+      </div>
+      <div class="sp-sec"><div class="sp-sec-title">Custo/m vs. Segmento (R$/m)</div>
+        <!-- canvas com dimensões absolutas explícitas — sem responsive -->
+        <div class="sp-canvas-wrap" style="height:200px">
+          <span class="chart-lbl">R$/m linear — esta obra vs. min/média/máx SEINFRA-CE / SINAPI</span>
+          <canvas id="sp-chart" width="490" height="155" style="width:490px;height:155px"></canvas>
         </div>
-        <div><i class="fas fa-map-pin"></i> Dados abertos</div>
-    </footer>
+      </div>
+      <div class="sp-sec"><div class="sp-sec-title">Consumo de Materiais (Paramétrico)</div>
+        <div class="mat-grid" id="mat-grid"></div>
+        <p class="sinapi-note">Estimativas: SEINFRA-CE tab.27 + SINAPI. Concreto fck 35 MPa. Aço CA-50. Taxa 120 kg/m³.</p>
+      </div>
+    </div>
+  </div>
+</aside>
+<div id="overlay" onclick="fecharPainel()"></div>
 
-    <!-- Botão Voltar ao Topo -->
-    <button id="back-to-top" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+'use strict';
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Nosso JavaScript -->
-    <script src="script.js"></script>
+// ─── CONSTANTES ──────────────────────────────────────────────────────
+const ICE  = {conc:0.159, aco:1.46, bet:0.374};
+const MAT  = {tunel:{cm:18.5,am:2220}, viaduto:{cm:6.2,am:744}, ponte:{cm:4.8,am:576}};
+const BENCH= {tunel:{med:185000,min:95000,max:310000},viaduto:{med:95000,min:55000,max:180000},ponte:{med:72000,min:28000,max:140000}};
+const TL   = {tunel:'Túnel',viaduto:'Viaduto',ponte:'Ponte'};
+const SL   = {FINALIZADO:'Finalizado','EM EXECUÇÃO':'Em Execução','A INICIAR':'A Iniciar'};
+const SC   = {FINALIZADO:'s-ok','EM EXECUÇÃO':'s-exec','A INICIAR':'s-pend'};
+const COR  = {tunel:'#1d4ed8',viaduto:'#b45309',ponte:'#166534'};
+const FUND_C = {'Estacas Hélice Contínua':'#eff6ff:#1d4ed8','Paredes Diafragma + Laje Subpressão':'#f5f3ff:#7c3aed','Paredes Atirantadas + Estacas HC':'#f5f3ff:#7c3aed','Tubulões a Céu Aberto':'#fffbeb:#b45309','Sapata Isolada + Tubulões':'#f0fdf4:#166534','Estacas Cravadas de Concreto':'#fef3c7:#92400e','Estacas Raiz (nova estrutura)':'#f0fdf4:#166534','Pilares CA Originais (1920)':'#f8fafc:#64748b','Estacas HC + Laje Reforçada':'#eff6ff:#1d4ed8','A definir':'#f8fafc:#64748b'};
+
+// ─── DEFAULTS CHART.JS: responsive=false, animation=false ─────────────
+// responsive:false = Chart.js NÃO observa o container → zero ResizeObserver loop
+// animation:false  = zero requestAnimationFrame de animação de entrada
+const CH_DEFAULTS = {
+  responsive: false,
+  animation: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      backgroundColor: 'rgba(24,20,12,.88)',
+      titleFont: { family: 'DM Sans', size: 11, weight: '700' },
+      bodyFont:  { family: 'DM Sans', size: 11 },
+      padding: 10, cornerRadius: 8
+    }
+  },
+  scales: {
+    x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 9 }, color: '#9e9078' } },
+    y: { grid: { color: 'rgba(0,0,0,.05)' }, ticks: { font: { family: 'DM Sans', size: 9 }, color: '#9e9078' } }
+  }
+};
+
+// ─── CO2 CALC ─────────────────────────────────────────────────────────
+function calcCO2(d){
+  const L=d.extensaoNum||100, m=MAT[d.tipo]||MAT.viaduto;
+  const cv=m.cm*L, cm=cv*2400, am=m.am*L;
+  const cc=cm*ICE.conc, ca=am*ICE.aco, cp=L*1.2*0.08*2400*ICE.bet;
+  const cx=(cc+ca+cp)*0.12, tot=(cc+ca+cp+cx)/1000;
+  let cls='A',css='g',clt='Baixo';
+  if(tot>15000){cls='C';css='r';clt='Alto';}else if(tot>4000){cls='B';css='o';clt='Médio';}
+  return{tot,cv,am,cc:cc/1000,ca:ca/1000,cp:cp/1000,cx:cx/1000,cls,css,clt,cm3pm:m.cm,akgpm:m.am};
+}
+function custoM(d){
+  if(d.custoRaw&&d.extensaoNum) return{v:Math.round(d.custoRaw/d.extensaoNum),real:true};
+  return{v:BENCH[d.tipo]?.med||95000,real:false};
+}
+
+// ─── DADOS ────────────────────────────────────────────────────────────
+const dados=[
+  {id:'id_mappfor_2550',tipo:'tunel',estagio:'FINALIZADO',nome:'Túnel Santos Dumont',vulgo:'Túnel Santos Dumont / Via Expressa',lat:-3.7396712921810384,lng:-38.487653575393665,extensaoNum:170,extensao:'~170 m',custoRaw:null,custoTexto:'Parte do corredor da Via Expressa',construtora:'Prefeitura de Fortaleza / SEINF',inicio:'11/05/2013',inauguracao:'24/04/2014',bairro:'Meireles / SER II',metodo:'Estrutura celular de concreto armado em trincheira coberta (cut-and-cover). Elimina cruzamento da Av. Santos Dumont com a linha férrea e a Via Expressa. Fundações em estacas hélice contínua, drenagem profunda.',homenageado:'Alberto Santos Dumont (1873–1932), Patrono da Força Aérea Brasileira. Realizou o voo 14-Bis em Paris em outubro de 1906. A Av. Santos Dumont conecta a Aldeota ao Aeroporto Internacional Pinto Martins.',fonte:'MAPP-FOR id_mappfor_2550 · Seinfra-CE · SEINF',eng:{gabarito:'4,5 m',fps:2,ciclo:'Ciclovia lateral',drenTipo:'Gravidade + Bombeamento',drenSis:'Misto',drenSpec:'Calha perimetral + 2 poços de bombeamento (Q≈80 L/s), dreno longitudinal DN200.',fundTipo:'Estacas Hélice Contínua',fundProf:'~18 m',fundObs:'Solo argiloso seco, SPT médio 12. Estacas ø50 cm. Contenção por paredes diafragma 40 cm.',isTunel:true}},
+  {id:'id_mappfor_6',tipo:'tunel',estagio:'FINALIZADO',nome:'Túnel Padre Antônio Tomás',vulgo:'Túnel Via Expressa — Av. Pe. Antônio Tomás',lat:-3.743459871063889,lng:-38.489927114576346,extensaoNum:200,extensao:'~200 m',custoRaw:null,custoTexto:'Parte do Corredor Norte-Sul da Via Expressa',construtora:'Prefeitura de Fortaleza / SEINF',inicio:'05/05/2015',inauguracao:'31/12/2017',bairro:'Cocó / SER II',metodo:'Trincheira coberta de CA com paredes atirantadas. Corredor Norte-Sul da Via Expressa. Fundações em estacas hélice contínua, bombeamento e revestimento em placas cimentícias.',homenageado:'Padre Antônio Tomás (séc. XIX–XX), sacerdote missionário cearense, fundador de obras sociais. A avenida conecta Cocó, Papicu e Joaquim Távora.',fonte:'MAPP-FOR id_mappfor_6 · Seinfra-CE',eng:{gabarito:'4,5 m',fps:2,ciclo:'Ciclofaixa bidirecional',drenTipo:'Bombeamento',drenSis:'Forçado',drenSpec:'2 poços de recalque (Q≈100 L/s cada), calha DN300, sensor de nível automático.',fundTipo:'Paredes Atirantadas + Estacas HC',fundProf:'~20 m',fundObs:'Lençol freático a ~3 m. Rebaixamento por wellpoints. Ancoragem atirantada em 3 níveis.',isTunel:true}},
+  {id:'id_mappfor_2549',tipo:'tunel',estagio:'FINALIZADO',nome:'Túnel Prof. Wagner Barreira',vulgo:'3º Túnel da Via Expressa',lat:-3.742209110613029,lng:-38.488673577315524,extensaoNum:370,extensao:'370 m (74 m cobertos)',custoRaw:20000000,custoTexto:'Aprox. R$ 20 M',construtora:'Prefeitura / SEINF (convênio Seinfra-CE)',inicio:'26/05/2017',inauguracao:'22/12/2018',bairro:'Papicu / SER II',metodo:'Túnel longitudinal em trincheira coberta — 370 m totais / 74 m cobertos. Permite passagem do VLT sem cruzamento com veículos. Pista em concreto, ciclovia, LED, revestimento em alumínio.',homenageado:'Wagner Barreira (1913–c.1990), professor, jurista e advogado cearense. Catedrático de Direito na UFC (1938). Juiz do TRE-CE em 1961.',fonte:'MAPP-FOR id_mappfor_2549 · Governo CE / Seinfra (22/12/2018)',eng:{gabarito:'4,8 m',fps:2,ciclo:'Ciclovia',drenTipo:'Gravidade + Bombeamento',drenSis:'Misto',drenSpec:'Calha perimetral + poço central. Bomba submersível Q≈60 L/s. Sensor LED de inundação.',fundTipo:'Estacas Hélice Contínua',fundProf:'~16 m',fundObs:'Solo areno-argiloso, SPT 10–15. Estacas ø50 cm, espaç. 2,5 m. Laje suporta VLT (22 t/eixo).',isTunel:true}},
+  {id:'id_mappfor_2548',tipo:'tunel',estagio:'FINALIZADO',nome:'Túnel Alberto Sá',vulgo:'4º Túnel da Via Expressa',lat:-3.7325041775966263,lng:-38.483012894832996,extensaoNum:180,extensao:'~180 m',custoRaw:null,custoTexto:'Parte do Corredor Norte-Sul da Via Expressa',construtora:'Prefeitura de Fortaleza / SEINF',inicio:'26/05/2017',inauguracao:'31/05/2020',bairro:'Aldeota / SER II',metodo:'4º túnel longitudinal do eixo da Via Expressa. Elimina o último cruzamento em nível do VLT. Pista em concreto, drenagem profunda, iluminação LED.',homenageado:'Alberto Sá (1906–c.1984), político e servidor público cearense com atuação relevante na administração municipal do século XX.',fonte:'MAPP-FOR id_mappfor_2548 · Seinfra-CE',eng:{gabarito:'4,5 m',fps:2,ciclo:'Passeio lateral',drenTipo:'Bombeamento',drenSis:'Forçado',drenSpec:'Poço de recalque + calha perimetral DN200. Automação por boia de nível.',fundTipo:'Estacas Hélice Contínua',fundProf:'~14 m',fundObs:'Solo arenoso fino. Estacas ø40 cm. Contenção CA 30 cm. Impermeabilização PEAD exterior.',isTunel:true}},
+  {id:'id_mappfor_2421',tipo:'tunel',estagio:'FINALIZADO',nome:'Túnel Wellington Landim',vulgo:'Santana Júnior × Pe. Antônio Tomás',lat:-3.743978023043234,lng:-38.487894845299536,extensaoNum:180,extensao:'~180 m',custoRaw:null,custoTexto:'Parte do corredor Antônio Bezerra–Papicu',construtora:'Prefeitura / SEINF — Corredor AB/Papicu',inicio:'02/05/2016',inauguracao:'31/08/2016',bairro:'Papicu / SER II',metodo:'Trincheira coberta de CA. Parte do BRT Antônio Bezerra–Papicu. Laje de cobertura reforçada para carga VLT (22 t/eixo).',homenageado:'Wellington Landim (1953–2015), médico ultrassonografista e deputado estadual cearense. Presidiu a Alece por dois biênios. Faleceu de meningite bacteriana.',fonte:'MAPP-FOR id_mappfor_2421 · SEINF · O Povo (03/2026)',eng:{gabarito:'4,5 m',fps:2,ciclo:'Ciclovia bilateral',drenTipo:'Gravidade',drenSis:'Gravitário',drenSpec:'Calha longitudinal com saída para galeria municipal. Grelhas e bocas-de-lobo pré-moldados.',fundTipo:'Estacas HC + Laje Reforçada',fundProf:'~16 m',fundObs:'Laje com armação dupla para carga ferroviária VLT (NBR 7188). Estacas ø50 cm em grupo de 3.',isTunel:true}},
+  {id:'wikimapia_DDummar',tipo:'tunel',estagio:'FINALIZADO',nome:'Túnel Jornalista Demócrito Dummar',vulgo:'Túnel do Castelão / Av. Alberto Craveiro',lat:-3.8064,lng:-38.5248,extensaoNum:440,extensao:'440 m',custoRaw:38400000,custoTexto:'R$ 38,4 M (Tesouro Estadual)',construtora:'Governo do Estado do Ceará / SOP-CE',inicio:'2012',inauguracao:'07/06/2014',bairro:'Boa Vista / Passaré — SER VI',metodo:'Trincheira coberta (cut-and-cover) de CA. Duas pistas de 3 faixas, ciclovia bilateral, calçadas, drenagem gravitária, LED. Copa do Mundo FIFA 2014.',homenageado:'Demócrito Rocha Dummar (1926–2008), fundador do Sistema Verdes Mares — maior grupo de comunicação do Nordeste (Diário do Nordeste, TV Verdes Mares).',fonte:'Wikimapia · Governo CE (SOP) · O Povo (03/2026)',eng:{gabarito:'5,0 m',fps:3,ciclo:'Ciclovia bilateral',drenTipo:'Gravidade',drenSis:'Gravitário',drenSpec:'Rede coletora DN400 para galeria da Av. Paulino Rocha. Bocas-de-lobo duplas a cada 25 m.',fundTipo:'Paredes Diafragma + Laje Subpressão',fundProf:'~22 m',fundObs:'Próximo ao Riacho Maceió. Lençol freático elevado — laje fundo dimensionada à subpressão. Paredes e=60 cm.',isTunel:true}},
+  {id:'id_mappfor_2417',tipo:'viaduto',estagio:'FINALIZADO',nome:'Viaduto M. Dias Branco',vulgo:'Viaduto da Rotatória Aguanambi–BR-116',lat:-3.7558498092991552,lng:-38.52302558320309,extensaoNum:300,extensao:'~300 m',custoRaw:null,custoTexto:'Parte do Corredor Expresso Messejana–Centro',construtora:'SEINF / Ferreira Guedes + FAM Steel',inicio:'15/01/2016',inauguracao:'30/11/2017',bairro:'Amadeu Furtado / SER IV',metodo:'Estrutura mista aço-concreto. Superestrutura metálica pré-fabricada (FAM Steel) com tabuleiro em grelha. Execução noturna. 4 faixas: 2 veículos + 2 ônibus BRT.',homenageado:'Manuel Dias Branco (1900–1989), fundador do Grupo M. Dias Branco — maior produtor de biscoitos e massas da América Latina.',fonte:'MAPP-FOR id_mappfor_2417 · Governo CE (12/2018) · FAM Steel',eng:{gabarito:'5,5 m',fps:2,ciclo:'Ciclofaixa no canteiro',drenTipo:'Gravidade',drenSis:'Superficial',drenSpec:'Sarjetas em aço galvanizado, descida d\'água a cada pilar. TR25 (110 mm/h Fortaleza).',fundTipo:'Estacas Cravadas de Concreto',fundProf:'~14 m',fundObs:'Estacas pré-moldadas ø35 cm por percussão. Cap. 80 t/estaca. Solo aterro controlado; areia média abaixo de 8 m.',isTunel:false}},
+  {id:'id_mappfor_2547',tipo:'viaduto',estagio:'FINALIZADO',nome:'Viaduto Raul Barbosa × Murilo Borges',vulgo:'Viaduto da Raul Barbosa / Aeroporto',lat:-3.764022650570293,lng:-38.50866277119445,extensaoNum:350,extensao:'~350 m + rotatória',custoRaw:31000000,custoTexto:'R$ 31 M (CEF)',construtora:'Prefeitura / SEINF (CEF)',inicio:'05/05/2015',inauguracao:'31/12/2017',bairro:'Papicu / SER II',metodo:'CA com vigas pré-moldadas protendidas, rotatória integrada e alargamento da ponte sobre o canal do Lagamar. Ciclofaixas, LED, faixa exclusiva para ônibus.',homenageado:'Raul Barbosa (1893–1976), jornalista e membro fundador da Academia Cearense de Letras. Av. com 76 mil veículos/dia.',fonte:'MAPP-FOR id_mappfor_2547 · SEINF · Etufor (2017)',eng:{gabarito:'5,0 m',fps:2,ciclo:'Ciclofaixa',drenTipo:'Gravidade',drenSis:'Superficial + galeria',drenSpec:'Sarjetas com boca-de-lobo a cada 30 m. Ligação à galeria canal do Lagamar (1,0×1,2 m). TR25.',fundTipo:'Estacas Hélice Contínua',fundProf:'~16 m',fundObs:'Proximidade com canal — verificação para carga lateral. Estacas ø50 cm. Vinculação ao alargamento existente.',isTunel:false}},
+  {id:'id_mappfor_3804',tipo:'viaduto',estagio:'FINALIZADO',nome:'Viaduto do Makro (Alberto Craveiro × BR-116)',vulgo:'Viaduto do Makro',lat:-3.7795852594259065,lng:-38.51507145158997,extensaoNum:420,extensao:'~420 m (pós-duplicação)',custoRaw:20000000,custoTexto:'R$ 20 M (CEF — duplicação)',construtora:'Prefeitura / SEINF (CEF)',inicio:'01/03/2019',inauguracao:'03/10/2020',bairro:'Dias Macedo / SER VI',metodo:'Duplicação: de 4 para 8 faixas com ciclofaixa bidirecional 8,5 km. Drenagem profunda no Riacho Uirapuru. 4 fases sem bloqueio total.',homenageado:'Popular "Viaduto do Makro". Av. Alberto Craveiro: maior fluxo municipal (76 mil veíc./dia).',fonte:'MAPP-FOR id_mappfor_3804 · O Povo (05/2019) · SEINF',eng:{gabarito:'5,5 m',fps:4,ciclo:'Ciclofaixa bidirecional 8,5 km',drenTipo:'Gravidade + Bombeamento',drenSis:'Misto',drenSpec:'Galeria retangular 2,0×1,8 m (L=380 m) no Riacho Uirapuru. Poço + bomba Q=160 L/s.',fundTipo:'Estacas Raiz (nova estrutura)',fundProf:'~18 m',fundObs:'Estacas raiz ø30 cm para estrutura duplicada. Original: tubulões. Verificação de recalques diferenciais.',isTunel:false}},
+  {id:'id_mappfor_5533',tipo:'viaduto',estagio:'FINALIZADO',nome:'Viaduto Cel. Matos Dourado × Mister Hull',vulgo:'Viaduto do Antônio Bezerra',lat:-3.738828099685918,lng:-38.5852463994751,extensaoNum:180,extensao:'~180 m',custoRaw:null,custoTexto:'Parte do pacote R$ 27,3 M (36 OAEs)',construtora:'Prefeitura (original c.1999); recuperação: SEINF 2020',inicio:'01/10/2020',inauguracao:'30/05/2021',bairro:'Antônio Bezerra / SER V',metodo:'Estrutura histórica c.1999. Recuperação 2020–2021: concreto, juntas, guarda-corpo, anticorrosiva, repavimentação.',homenageado:'Coronel Matos Dourado, militar cearense. Complexo viário histórico da gestão Juraci Magalhães (anos 1990).',fonte:'MAPP-FOR id_mappfor_5533 · SEINF · O Estado CE (01/2021)',eng:{gabarito:'4,8 m',fps:2,ciclo:'Calçada lateral',drenTipo:'Gravidade',drenSis:'Superficial',drenSpec:'Sarjetas originais substituídas em alumínio. Bocas-de-lobo a cada 25 m. Descida PVC reforçado.',fundTipo:'Tubulões a Céu Aberto',fundProf:'~12 m',fundObs:'Tubulões ø80 cm, fck 20 MPa. Inspeção subaquática 2020 — sem anomalias.',isTunel:false}},
+  {id:'id_mappfor_5972',tipo:'viaduto',estagio:'FINALIZADO',nome:'Viaduto Dep. Estadual João Frederico',vulgo:'Viaduto João Frederico / Mister Hull',lat:-3.7404535,lng:-38.585343,extensaoNum:120,extensao:'~120 m',custoRaw:null,custoTexto:'Dado não disponível',construtora:'Prefeitura de Fortaleza / SEINF',inicio:'01/06/2022',inauguracao:'03/10/2023',bairro:'Antônio Bezerra / SER V',metodo:'CA com vigas pré-moldadas protendidas e fundações em tubulões. Estrutura de pequeno porte na via local da Av. Mister Hull.',homenageado:'João Frederico, deputado estadual cearense pela Alece, representante da zona oeste de Fortaleza.',fonte:'MAPP-FOR id_mappfor_5972 · SEINF',eng:{gabarito:'4,5 m',fps:1,ciclo:'Passeio',drenTipo:'Gravidade',drenSis:'Simples',drenSpec:'Sarjetas laterais com descida PVC. Ligação à boca-de-lobo na pista de nível.',fundTipo:'Tubulões a Céu Aberto',fundProf:'~10 m',fundObs:'Solo argiloso médio, SPT 8–12. Tubulões ø80 cm escavados a seco. Cap. 65 t/tubulão.',isTunel:false}},
+  {id:'id_mappfor_5855',tipo:'viaduto',estagio:'FINALIZADO',nome:'Viaduto Alm. Sabóia × Prof. Silas Ribeiro',vulgo:'Viaduto da Sabóia / Via Expressa Norte',lat:-3.7363841580030472,lng:-38.48478787042236,extensaoNum:150,extensao:'~150 m',custoRaw:null,custoTexto:'Parte do programa de manutenção de OAEs',construtora:'Prefeitura / SEINF (reforma 2022)',inicio:'22/03/2022',inauguracao:'30/12/2022',bairro:'Papicu / SER II',metodo:'Vigas pré-moldadas protendidas. Reforma 2022: pavimentação, guarda-corpo, LED e calçadas.',homenageado:'Almirante Henrique Sabóia (1858–1939), oficial da Marinha e governador do Ceará (1904–1906).',fonte:'MAPP-FOR id_mappfor_5855 · SEINF',eng:{gabarito:'5,0 m',fps:2,ciclo:'Ciclofaixa',drenTipo:'Gravidade',drenSis:'Superficial',drenSpec:'Sarjetas moldadas in loco. Grelha metálica nos vãos. Escoamento para via de nível inferior.',fundTipo:'Estacas Hélice Contínua',fundProf:'~14 m',fundObs:'Capacidade residual suficiente para 20+ anos (laudo 2022). Sem reforço de fundações.',isTunel:false}},
+  {id:'id_mappfor_3899',tipo:'viaduto',estagio:'FINALIZADO',nome:'Viaduto do Mercado Central',vulgo:'Viaduto da Av. Leste-Oeste / Centro',lat:-3.722550366939784,lng:-38.52378415581973,extensaoNum:280,extensao:'~280 m',custoRaw:null,custoTexto:'Parte do pacote R$ 27,3 M (OAEs 2020)',construtora:'Prefeitura / SEINF (restauro 2019–2020)',inicio:'20/10/2019',inauguracao:'06/09/2020',bairro:'Centro / SER I',metodo:'Vigas pré-moldadas sobre malha ferroviária histórica do Centro. Restauro 2019–2020: concreto, juntas, guarda-corpo e sinalização.',homenageado:'Mercado Central de Fortaleza (1897) — maior mercado de artesanato do Ceará, 600+ boxes.',fonte:'MAPP-FOR id_mappfor_3899 · SEINF · O Estado CE (01/2021)',eng:{gabarito:'4,8 m',fps:2,ciclo:'Calçada',drenTipo:'Gravidade',drenSis:'Restaurado',drenSpec:'Recomposição de sarjetas em concreto. BDL moldada in loco a cada 20 m.',fundTipo:'Sapata Isolada + Tubulões',fundProf:'~8 m',fundObs:'Solo areno-argiloso compacto do Centro. Fundações adequadas para carga permanente.',isTunel:false}},
+  {id:'id_mappfor_5291',tipo:'viaduto',estagio:'FINALIZADO',nome:'Viaduto Santos Dumont × Santana Júnior',vulgo:'Viaduto da Santos Dumont / Santana Jr.',lat:-3.7404645950591853,lng:-38.48514331481933,extensaoNum:200,extensao:'~200 m',custoRaw:null,custoTexto:'Parte do pacote R$ 27,3 M (OAEs 2020)',construtora:'Prefeitura / SEINF (reparação 2020)',inicio:'01/08/2020',inauguracao:'01/10/2020',bairro:'Meireles / SER II',metodo:'Vigas pré-moldadas protendidas. Reparação 2020: pilares, juntas, guarda-corpo e repavimentação.',homenageado:'Alberto Santos Dumont (1873–1932), Patrono da Força Aérea Brasileira. Corredor para o Aeroporto Internacional Pinto Martins.',fonte:'MAPP-FOR id_mappfor_5291 · SEINF · O Estado CE (01/2021)',eng:{gabarito:'4,5 m',fps:2,ciclo:'Passeio lateral',drenTipo:'Gravidade',drenSis:'Superficial',drenSpec:'Sarjetas recompostas. Descida em calha de aço galvanizado nos pilares.',fundTipo:'Estacas Cravadas de Concreto',fundProf:'~14 m',fundObs:'Estacas ø35 cm. Prova de carga 2020 (2 estacas) — sem anomalias.',isTunel:false}},
+  {id:'id_mappfor_169',tipo:'viaduto',estagio:'A INICIAR',nome:'TRANSFOR — Corredor I (Viaduto previsto)',vulgo:'Viaduto do TRANSFOR / BRT Corredor I',lat:-3.7492991580634,lng:-38.49022209246823,extensaoNum:200,extensao:'A definir',custoRaw:null,custoTexto:'A definir',construtora:'A definir (TRANSFOR / Prefeitura)',inicio:'A definir (2026)',inauguracao:'Previsão 2026–2027',bairro:'Papicu / SER II',metodo:'Obra estruturante do programa TRANSFOR. Tipo, projeto e construtora a definir. Dependente de operações de crédito.',homenageado:'Programa TRANSFOR — Transformação do Transporte de Fortaleza. Prefeito Evandro Leitão anunciou 3 novas obras em 2026.',fonte:'MAPP-FOR id_mappfor_169 · Diário do Nordeste (12/2025)',eng:{gabarito:'A definir',fps:2,ciclo:'Previsto',drenTipo:'A definir',drenSis:'—',drenSpec:'Projeto de drenagem ainda não concluído.',fundTipo:'A definir',fundProf:'A definir',fundObs:'Sondagem preliminar em andamento. Solo referência: areno-argiloso, SPT~12.',isTunel:false}},
+  {id:'id_mappfor_7626',tipo:'ponte',estagio:'EM EXECUÇÃO',nome:'Ponte na Rua Manaus',vulgo:'Ponte da Rua Manaus / Barra do Ceará',lat:-3.7491601,lng:-38.5887656,extensaoNum:40,extensao:'A definir',custoRaw:null,custoTexto:'Dado não disponível',construtora:'Prefeitura / SEINF',inicio:'15/11/2023',inauguracao:'Previsão: 12/2024',bairro:'Barra do Ceará / SER XI',metodo:'Ponte local em CA sobre canal no bairro Barra do Ceará. Vigas pré-moldadas e fundações em estacas.',homenageado:'A Barra do Ceará é o Marco Zero histórico de Fortaleza (fundada 1604), onde o Rio Ceará encontra o Atlântico.',fonte:'MAPP-FOR id_mappfor_7626 · SEINF',eng:{gabarito:'3,5 m (est.)',fps:1,ciclo:'Não previsto',drenTipo:'Gravidade (curso d\'água)',drenSis:'Livre',drenSpec:'Seção do canal mantida. Gabarito hidráulico verificado para Q TR25.',fundTipo:'Estacas Hélice Contínua',fundProf:'~12 m',fundObs:'Solo de várzea — areia fina saturada. Estacas em grupo de 2 por pilar. Enrocamento anti-erosão.',isTunel:false}},
+  {id:'id_mappfor_3900',tipo:'ponte',estagio:'FINALIZADO',nome:'Ponte José Martins Rodrigues',vulgo:'Ponte da Barra / Ponte sobre o Rio Ceará',lat:-3.6998743445272466,lng:-38.58800160405429,extensaoNum:634,extensao:'633,75 m (largura 20,2 m)',custoRaw:17000000,custoTexto:'R$ 17 M (1997)',construtora:'Prefeitura Fortaleza + Caucaia (CHC); reforma: SEINF',inicio:'1995',inauguracao:'11/10/1997 (iluminação RGB: 06/06/2024)',bairro:'Barra do Ceará / SER XI',metodo:'29 vãos de 21,8 m em vigas protendidas pré-moldadas. Pilares duplos. Pista dupla 20,2 m. Reforma 2024: 120 projetores RGB + ciclofaixa.',homenageado:'José Martins Rodrigues (1929–1993), advogado, professor da UFC e defensor dos direitos humanos. Eleita o local mais representativo de Fortaleza em 2014 (70% dos votos).',fonte:'MAPP-FOR id_mappfor_3900 · Diário do Nordeste (10/2022) · URB News (06/2024)',eng:{gabarito:'5,5 m (nav. fluvial)',fps:2,ciclo:'Ciclofaixa (2024)',drenTipo:'Gravidade (tabuleiro)',drenSis:'Transversal',drenSpec:'Bocas-de-lobo a cada 10 m lançando no Rio Ceará. Sarjetas aço galvanizado.',fundTipo:'Tubulões a Céu Aberto',fundProf:'~15 m',fundObs:'Tubulões ø80 cm no leito do rio. Enrocamento granítico anti-erosão por pilar. Inspeção subaquática a cada 5 anos.',isTunel:false}},
+  {id:'id_mappfor_5854',tipo:'ponte',estagio:'EM EXECUÇÃO',nome:'Ponte dos Ingleses (Restauro)',vulgo:'Ponte Metálica / Pier da Praia de Iracema',lat:-3.7190168,lng:-38.5145028,extensaoNum:130,extensao:'130 m (projeto original: 800 m)',custoRaw:8000000,custoTexto:'R$ 8 M (restauro 2020–2024)',construtora:'Norton Griffts Co. (1920); restauro: SEINF',inicio:'16/11/2020 (restauro)',inauguracao:'25/08/2024 (reabertura)',bairro:'Praia de Iracema / SER I',metodo:'Estrutura histórica mista: pilares CA + superestrutura aço (Norton Griffts Co., 1920). Restauro 2020–2024: elétrica, postes, pilares madeira, vidro no guarda-corpo.',homenageado:'Projetada em 1920 pela empresa inglesa Norton Griffts Co. Tombada em 1989. Tornou-se o cartão postal boêmio mais icônico de Fortaleza.',fonte:'MAPP-FOR id_mappfor_5854 · Wikipedia · JP Turismo (08/2024) · iPatrimônio.org',eng:{gabarito:'3,0 m (pedonal)',fps:0,ciclo:'Apenas pedestres',drenTipo:'Gravidade (marinha)',drenSis:'Livre para o mar',drenSpec:'Agressividade ZA4 (NBR 6118). Pintura epóxi + poliuretano nos elementos metálicos. Inspeção anual.',fundTipo:'Pilares CA Originais (1920)',fundProf:'~5 m',fundObs:'Pilares 1920 reforçados em 2020. Corrosão por cloretos tratada com ICM (Inibidor por Migração).',isTunel:false}}
+];
+
+// ─── MAPA ─────────────────────────────────────────────────────────────
+document.getElementById('count-t').textContent=dados.filter(d=>d.tipo==='tunel').length;
+document.getElementById('count-v').textContent=dados.filter(d=>d.tipo==='viaduto').length;
+document.getElementById('count-p').textContent=dados.filter(d=>d.tipo==='ponte').length;
+
+const map=L.map('map-container',{zoomControl:false}).setView([-3.745,-38.52],12);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© CartoDB'}).addTo(map);
+L.control.zoom({position:'topright'}).addTo(map);
+let mg=L.layerGroup().addTo(map);
+function mkIcon(d){
+  let c=COR[d.tipo];
+  if(d.estagio==='EM EXECUÇÃO') c='#7c3aed';
+  if(d.estagio==='A INICIAR') c='#64748b';
+  const o=d.estagio!=='FINALIZADO'?.65:1;
+  return L.divIcon({className:'oae-pin',html:`<div style="width:16px;height:16px;border-radius:50%;background:${c};border:2.5px solid rgba(255,255,255,.88);box-shadow:0 2px 8px rgba(0,0,0,.25);opacity:${o}"></div>`,iconSize:[16,16],iconAnchor:[8,8]});
+}
+function renderMapa(f='todos'){
+  mg.clearLayers();
+  dados.forEach(d=>{
+    if(f!=='todos'&&d.tipo!==f) return;
+    L.marker([d.lat,d.lng],{icon:mkIcon(d)}).on('click',()=>{abrirPainel(d);map.setView([d.lat,d.lng],15,{animate:true});}).addTo(mg);
+  });
+}
+
+// ─── CARDS ────────────────────────────────────────────────────────────
+function renderCards(f='todos'){
+  const g=document.getElementById('cards-grid'); g.innerHTML='';
+  dados.filter(d=>f==='todos'||d.tipo===f).forEach(d=>{
+    const c2=calcCO2(d);
+    const fim=d.inauguracao.length>16?d.inauguracao.substring(0,10)+'…':d.inauguracao;
+    const el=document.createElement('div'); el.className=`card ${d.tipo}`;
+    el.innerHTML=`
+      <div class="card-badges"><span class="badge ${d.tipo}">${TL[d.tipo]}</span><span class="badge ${SC[d.estagio]||'s-pend'}">${SL[d.estagio]||d.estagio}</span></div>
+      <h3>${d.nome}</h3><p class="card-vulgo">${d.vulgo}</p>
+      <div class="card-meta">
+        <div class="meta-item"><span class="lbl">Extensão</span><span class="val">${d.extensao.split('(')[0].trim()}</span></div>
+        <div class="meta-item"><span class="lbl">Inauguração</span><span class="val">${fim}</span></div>
+      </div>
+      <div class="card-co2"><span style="font-size:11px">🌿</span><span class="co2v">~${c2.tot<1000?c2.tot.toFixed(0):(c2.tot/1000).toFixed(1)+'k'} tCO₂e</span><span class="co2c cls${c2.cls}">${c2.cls} — ${c2.clt}</span></div>
+      <div class="card-arrow">→</div>`;
+    el.addEventListener('click',()=>{abrirPainel(d);document.getElementById('mapa').scrollIntoView({behavior:'smooth'});setTimeout(()=>map.setView([d.lat,d.lng],15,{animate:true}),350);});
+    g.appendChild(el);
+  });
+}
+
+// ─── ANÁLISE GLOBAL — Chart.js com responsive:false ──────────────────
+// Lemos as dimensões reais do wrapper ANTES de criar os charts
+function makeGlobalCharts(){
+  const allC  = dados.map(d=>calcCO2(d));
+  const names = dados.map(d=>d.nome.replace(/Túnel |Viaduto |Ponte /,'').substring(0,14));
+  const tipC  = dados.map(d=>COR[d.tipo]+'cc');
+
+  // Pega a largura real de um wrapper (todos iguais na grid)
+  const W = document.querySelector('.canvas-wrap').clientWidth || 500;
+  const H = 240;
+
+  function setSize(id){ const c=document.getElementById(id); c.width=W; c.height=H; c.style.width=W+'px'; c.style.height=H+'px'; }
+  ['ch-co2','ch-cost','ch-tipo','ch-conc'].forEach(setSize);
+
+  const BASE_OPT = {
+    ...CH_DEFAULTS,
+    plugins: {
+      ...CH_DEFAULTS.plugins,
+      legend: { display: false }
+    }
+  };
+
+  // 1 — CO2 por obra
+  new Chart(document.getElementById('ch-co2'),{
+    type:'bar',
+    data:{labels:names, datasets:[{data:allC.map(c=>+(c.tot/1000).toFixed(1)), backgroundColor:tipC, borderRadius:4}]},
+    options:{...BASE_OPT, plugins:{...BASE_OPT.plugins, tooltip:{...CH_DEFAULTS.plugins.tooltip, callbacks:{label:c=>' '+c.raw+' ktCO₂e'}}}, scales:{...CH_DEFAULTS.scales, y:{...CH_DEFAULTS.scales.y, ticks:{...CH_DEFAULTS.scales.y.ticks, callback:v=>v+'k t'}}}}
+  });
+
+  // 2 — custo/m por obra
+  const cdata = dados.map(d=>{ const cm=custoM(d); return{v:+(cm.v/1000).toFixed(1), real:cm.real}; });
+  new Chart(document.getElementById('ch-cost'),{
+    type:'bar',
+    data:{labels:names, datasets:[
+      {label:'Real',    data:cdata.map(c=>c.real?c.v:null), backgroundColor:'rgba(24,20,12,.8)',  borderRadius:4},
+      {label:'Est. ★',  data:cdata.map(c=>!c.real?c.v:null), backgroundColor:'rgba(158,144,120,.45)', borderRadius:4}
+    ]},
+    options:{...BASE_OPT, plugins:{...BASE_OPT.plugins, legend:{display:true,labels:{font:{family:'DM Sans',size:9},color:'#9e9078',boxWidth:10}}, tooltip:{...CH_DEFAULTS.plugins.tooltip, callbacks:{label:c=>' R$ '+c.raw+'k/m'}}}, scales:{...CH_DEFAULTS.scales, y:{...CH_DEFAULTS.scales.y, ticks:{...CH_DEFAULTS.scales.y.ticks, callback:v=>'R$'+v+'k'}}}}
+  });
+
+  // 3 — CO2 médio por tipo (doughnut)
+  const tipos=['tunel','viaduto','ponte'];
+  const medT=tipos.map(t=>{const a=dados.filter(d=>d.tipo===t).map(d=>calcCO2(d).tot/1000);return a.length?+(a.reduce((s,v)=>s+v,0)/a.length).toFixed(1):0;});
+  new Chart(document.getElementById('ch-tipo'),{
+    type:'doughnut',
+    data:{labels:['Túnel','Viaduto','Ponte'],datasets:[{data:medT,backgroundColor:[COR.tunel+'cc',COR.viaduto+'cc',COR.ponte+'cc'],borderWidth:0,hoverOffset:8}]},
+    options:{responsive:false, animation:false, plugins:{legend:{display:true,position:'bottom',labels:{font:{family:'DM Sans',size:10},color:'#5a4e38',padding:10}},tooltip:{...CH_DEFAULTS.plugins.tooltip,callbacks:{label:c=>' '+c.raw+' ktCO₂e (média)'}}}}
+  });
+
+  // 4 — concreto por obra
+  new Chart(document.getElementById('ch-conc'),{
+    type:'bar',
+    data:{labels:names, datasets:[{data:allC.map(c=>+c.cv.toFixed(0)), backgroundColor:tipC, borderRadius:4}]},
+    options:{...BASE_OPT, plugins:{...BASE_OPT.plugins, tooltip:{...CH_DEFAULTS.plugins.tooltip, callbacks:{label:c=>' '+c.raw.toLocaleString('pt-BR')+' m³'}}}, scales:{...CH_DEFAULTS.scales, y:{...CH_DEFAULTS.scales.y, ticks:{...CH_DEFAULTS.scales.y.ticks, callback:v=>v.toLocaleString('pt-BR')}}}}
+  });
+
+  // KPIs
+  const totCO2=allC.reduce((s,c)=>s+c.tot,0);
+  const totConc=allC.reduce((s,c)=>s+c.cv,0);
+  const totAco=allC.reduce((s,c)=>s+c.am,0)/1000;
+  const comC=dados.filter(d=>d.custoRaw);
+  const medCm=comC.length?comC.reduce((s,d)=>s+d.custoRaw/d.extensaoNum,0)/comC.length:0;
+  const totExt=dados.reduce((s,d)=>s+(d.extensaoNum||0),0)/1000;
+  document.getElementById('analise-kpis').innerHTML=`
+    <div class="kpi-s"><span class="lbl">CO₂e Total Est.</span><span class="num">${(totCO2/1000).toFixed(0)}<span class="unit"> ktCO₂e</span></span></div>
+    <div class="kpi-s"><span class="lbl">Concreto C35 Est.</span><span class="num">${(totConc/1000).toFixed(0)}<span class="unit"> mil m³</span></span></div>
+    <div class="kpi-s"><span class="lbl">Aço CA-50 Est.</span><span class="num">${totAco.toFixed(0)}<span class="unit"> ton</span></span></div>
+    <div class="kpi-s"><span class="lbl">Custo Médio/m (real)</span><span class="num">${medCm?'R$ '+(medCm/1000).toFixed(0)+'k':'N/D'}<span class="unit">/m</span></span></div>
+    <div class="kpi-s"><span class="lbl">Obras com custo real</span><span class="num">${comC.length}<span class="unit"> / ${dados.length}</span></span></div>
+    <div class="kpi-s"><span class="lbl">Extensão total catálogo</span><span class="num">${totExt.toFixed(2)}<span class="unit"> km</span></span></div>`;
+  document.getElementById('analise-nota').textContent=`Análise de ${dados.length} obras (${totExt.toFixed(2)} km). CO₂e: ICE v3 + SIDERC (±20–30%). ${comC.length} obras com custo real isolado; demais com média SEINFRA-CE (★). Tipos: ${dados.filter(d=>d.tipo==='tunel').length} túneis · ${dados.filter(d=>d.tipo==='viaduto').length} viadutos · ${dados.filter(d=>d.tipo==='ponte').length} pontes.`;
+}
+
+// ─── SIDE PANEL ───────────────────────────────────────────────────────
+let spChartInst = null;
+let currentData = null;
+
+function buildSpChart(d){
+  // Destrói instância anterior
+  if(spChartInst){ spChartInst.destroy(); spChartInst=null; }
+
+  const cv = document.getElementById('sp-chart');
+  // Dimensões já fixadas no HTML (width=490 height=155)
+  const ref=BENCH[d.tipo], cm=custoM(d);
+  const labels=['Mínimo','Esta Obra','Média','Máximo'];
+  const vals=[ref.min/1000, cm.v/1000, ref.med/1000, ref.max/1000];
+  const bgs=['rgba(158,144,120,.25)', cm.real?COR[d.tipo]+'dd':'rgba(158,144,120,.55)', 'rgba(158,144,120,.25)', 'rgba(158,144,120,.25)'];
+
+  spChartInst = new Chart(cv,{
+    type:'bar',
+    data:{labels, datasets:[{data:vals, backgroundColor:bgs, borderRadius:5, borderWidth:0}]},
+    options:{
+      responsive: false,   // ← CHAVE: sem ResizeObserver
+      animation: false,    // ← CHAVE: sem requestAnimationFrame loop
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'rgba(24,20,12,.88)',
+          titleFont:{family:'DM Sans',size:11,weight:'700'},
+          bodyFont:{family:'DM Sans',size:11},
+          padding:10, cornerRadius:8,
+          callbacks:{label:c=>' R$ '+c.raw+'k/m'}
+        }
+      },
+      scales:{
+        x:{grid:{display:false}, ticks:{font:{family:'DM Sans',size:9},color:'#9e9078'}},
+        y:{grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{family:'DM Sans',size:9},color:'#9e9078',callback:v=>'R$'+v+'k'}}
+      }
+    }
+  });
+}
+
+window.abrirPainel = function(d){
+  currentData=d;
+  const c2=calcCO2(d), e=d.eng;
+
+  // FICHA
+  document.getElementById('sp-badges').innerHTML=`<span class="badge ${d.tipo}">${TL[d.tipo]}</span><span class="badge ${SC[d.estagio]||'s-pend'}">${SL[d.estagio]||d.estagio}</span>`;
+  document.getElementById('sp-name').textContent=d.nome;
+  document.getElementById('sp-vulgo').textContent=d.vulgo?'Conhecido como: '+d.vulgo:'—';
+  document.getElementById('sp-dates').innerHTML=`<div class="date-pill"><span class="lbl">Início das obras</span><span class="val">${d.inicio}</span></div><div class="date-pill"><span class="lbl">Inauguração / Conclusão</span><span class="val">${d.inauguracao}</span></div>`;
+  document.getElementById('sp-metodo').textContent=d.metodo;
+  document.getElementById('sp-ext').textContent=d.extensao;
+  document.getElementById('sp-const').textContent=d.construtora;
+  document.getElementById('sp-custo').textContent=d.custoTexto;
+  document.getElementById('sp-bairro').textContent=d.bairro;
+  document.getElementById('sp-mappid').textContent=d.id;
+  document.getElementById('sp-homen').textContent=d.homenageado;
+  document.getElementById('sp-fonte').innerHTML='<strong>Fonte:</strong> '+d.fonte;
+
+  // ENG
+  document.getElementById('eg-gab').textContent=e.gabarito;
+  document.getElementById('eg-fxt').textContent=e.fps>0?e.fps+' por sentido':'Pedonal';
+  document.getElementById('eg-ftot').textContent=e.fps>0?(e.fps*2)+' faixas totais':'—';
+  document.getElementById('eg-ciclo').textContent=e.ciclo;
+  const fv=document.getElementById('eg-fxv'); fv.innerHTML='';
+  if(e.fps>0){for(let i=0;i<e.fps;i++){const s=document.createElement('div');s.className='fx veh';fv.appendChild(s);}const sp=document.createElement('div');sp.className='fx sep';fv.appendChild(sp);for(let i=0;i<e.fps;i++){const s=document.createElement('div');s.className='fx veh';fv.appendChild(s);}}
+  document.getElementById('eg-drt').textContent=e.drenTipo;
+  document.getElementById('eg-drs').textContent=e.drenSis;
+  document.getElementById('eg-drsp').textContent=e.drenSpec;
+  document.getElementById('eg-fund-title').textContent=e.isTunel?'Contenção do Terreno':'Tipo de Fundação';
+  document.getElementById('eg-fp').textContent=e.fundProf;
+  document.getElementById('eg-fo').textContent=e.fundObs;
+  const fc=FUND_C[e.fundTipo]||'#f8fafc:#64748b'; const [fbg,fcol]=fc.split(':');
+  document.getElementById('eg-fund-tag').innerHTML=`<span class="fund-tag" style="background:${fbg};color:${fcol};border-color:${fcol}22">${e.fundTipo}</span>`;
+
+  // CO2
+  const hc=c2.css==='g'?'low':c2.css==='o'?'med':'high';
+  document.getElementById('co2-hero-wrap').innerHTML=`<div class="co2-hero-box ${hc}"><div><span class="co2-num ${c2.css}">${c2.tot<1000?c2.tot.toFixed(0):(c2.tot/1000).toFixed(1)+'k'}</span><div class="co2-sub">tCO₂e — Classe ${c2.cls} (${c2.clt})</div></div><div style="font-size:1.8rem">🌿</div></div>`;
+  document.getElementById('co2-bk').innerHTML=`
+    <div class="co2-item"><span class="ico">🏗️</span><span class="lbl">Concreto</span><span class="val">${c2.cc.toFixed(0)} t</span></div>
+    <div class="co2-item"><span class="ico">⚙️</span><span class="lbl">Aço CA-50</span><span class="val">${c2.ca.toFixed(0)} t</span></div>
+    <div class="co2-item"><span class="ico">🛣️</span><span class="lbl">Pavimento</span><span class="val">${c2.cp.toFixed(0)} t</span></div>
+    <div class="co2-item"><span class="ico">🔧</span><span class="lbl">Construção</span><span class="val">${c2.cx.toFixed(0)} t</span></div>
+    <div class="co2-item"><span class="ico">📐</span><span class="lbl">CO₂e/metro</span><span class="val">${(c2.tot*1000/d.extensaoNum).toFixed(0)} kg</span></div>
+    <div class="co2-item"><span class="ico">🏭</span><span class="lbl">Concreto tot.</span><span class="val">${c2.cv.toFixed(0)} m³</span></div>`;
+  document.getElementById('co2-cv').textContent=c2.cv.toLocaleString('pt-BR')+' m³';
+  document.getElementById('co2-am').textContent=(c2.am/1000).toFixed(1)+' ton';
+  document.getElementById('co2-coef').textContent=c2.cm3pm+' m³/m ('+TL[d.tipo]+')';
+  document.getElementById('co2-ext').textContent=d.extensaoNum+' m';
+  const tk=c2.tot*1000;
+  document.getElementById('co2-equiv').innerHTML=`
+    <div class="equiv-item"><span class="ico">✈️</span>${Math.round(tk/255).toLocaleString('pt-BR')} voos Fortaleza–São Paulo (ida)</div>
+    <div class="equiv-item"><span class="ico">🚗</span>${Math.round(tk/0.21/1000).toLocaleString('pt-BR')} mil km de carro a gasolina</div>
+    <div class="equiv-item"><span class="ico">🌳</span>${Math.round(tk/22).toLocaleString('pt-BR')} árvores durante 1 ano para compensar</div>
+    <div class="equiv-item"><span class="ico">🏠</span>${Math.round(tk/1500)} residências brasileiras / ano</div>`;
+
+  // BENCHMARK
+  const cm=custoM(d), ref=BENCH[d.tipo];
+  document.getElementById('bench-kpis').innerHTML=`
+    <div class="bkpi ${cm.real?'hl':''}"><span class="lbl">Custo/m ${cm.real?'(real)':'(estimado)'}</span><span class="val">R$ ${(cm.v/1000).toFixed(0)}k</span><span class="unit">/metro linear</span></div>
+    <div class="bkpi"><span class="lbl">Média do segmento</span><span class="val">R$ ${(ref.med/1000).toFixed(0)}k</span><span class="unit">/metro linear</span></div>
+    <div class="bkpi"><span class="lbl">Faixa de mercado</span><span class="val">R$ ${(ref.min/1000).toFixed(0)}–${(ref.max/1000).toFixed(0)}k</span><span class="unit">/m</span></div>`;
+  document.getElementById('bench-note').textContent=cm.real
+    ?'Valor calculado com custo real ÷ extensão catalogada.'
+    :'⚠️ Custo real não disponível — exibida a média SEINFRA-CE / SINAPI 2024 como estimativa.';
+
+  const maxConc=MAT.tunel.cm*d.extensaoNum, maxAco=MAT.tunel.am*d.extensaoNum;
+  document.getElementById('mat-grid').innerHTML=`
+    <div class="mat-box"><span class="lbl">Concreto C35 (est.)</span><span class="val">${c2.cv.toLocaleString('pt-BR')} <span class="unit">m³</span></span><div class="mat-bar"><div class="mat-fill" style="width:${Math.min(100,c2.cv/maxConc*100).toFixed(0)}%;background:#1d4ed8"></div></div></div>
+    <div class="mat-box"><span class="lbl">Aço CA-50 (est.)</span><span class="val">${(c2.am/1000).toFixed(1)} <span class="unit">ton</span></span><div class="mat-bar"><div class="mat-fill" style="width:${Math.min(100,c2.am/maxAco*100).toFixed(0)}%;background:#b45309"></div></div></div>
+    <div class="mat-box"><span class="lbl">Coef. concreto</span><span class="val">${c2.cm3pm} <span class="unit">m³/m</span></span></div>
+    <div class="mat-box"><span class="lbl">Coef. aço</span><span class="val">${c2.akgpm} <span class="unit">kg/m</span></span></div>`;
+
+  switchTab('ficha');
+  document.getElementById('side-panel').classList.add('open');
+  document.getElementById('overlay').classList.add('visible');
+};
+
+window.fecharPainel=function(){
+  document.getElementById('side-panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('visible');
+};
+
+function switchTab(n){
+  document.querySelectorAll('.sp-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===n));
+  document.querySelectorAll('.sp-pane').forEach(p=>p.classList.toggle('active',p.id==='pane-'+n));
+  // Chart do benchmark: criado SOMENTE quando a aba fica visível e há dados
+  if(n==='bench' && currentData) buildSpChart(currentData);
+}
+document.querySelectorAll('.sp-tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+document.querySelectorAll('.btn-filtro').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.btn-filtro').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMapa(btn.dataset.filtro);
+  renderCards(btn.dataset.filtro);
+}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharPainel();});
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+renderMapa();
+renderCards();
+// Aguarda o layout estar pronto (clientWidth disponível) antes de criar os charts globais
+requestAnimationFrame(()=>requestAnimationFrame(makeGlobalCharts));
+
+console.log(`✅ Fortaleza Sub & Via v6 — ${dados.filter(d=>d.tipo==='tunel').length}T · ${dados.filter(d=>d.tipo==='viaduto').length}V · ${dados.filter(d=>d.tipo==='ponte').length}P — Chart.js responsive:false, sem loop`);
+</script>
 </body>
 </html>
