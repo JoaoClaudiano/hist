@@ -22,7 +22,7 @@
   /* ── Links de navegação por contexto ── */
   function buildNavLinks() {
     if (isIndex) {
-      return `<a href="#mapa">Mapa</a><a href="#acervo">Acervo</a><a href="#analise">Análise</a><a href="${root}panorama.html">Panorama</a><a href="${root}metodologia.html">Metodologia</a>`;
+      return `<a href="#mapa">Mapa</a><a href="#acervo">Acervo</a><a href="#analise">Análise</a>`;
     }
     return [
       navLink('panorama.html', 'Panorama'),
