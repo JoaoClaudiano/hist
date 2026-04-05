@@ -2,7 +2,7 @@
    BUILD_ID é substituído automaticamente pelo GitHub Actions em cada push.
    Para atualizar manualmente, altere BUILD_ID abaixo. */
 
-const BUILD_ID = 'fsv-build-392fad0';
+const BUILD_ID = 'fsv-build-814845d';
 const CACHE_NAME = `fsv-${BUILD_ID}`;
 
 // Assets to precache (adjust if paths differ)
