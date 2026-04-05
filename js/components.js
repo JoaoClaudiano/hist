@@ -145,11 +145,20 @@
   }
 
   /* ── Botão Voltar ao Topo ── */
-  const btnTop = document.getElementById('back-to-top');
-  if (btnTop) {
+  let btnTop = document.getElementById('back-to-top');
+  if (!btnTop) {
+    btnTop = document.createElement('button');
+    btnTop.id = 'back-to-top';
+    btnTop.title = 'Voltar ao topo';
+    btnTop.setAttribute('aria-label', 'Voltar ao topo');
+    btnTop.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    document.body.appendChild(btnTop);
+  }
+  if (!btnTop.dataset.wired) {
+    btnTop.dataset.wired = '1';
     window.addEventListener('scroll', function () {
       btnTop.classList.toggle('visible', window.scrollY > 300);
-    });
+    }, { passive: true });
     btnTop.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
