@@ -32,16 +32,12 @@
         <div class="nav-mark" aria-hidden="true">F|V</div>
         <span class="nav-title">Memorial Urbano · Fortaleza</span>
       </a>
-      <div class="nav-links" role="list">
-        ${navLink('index.html', 'Mapa')}
-        ${navLink('panorama.html', 'Panorama')}
-        ${navLink('personalidades.html', 'Personalidades')}
-      </div>
+      <div class="nav-links" role="list"></div>
       <div style="display:flex;align-items:center;gap:.35rem">
         <button class="theme-toggle" id="theme-toggle-btn"
           aria-label="${isDark() ? 'Mudar para tema claro' : 'Mudar para tema escuro'}"
           title="${isDark() ? 'Tema claro' : 'Tema escuro'}">
-          <span class="theme-icon" aria-hidden="true">${isDark() ? '☀️' : '🌙'}</span>
+          <span class="theme-icon" aria-hidden="true">${isDark() ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'}</span>
         </button>
         <button class="nav-hamburger" id="nav-hamburger"
           aria-label="Abrir menu de navegação"
@@ -58,11 +54,7 @@
     mobileMenu.className = 'nav-mobile-menu';
     mobileMenu.setAttribute('aria-label', 'Menu móvel');
     mobileMenu.setAttribute('aria-hidden', 'true');
-    mobileMenu.innerHTML = `
-      ${navLink('index.html', 'Mapa')}
-      ${navLink('panorama.html', 'Panorama')}
-      ${navLink('personalidades.html', 'Personalidades')}
-    `;
+    mobileMenu.innerHTML = '';
     navEl.insertAdjacentElement('afterend', mobileMenu);
 
     /* Hamburger toggle */
@@ -132,4 +124,20 @@
       navigator.serviceWorker.register(root + 'sw.js').catch(function () {/* silently fail */});
     });
   }
+  /* ── Reading Progress Bar ── */
+  const _pb = document.createElement('div');
+  _pb.id = 'reading-progress';
+  _pb.setAttribute('role', 'progressbar');
+  _pb.setAttribute('aria-valuenow', '0');
+  _pb.setAttribute('aria-valuemin', '0');
+  _pb.setAttribute('aria-valuemax', '100');
+  _pb.setAttribute('aria-label', 'Progresso de leitura');
+  document.body.appendChild(_pb);
+  window.addEventListener('scroll', function () {
+    var _st = window.scrollY;
+    var _dh = document.documentElement.scrollHeight - window.innerHeight;
+    var _pct = _dh > 0 ? Math.round((_st / _dh) * 100) : 0;
+    _pb.style.width = _pct + '%';
+    _pb.setAttribute('aria-valuenow', _pct);
+  }, { passive: true });
 })();

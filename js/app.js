@@ -2,13 +2,19 @@
 'use strict';
 
 async function boot() {
-  // Load config and obras in parallel
-  const [cfgRes, obrasRes] = await Promise.all([
+  // Load config and modular obra files in parallel
+  const [cfgRes, tuneisRes, viadutosRes, pontesRes] = await Promise.all([
     fetch('data/config.json'),
-    fetch('data/obras.json')
+    fetch('data/tuneis.json'),
+    fetch('data/viadutos.json'),
+    fetch('data/pontes.json')
   ]);
   window.CFG   = await cfgRes.json();
-  window.OBRAS = await obrasRes.json();
+  window.OBRAS = [
+    ...(await tuneisRes.json()),
+    ...(await viadutosRes.json()),
+    ...(await pontesRes.json())
+  ];
 
   // Populate hero counters
   document.getElementById('count-t').textContent = OBRAS.filter(d => d.tipo === 'tunel').length;

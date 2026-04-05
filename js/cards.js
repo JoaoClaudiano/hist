@@ -10,6 +10,9 @@ function renderCards(f = 'todos') {
     const fim = d.inauguracao.length > 16 ? d.inauguracao.substring(0, 10) + '…' : d.inauguracao;
     const el = document.createElement('div');
     el.className = `card ${d.tipo}`;
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('aria-label', `${TL[d.tipo]} ${d.nome} — ${d.bairro} — Inauguração: ${fim} — CO₂e Classe ${c2.cls}`);
     el.innerHTML = `
       <div class="card-badges"><span class="badge ${d.tipo}">${TL[d.tipo]}</span><span class="badge ${SC[d.estagio] || 's-pend'}">${SL[d.estagio] || d.estagio}</span></div>
       <h3>${d.nome}</h3><p class="card-vulgo">${d.vulgo}</p>
@@ -23,6 +26,9 @@ function renderCards(f = 'todos') {
       abrirPainel(d);
       document.getElementById('mapa').scrollIntoView({ behavior: 'smooth' });
       setTimeout(() => map.setView([d.lat, d.lng], 15, { animate: true }), 350);
+    });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
     });
     g.appendChild(el);
   });

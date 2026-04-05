@@ -1,0 +1,108 @@
+name: Validate Data & Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-json:
+    name: Validate JSON files
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON syntax
+        run: |
+          echo "Validating JSON files..."
+          for f in data/config.json data/tuneis.json data/viadutos.json data/pontes.json; do
+            python3 -c "import json; json.load(open('$f'))" && echo "✅ $f OK" || { echo "❌ $f INVALID"; exit 1; }
+          done
+
+      - name: Install jsonschema
+        run: pip install jsonschema
+
+      - name: Validate obras against schema
+        run: |
+          python3 << 'PYEOF'
+          import json, jsonschema, sys
+
+          with open('data/obras.schema.json') as f:
+              schema = json.load(f)
+
+          errors = []
+          for fname in ['data/tuneis.json', 'data/viadutos.json', 'data/pontes.json']:
+              with open(fname) as f:
+                  data = json.load(f)
+              try:
+                  jsonschema.validate(instance=data, schema=schema)
+                  print(f'✅ {fname} válido ({len(data)} obras)')
+              except jsonschema.ValidationError as e:
+                  errors.append(f'❌ {fname}: {e.message} (caminho: {list(e.path)})')
+
+          if errors:
+              for err in errors:
+                  print(err, file=sys.stderr)
+              sys.exit(1)
+          else:
+              print('✅ Todos os arquivos de obras são válidos')
+          PYEOF
+
+      - name: Check for duplicate IDs across all obra files
+        run: |
+          python3 << 'PYEOF'
+          import json, sys
+
+          all_ids = []
+          for fname in ['data/tuneis.json', 'data/viadutos.json', 'data/pontes.json']:
+              with open(fname) as f:
+                  data = json.load(f)
+              all_ids.extend(o['id'] for o in data)
+
+          duplicates = [x for x in all_ids if all_ids.count(x) > 1]
+          if duplicates:
+              print(f'❌ IDs duplicados encontrados: {set(duplicates)}', file=sys.stderr)
+              sys.exit(1)
+          else:
+              print(f'✅ Sem IDs duplicados ({len(all_ids)} obras no total)')
+          PYEOF
+
+  validate-html:
+    name: Check HTML structure
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check canonical + OG tags presence
+        run: |
+          python3 << 'PYEOF'
+          import os, sys
+
+          pages = [
+            'index.html', 'sobre.html', 'panorama.html', 'personalidades.html',
+            'metodologia.html', 'apoio.html', 'contato.html', 'licenca.html',
+            'privacidade.html', 'termos.html'
+          ]
+
+          errors = []
+          for page in pages:
+              content = open(page).read()
+              if 'og:title' not in content:
+                  errors.append(f'❌ {page}: faltando meta og:title')
+              if 'og:description' not in content:
+                  errors.append(f'❌ {page}: faltando meta og:description')
+              if 'rel="canonical"' not in content:
+                  errors.append(f'❌ {page}: faltando link canonical')
+              else:
+                  print(f'✅ {page}: OK')
+
+          if errors:
+              for err in errors:
+                  print(err, file=sys.stderr)
+              sys.exit(1)
+          PYEOF

@@ -20,8 +20,10 @@ const PRECACHE = [
   './panorama.html',
   './css/shared.css',
   './css/index.css',
+  './css/responsive.css',
   './js/components.js',
   './js/theme.js',
+  './js/ui.js',
   './js/calc.js',
   './js/charts.js',
   './js/map.js',
@@ -29,7 +31,9 @@ const PRECACHE = [
   './js/panel.js',
   './js/app.js',
   './data/config.json',
-  './data/obras.json',
+  './data/tuneis.json',
+  './data/viadutos.json',
+  './data/pontes.json',
 ];
 
 self.addEventListener('install', event => {
