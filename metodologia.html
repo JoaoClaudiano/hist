@@ -418,6 +418,8 @@ onde:
         }
       }
     });
+  /* rootMargin: -60px top = clear fixed nav (60px); -60% bottom = activate when section
+     is in the top 40% of the viewport, giving natural "reading position" feedback */
   }, { rootMargin: '-60px 0px -60% 0px', threshold: 0 });
   sectionIds.forEach(function (id) {
     var el = document.getElementById(id);
