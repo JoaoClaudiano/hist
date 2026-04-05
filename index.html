@@ -8,16 +8,43 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link rel="stylesheet" href="css/index.css"/>
+<meta name="theme-color" content="#18140c"/>
+<link rel="manifest" href="manifest.json"/>
+<script src="js/theme.js"></script>
 </head>
 <body>
 
-<nav>
-  <div class="nav-brand"><div class="nav-mark">F|V</div><span class="nav-title">Memorial Urbano · Fortaleza</span></div>
-  <div class="nav-links">
+<nav role="navigation" aria-label="Navegação principal">
+  <a class="nav-brand" href="index.html" aria-label="Fortaleza Sub &amp; Via — página inicial">
+    <div class="nav-mark" aria-hidden="true">F|V</div>
+    <span class="nav-title">Memorial Urbano · Fortaleza</span>
+  </a>
+  <div class="nav-links" role="list">
     <a href="#mapa">Mapa</a><a href="#acervo">Acervo</a>
     <a href="#analise">Análise</a><a href="#metodologia">Metodologia</a>
-    <a href="panorama.html">Panorama</a><a href="metodologia.html">Docs</a>
+    <a href="panorama.html">Panorama</a><a href="sobre.html">Sobre</a>
   </div>
+  <div style="display:flex;align-items:center;gap:.35rem">
+    <button class="theme-toggle" id="theme-toggle-btn"
+      aria-label="Mudar para tema escuro"
+      title="Mudar tema">
+      <span class="theme-icon" aria-hidden="true">🌙</span>
+    </button>
+    <button class="nav-hamburger" id="nav-hamburger"
+      aria-label="Abrir menu de navegação"
+      aria-expanded="false"
+      aria-controls="nav-mobile-menu-idx">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+<nav id="nav-mobile-menu-idx" class="nav-mobile-menu" aria-label="Menu móvel" aria-hidden="true">
+  <a href="#mapa">Mapa</a>
+  <a href="#acervo">Acervo</a>
+  <a href="#analise">Análise</a>
+  <a href="#metodologia">Metodologia</a>
+  <a href="panorama.html">Panorama</a>
+  <a href="sobre.html">Sobre</a>
 </nav>
 
 <header class="hero">
@@ -36,7 +63,7 @@
   </div>
 </header>
 
-<section id="mapa" class="section">
+<section id="mapa" class="section" aria-label="Mapa de obras">
   <div class="section-label">Localização Georreferenciada — Coordenadas MAPP-FOR</div>
   <div class="map-toolbar">
     <div class="filter-row">
@@ -59,7 +86,7 @@
   </div>
 </section>
 
-<section id="acervo" class="section">
+<section id="acervo" class="section" aria-label="Acervo técnico">
   <div class="section-label">Fichas Técnicas</div>
   <div class="acervo-header">
     <h2>Acervo<br>Técnico</h2>
@@ -214,16 +241,17 @@ Total (tCO₂e) = soma ÷ 1000</div>
     <a href="contato.html">Contato</a>
     <a href="licenca.html">Licença CC</a>
     <a href="privacidade.html">Privacidade</a>
+    <a href="termos.html">Termos de Uso</a>
   </nav>
   CO₂e: ICE v3 (Univ. Bath) + SIDERC / IPCC AR6 · Custos: SEINFRA-CE tab.27 · SINAPI 2024<br>
   Estimativas paramétricas ±20–30%. Não substitui ACV auditada. Última revisão: Abril 2026.
 </footer>
 
 <!-- SIDE PANEL -->
-<aside id="side-panel" role="dialog" aria-modal="true">
+<aside id="side-panel" role="dialog" aria-modal="true" aria-labelledby="sp-name">
   <div class="sp-header">
     <div class="sp-badges" id="sp-badges"></div>
-    <button class="sp-close" onclick="fecharPainel()">
+    <button class="sp-close" onclick="fecharPainel()" aria-label="Fechar painel">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
@@ -313,5 +341,45 @@ Total (tCO₂e) = soma ÷ 1000</div>
 <script src="js/cards.js"></script>
 <script src="js/panel.js"></script>
 <script src="js/app.js"></script>
+<script>
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    var hamburger = document.getElementById('nav-hamburger');
+    var mobileMenu = document.getElementById('nav-mobile-menu-idx');
+    var themeBtn = document.getElementById('theme-toggle-btn');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', function() {
+        var isOpen = mobileMenu.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+        mobileMenu.setAttribute('aria-hidden', !isOpen);
+        hamburger.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu de navegação');
+        hamburger.innerHTML = isOpen
+          ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>'
+          : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>';
+      });
+      document.addEventListener('click', function(e) {
+        if (!hamburger.closest('nav').contains(e.target) && !mobileMenu.contains(e.target)) {
+          mobileMenu.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
+    if (themeBtn && window.FSVTheme) {
+      themeBtn.addEventListener('click', function() {
+        window.FSVTheme.toggle();
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        themeBtn.setAttribute('aria-label', dark ? 'Mudar para tema claro' : 'Mudar para tema escuro');
+        themeBtn.querySelector('.theme-icon').textContent = dark ? '☀️' : '🌙';
+      });
+    }
+  });
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
 </body>
 </html>

@@ -1,0 +1,20 @@
+{
+  "name": "Fortaleza Sub & Via — Memorial Urbano",
+  "short_name": "Sub & Via",
+  "description": "Mapeamento de Obras de Arte Especiais de Fortaleza com fichas técnicas, históricas e análise de carbono incorporado.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f3f0e8",
+  "theme_color": "#18140c",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sobre o Projeto · Fortaleza Sub & Via</title>
   <meta name="description" content="Conheça a origem, os objetivos, a metodologia e a equipe do Memorial Urbano Fortaleza Sub & Via."/>
+  <meta name="theme-color" content="#18140c"/>
+  <link rel="manifest" href="manifest.json"/>
   <link rel="stylesheet" href="css/shared.css"/>
   <style>
     .page-hero{padding:6rem 2rem 3rem;max-width:1100px;margin:0 auto}
@@ -143,6 +145,23 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="section-label">Tecnologia</div>
+    <h2 class="section-title" style="margin-bottom:2rem">A stack do<br><em>projeto</em></h2>
+    <div class="fontes-grid">
+      <div class="fonte-card"><span class="ico">🌐</span><h4>HTML5 + CSS3 Puro</h4><p>Zero frameworks de front-end. Markup semântico, CSS custom properties para design tokens, sem bundler ou transpiler.</p></div>
+      <div class="fonte-card"><span class="ico">⚡</span><h4>JavaScript Vanilla (ES2020+)</h4><p>Módulos JS nativos (sem npm), async/await para carregamento de dados, fetch API para JSON externo. Compatível com todos os navegadores modernos.</p></div>
+      <div class="fonte-card"><span class="ico">🗺️</span><h4>Leaflet.js 1.9</h4><p>Biblioteca de mapas interativos open-source com tiles da CartoDB. Marcadores customizados, filtros por tipo e integração com o painel lateral.</p></div>
+      <div class="fonte-card"><span class="ico">📊</span><h4>Chart.js 4.4</h4><p>Gráficos de barras e rosca para análise comparativa de CO₂e, custo/m e volumes de materiais. Renderização em canvas com responsive:false para evitar loops de resize.</p></div>
+      <div class="fonte-card"><span class="ico">📄</span><h4>Dados em JSON</h4><p>Obras e configurações em <code>data/obras.json</code> e <code>data/config.json</code>. Fácil edição sem código — basta atualizar os arquivos JSON para adicionar ou corrigir obras.</p></div>
+      <div class="fonte-card"><span class="ico">🚀</span><h4>GitHub Pages (PWA)</h4><p>Hospedagem gratuita com CI/CD automático via GitHub Actions. Service Worker com cache versionado para funcionamento offline. Manifest PWA para instalação nativa.</p></div>
+    </div>
+    <div class="callout" style="margin-top:1.5rem">
+      <strong>Por que sem framework?</strong><br>
+      A escolha deliberada por HTML/CSS/JS puro garante máxima longevidade — o projeto deve ser legível e funcional por décadas, sem risco de deprecação de dependências. O código-fonte é 100% aberto e auditável.
+    </div>
+  </section>
+
   <section class="section" style="padding-top:0;padding-bottom:4rem">
     <div class="cta-block">
       <div>
@@ -162,6 +181,7 @@
 <button id="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
+<script src="js/theme.js"></script>
 <script src="js/components.js"></script>
 </body>
 </html>
