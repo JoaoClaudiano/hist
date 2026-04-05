@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Panorama do Inventário — Fortaleza Sub & Via</title>
+<link rel="stylesheet" href="css/shared.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+.pan-hero{padding:100px 2rem 4rem;max-width:1100px;margin:0 auto}
+.pan-hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);padding:5px 14px;border-radius:100px;border:1px solid rgba(50,40,20,.18);background:var(--surface);margin-bottom:1.5rem}
+.pan-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.4rem,6vw,4.5rem);line-height:1.05;letter-spacing:-.03em;margin-bottom:1rem}
+.pan-hero .sub{font-size:15px;line-height:1.75;color:var(--ink-mid);max-width:620px}
+.pan-section{padding:0 2rem 4rem;max-width:1100px;margin:0 auto}
+.pan-section-label{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.6rem;display:flex;align-items:center;gap:8px}
+.pan-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.pan-section h2{font-family:'DM Serif Display',serif;font-size:1.8rem;line-height:1.15;letter-spacing:-.02em;margin-bottom:1.1rem}
+.pan-section p{font-size:13px;color:var(--ink-mid);line-height:1.8;margin-bottom:.9rem}
+.kpis-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2.5rem}
+.kpi-big{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem}
+.kpi-big .lbl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+.kpi-big .num{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1;color:var(--ink)}
+.kpi-big .unit{font-size:11px;color:var(--ink-faint);font-weight:500}
+.charts-duo{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem;overflow:hidden}
+.chart-card-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mid);margin-bottom:.25rem}
+.chart-card-sub{font-size:11px;color:var(--ink-faint);margin-bottom:1rem;line-height:1.5}
+.canvas-wrap{position:relative;width:100%;height:260px;overflow:hidden}
+.canvas-wrap canvas{position:absolute;top:0;left:0}
+.insight-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1.2rem}
+.insight-card h3{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.7rem}
+.insight-card p{font-size:12.5px;color:var(--ink-mid);line-height:1.75;margin-bottom:.6rem}
+.insight-card p:last-child{margin-bottom:0}
+.rank-table{width:100%;border-collapse:collapse;font-size:12px;margin:.8rem 0}
+.rank-table th{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);text-align:left;padding:.45rem .7rem;border-bottom:1px solid var(--border);background:var(--bg)}
+.rank-table td{padding:.55rem .7rem;border-bottom:1px solid rgba(50,40,20,.05);color:var(--ink-mid)}
+.rank-table tr:last-child td{border-bottom:none}
+.rank-table td:first-child{font-weight:600;color:var(--ink)}
+.badge-sm{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+.badge-tunel{background:#eff6ff;color:#1d4ed8}
+.badge-viaduto{background:#fffbeb;color:#b45309}
+.badge-ponte{background:#f0fdf4;color:#166534}
+.nota-box{font-size:11px;color:var(--ink-faint);line-height:1.7;padding:1rem 1.25rem;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-top:1rem}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mid);text-decoration:none;padding:6px 14px;border:1px solid var(--border);border-radius:8px;transition:all .15s;margin-bottom:2rem}
+.back-link:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.loading{text-align:center;padding:4rem;color:var(--ink-faint);font-size:13px}
+@media(max-width:900px){.charts-duo{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="site-nav"></nav>
+
+<div class="pan-hero">
+  <a href="index.html" class="back-link">← Ver mapa completo</a>
+  <div class="eyebrow">Análise Estatística Comparativa</div>
+  <h1>Panorama<br><em style="font-style:italic;color:var(--ink-mid)">do Inventário</em></h1>
+  <p class="sub">Comparativo gráfico de CO₂e incorporado, custo por metro linear e consumo de materiais entre todas as obras catalogadas. Dados calculados em tempo real a partir do catálogo.</p>
+</div>
+
+<div id="main-content">
+  <div class="loading" id="loading-msg">Carregando dados do catálogo…</div>
+</div>
+
+<footer class="site-footer"></footer>
+
+<script src="js/components.js"></script>
+<script>
+'use strict';
+
+async function panoramaBoot() {
+  let CFG, OBRAS;
+  try {
+    const [cfgRes, obrasRes] = await Promise.all([
+      fetch('data/config.json'),
+      fetch('data/obras.json')
+    ]);
+    CFG   = await cfgRes.json();
+    OBRAS = await obrasRes.json();
+  } catch (e) {
+    document.getElementById('loading-msg').innerHTML =
+      '<strong>⚠️ Erro ao carregar dados:</strong> ' + e.message +
+      '<br><small>Certifique-se de acessar via servidor local (ex: <code>python -m http.server</code>).</small>';
+    return;
+  }
+  document.getElementById('loading-msg').remove();
+
+  // ── Calculation helpers (inline, no external dep) ──
+  const ICE = CFG.ice, MAT = CFG.mat, BENCH = CFG.bench, COR = CFG.cores;
+
+  function calcCO2(d) {
+    const L = d.extensaoNum || 100, m = MAT[d.tipo] || MAT.viaduto;
+    const cv = m.cm * L, cm = cv * 2400, am = m.am * L;
+    const cc = cm * ICE.conc, ca = am * ICE.aco, cp = L * 1.2 * 0.08 * 2400 * ICE.bet;
+    const cx = (cc + ca + cp) * 0.12, tot = (cc + ca + cp + cx) / 1000;
+    let cls = 'A', css = 'g', clt = 'Baixo';
+    if (tot > 15000) { cls = 'C'; css = 'r'; clt = 'Alto'; }
+    else if (tot > 4000) { cls = 'B'; css = 'o'; clt = 'Médio'; }
+    return { tot, cv, am, cc: cc / 1000, ca: ca / 1000, cp: cp / 1000, cx: cx / 1000, cls, css, clt, cm3pm: m.cm, akgpm: m.am };
+  }
+
+  function custoM(d) {
+    if (d.custoRaw && d.extensaoNum) return { v: Math.round(d.custoRaw / d.extensaoNum), real: true };
+    return { v: BENCH[d.tipo]?.med || 95000, real: false };
+  }
+
+  // ── Data prep ──
+  const allC  = OBRAS.map(calcCO2);
+  const names = OBRAS.map(d => d.nome.replace(/Túnel |Viaduto |Ponte /, '').substring(0, 14));
+  const tipC  = OBRAS.map(d => COR[d.tipo] + 'cc');
+  const comC  = OBRAS.filter(d => d.custoRaw);
+
+  const totCO2  = allC.reduce((s, c) => s + c.tot, 0);
+  const totConc = allC.reduce((s, c) => s + c.cv, 0);
+  const totAco  = allC.reduce((s, c) => s + c.am, 0) / 1000;
+  const medCm   = comC.length ? comC.reduce((s, d) => s + d.custoRaw / d.extensaoNum, 0) / comC.length : 0;
+  const totExt  = OBRAS.reduce((s, d) => s + (d.extensaoNum || 0), 0) / 1000;
+  const tipos   = ['tunel', 'viaduto', 'ponte'];
+
+  // ── Build HTML ──
+  const mc = document.getElementById('main-content');
+
+  // Section 1: KPIs
+  mc.innerHTML += `
+  <div class="pan-section">
+    <div class="pan-section-label">Indicadores Globais</div>
+    <h2>Resumo do Catálogo</h2>
+    <div class="kpis-row" id="pan-kpis"></div>
+  </div>`;
+
+  // Section 2: CO2
+  mc.innerHTML += `
+  <div class="pan-section">
+    <div class="pan-section-label">Seção 2 — Emissões</div>
+    <h2>Análise de CO₂e Incorporado</h2>
+    <p>O gráfico abaixo mostra a emissão incorporada estimada (tCO₂e) de cada obra catalogada, ordenada conforme o catálogo. Túneis (azul) aparecem consistentemente como as obras de maior intensidade, dado que a seção celular consome aproximadamente 3× mais concreto por metro linear que viadutos equivalentes.</p>
+    <div class="charts-duo">
+      <div class="chart-card">
+        <div class="chart-card-title">CO₂e por obra (ktCO₂e)</div>
+        <div class="chart-card-sub">Emissão incorporada estimada (fases A1–A5) por extensão e tipo construtivo.</div>
+        <div class="canvas-wrap"><canvas id="ch-co2-p"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">CO₂e médio por tipo construtivo</div>
+        <div class="chart-card-sub">Doughnut comparando a média de emissões por categoria. Túneis ~3× mais intensivos.</div>
+        <div class="canvas-wrap"><canvas id="ch-tipo-p"></canvas></div>
+      </div>
+    </div>
+    <div class="insight-card" id="co2-insight"></div>
+  </div>`;
+
+  // Section 3: Cost
+  mc.innerHTML += `
+  <div class="pan-section">
+    <div class="pan-section-label">Seção 3 — Custo</div>
+    <h2>Análise de Custo por Metro Linear</h2>
+    <p>Valores reais (sólido escuro) foram obtidos de publicações em Diário Oficial ou notas de imprensa. Estimativas SEINFRA-CE (translúcido, marcadas ★) são usadas quando o custo isolado não é público. <strong>${comC.length} de ${OBRAS.length} obras</strong> possuem dado real.</p>
+    <div class="chart-card" style="margin-bottom:1.2rem">
+      <div class="chart-card-title">Custo/m linear por obra (R$/m)</div>
+      <div class="chart-card-sub">Real (sólido) vs. estimativa SEINFRA-CE (translúcido ★).</div>
+      <div class="canvas-wrap"><canvas id="ch-cost-p"></canvas></div>
+    </div>
+    <div class="insight-card">
+      <h3>Tabela de Custo por Obra</h3>
+      <div style="overflow-x:auto"><table class="rank-table" id="cost-table"></table></div>
+    </div>
+  </div>`;
+
+  // Section 4: By type
+  mc.innerHTML += `
+  <div class="pan-section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding-top:3rem">
+    <div class="pan-section-label">Seção 4 — Por Tipo</div>
+    <h2>Análise por Tipo Construtivo</h2>
+    <div class="insight-card" id="type-analysis"></div>
+  </div>`;
+
+  // Section 5: Materials
+  mc.innerHTML += `
+  <div class="pan-section">
+    <div class="pan-section-label">Seção 5 — Materiais</div>
+    <h2>Análise de Consumo de Materiais</h2>
+    <p>Concreto C35 (fck 35 MPa) calculado pelo coeficiente paramétrico m³/m × extensão. Aço CA-50 à taxa de 120 kg/m³ de concreto. Valores nominais — ver Metodologia para premissas.</p>
+    <div class="chart-card" style="margin-bottom:1.2rem">
+      <div class="chart-card-title">Concreto C35 estimado por obra (m³)</div>
+      <div class="chart-card-sub">Calculado parametricamente com coeficientes SEINFRA-CE 27 (m³/m × extensão).</div>
+      <div class="canvas-wrap"><canvas id="ch-conc-p"></canvas></div>
+    </div>
+    <div class="insight-card">
+      <h3>Ranking — Maiores Consumidores de Concreto</h3>
+      <div style="overflow-x:auto"><table class="rank-table" id="mat-table"></table></div>
+    </div>
+  </div>`;
+
+  // Section 6: Insights
+  mc.innerHTML += `
+  <div class="pan-section">
+    <div class="pan-section-label">Seção 6 — Perspectivas</div>
+    <h2>Perspectivas Cruzadas</h2>
+    <div id="cross-insights"></div>
+  </div>`;
+
+  // ── Populate KPIs ──
+  document.getElementById('pan-kpis').innerHTML = `
+    <div class="kpi-big"><span class="lbl">CO₂e Total Est.</span><span class="num">${(totCO2 / 1000).toFixed(0)}<span class="unit"> ktCO₂e</span></span></div>
+    <div class="kpi-big"><span class="lbl">Concreto C35 Est.</span><span class="num">${(totConc / 1000).toFixed(0)}<span class="unit"> mil m³</span></span></div>
+    <div class="kpi-big"><span class="lbl">Aço CA-50 Est.</span><span class="num">${totAco.toFixed(0)}<span class="unit"> ton</span></span></div>
+    <div class="kpi-big"><span class="lbl">Custo Médio/m (real)</span><span class="num">${medCm ? 'R$' + (medCm / 1000).toFixed(0) + 'k' : 'N/D'}<span class="unit">/m</span></span></div>
+    <div class="kpi-big"><span class="lbl">Obras com custo real</span><span class="num">${comC.length}<span class="unit"> / ${OBRAS.length}</span></span></div>
+    <div class="kpi-big"><span class="lbl">Extensão total</span><span class="num">${totExt.toFixed(2)}<span class="unit"> km</span></span></div>`;
+
+  // ── Charts ──
+  const CH_DEFAULTS = {
+    responsive: false, animation: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: 'rgba(24,20,12,.88)', titleFont: { family: 'DM Sans', size: 11, weight: '700' }, bodyFont: { family: 'DM Sans', size: 11 }, padding: 10, cornerRadius: 8 }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 9 }, color: '#9e9078' } },
+      y: { grid: { color: 'rgba(0,0,0,.05)' }, ticks: { font: { family: 'DM Sans', size: 9 }, color: '#9e9078' } }
+    }
+  };
+
+  function initCanvas(id) {
+    const wrap = document.getElementById(id).parentElement;
+    const W = wrap.clientWidth || 500, H = 260;
+    const c = document.getElementById(id);
+    c.width = W; c.height = H; c.style.width = W + 'px'; c.style.height = H + 'px';
+  }
+  ['ch-co2-p', 'ch-tipo-p', 'ch-cost-p', 'ch-conc-p'].forEach(initCanvas);
+
+  new Chart(document.getElementById('ch-co2-p'), {
+    type: 'bar',
+    data: { labels: names, datasets: [{ data: allC.map(c => +(c.tot / 1000).toFixed(1)), backgroundColor: tipC, borderRadius: 4 }] },
+    options: { ...CH_DEFAULTS, plugins: { ...CH_DEFAULTS.plugins, tooltip: { ...CH_DEFAULTS.plugins.tooltip, callbacks: { label: c => ' ' + c.raw + ' ktCO₂e' } } }, scales: { ...CH_DEFAULTS.scales, y: { ...CH_DEFAULTS.scales.y, ticks: { ...CH_DEFAULTS.scales.y.ticks, callback: v => v + 'k t' } } } }
+  });
+
+  const medT = tipos.map(t => { const a = OBRAS.filter(d => d.tipo === t).map(d => calcCO2(d).tot / 1000); return a.length ? +(a.reduce((s, v) => s + v, 0) / a.length).toFixed(1) : 0; });
+  new Chart(document.getElementById('ch-tipo-p'), {
+    type: 'doughnut',
+    data: { labels: ['Túnel', 'Viaduto', 'Ponte'], datasets: [{ data: medT, backgroundColor: [COR.tunel + 'cc', COR.viaduto + 'cc', COR.ponte + 'cc'], borderWidth: 0, hoverOffset: 8 }] },
+    options: { responsive: false, animation: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { family: 'DM Sans', size: 10 }, color: '#5a4e38', padding: 10 } }, tooltip: { ...CH_DEFAULTS.plugins.tooltip, callbacks: { label: c => ' ' + c.raw + ' ktCO₂e (média)' } } } }
+  });
+
+  const cdata = OBRAS.map(d => { const cm = custoM(d); return { v: +(cm.v / 1000).toFixed(1), real: cm.real, nome: d.nome }; });
+  new Chart(document.getElementById('ch-cost-p'), {
+    type: 'bar',
+    data: {
+      labels: names,
+      datasets: [
+        { label: 'Real', data: cdata.map(c => c.real ? c.v : null), backgroundColor: 'rgba(24,20,12,.8)', borderRadius: 4 },
+        { label: 'Est. ★', data: cdata.map(c => !c.real ? c.v : null), backgroundColor: 'rgba(158,144,120,.45)', borderRadius: 4 }
+      ]
+    },
+    options: { ...CH_DEFAULTS, plugins: { ...CH_DEFAULTS.plugins, legend: { display: true, labels: { font: { family: 'DM Sans', size: 9 }, color: '#9e9078', boxWidth: 10 } }, tooltip: { ...CH_DEFAULTS.plugins.tooltip, callbacks: { label: c => ' R$ ' + c.raw + 'k/m' } } }, scales: { ...CH_DEFAULTS.scales, y: { ...CH_DEFAULTS.scales.y, ticks: { ...CH_DEFAULTS.scales.y.ticks, callback: v => 'R$' + v + 'k' } } } }
+  });
+
+  new Chart(document.getElementById('ch-conc-p'), {
+    type: 'bar',
+    data: { labels: names, datasets: [{ data: allC.map(c => +c.cv.toFixed(0)), backgroundColor: tipC, borderRadius: 4 }] },
+    options: { ...CH_DEFAULTS, plugins: { ...CH_DEFAULTS.plugins, tooltip: { ...CH_DEFAULTS.plugins.tooltip, callbacks: { label: c => ' ' + c.raw.toLocaleString('pt-BR') + ' m³' } } }, scales: { ...CH_DEFAULTS.scales, y: { ...CH_DEFAULTS.scales.y, ticks: { ...CH_DEFAULTS.scales.y.ticks, callback: v => v.toLocaleString('pt-BR') } } } }
+  });
+
+  // ── CO2 Insight ──
+  const maxCO2 = OBRAS.reduce((a, b) => calcCO2(a).tot > calcCO2(b).tot ? a : b);
+  const minCO2 = OBRAS.reduce((a, b) => calcCO2(a).tot < calcCO2(b).tot ? a : b);
+  const avgByType = tipos.map(t => {
+    const arr = OBRAS.filter(d => d.tipo === t);
+    return { tipo: t, n: arr.length, avg: arr.length ? arr.reduce((s, d) => s + calcCO2(d).tot, 0) / arr.length : 0 };
+  });
+  document.getElementById('co2-insight').innerHTML = `
+    <h3>Análise de Emissões — Principais Achados</h3>
+    <p><strong>Maior emissão:</strong> ${maxCO2.nome} — ${(calcCO2(maxCO2).tot / 1000).toFixed(1)} ktCO₂e. Esta obra se destaca pela combinação de grande extensão (${maxCO2.extensaoNum} m) com o coeficiente de concreto de túnel (18,5 m³/m), resultando em volume de concreto substancialmente maior que viadutos de comprimento similar.</p>
+    <p><strong>Menor emissão:</strong> ${minCO2.nome} — ${(calcCO2(minCO2).tot / 1000).toFixed(2)} ktCO₂e. Obra de menor extensão (${minCO2.extensaoNum} m) do tipo ${minCO2.tipo}, ilustrando como estruturas pontuais têm pegada de carbono incorporado relativamente reduzida.</p>
+    <p><strong>Média por tipo:</strong> Túneis: ${(avgByType[0].avg / 1000).toFixed(1)} ktCO₂e · Viadutos: ${(avgByType[1].avg / 1000).toFixed(1)} ktCO₂e · Pontes: ${(avgByType[2].avg / 1000).toFixed(1)} ktCO₂e. A diferença de ~${(avgByType[0].avg / avgByType[1].avg).toFixed(1)}× entre túneis e viadutos reflete diretamente a proporção entre seus coeficientes paramétricos de concreto (18,5 vs. 6,2 m³/m).</p>
+    <p><strong>Total acumulado:</strong> O inventário completo representa ${(totCO2 / 1000).toFixed(0)} ktCO₂e estimados, equivalentes a aproximadamente ${Math.round(totCO2 * 1000 / 255).toLocaleString('pt-BR')} voos Fortaleza–São Paulo ou ao sequestro de ${Math.round(totCO2 * 1000 / 22).toLocaleString('pt-BR')} árvores por um ano.</p>`;
+
+  // ── Cost Table ──
+  const sorted = [...OBRAS].sort((a, b) => custoM(b).v - custoM(a).v);
+  document.getElementById('cost-table').innerHTML = `
+    <thead><tr><th>#</th><th>Obra</th><th>Tipo</th><th>Custo/m</th><th>Dado</th></tr></thead>
+    <tbody>${sorted.map((d, i) => {
+      const cm = custoM(d);
+      return `<tr>
+        <td style="color:var(--ink-faint);font-size:10px">${i + 1}</td>
+        <td>${d.nome}</td>
+        <td><span class="badge-sm badge-${d.tipo}">${d.tipo}</span></td>
+        <td style="font-weight:700;color:var(--ink)">R$ ${(cm.v / 1000).toFixed(0)}k</td>
+        <td style="font-size:10px;color:${cm.real ? '#166534' : '#9e9078'}">${cm.real ? '✅ Real' : '★ Est.'}</td>
+      </tr>`;
+    }).join('')}</tbody>`;
+
+  // ── Type Analysis ──
+  document.getElementById('type-analysis').innerHTML = `
+    <h3>Por que Túneis Emitem ~${(avgByType[0].avg / avgByType[1].avg).toFixed(0)}× Mais que Viadutos?</h3>
+    <p>A diferença fundamental está na <strong>seção transversal</strong>. Um túnel cut-and-cover típico de Fortaleza possui seção retangular ~7 × 4,5 m com paredes de 40 cm e laje de 50 cm, totalizando 18,5 m³ de concreto por metro linear. Por contraste, um viaduto de vigas protendidas (largura 14 m) utiliza apenas ~6,2 m³/m — cerca de 3× menos.</p>
+    <p>Além disso, túneis requerem <strong>sistemas de drenagem ativos</strong> (poços de bombeamento, calhas perimetrais, drenos longitudinais), laje de subpressão em solos com lençol freático elevado, e contenções laterais por paredes diafragma ou tirantas — nenhum destes volumes está incluído no coeficiente paramétrico de 18,5 m³/m, o que significa que as estimativas de túneis são provavelmente <em>conservadoras</em>.</p>
+    <p>Para pontes, o coeficiente reduzido (4,8 m³/m) reflete a ausência de paredes laterais e laje inferior — apenas vigas, tabuleiro e pilares esbeltos. A Ponte José Martins Rodrigues (633 m, 29 vãos) é o maior destaque, com emissão total estimada de ${(calcCO2(OBRAS.find(d => d.id === 'id_mappfor_3900')).tot / 1000).toFixed(1)} ktCO₂e.</p>
+    <table class="rank-table" style="margin-top:.8rem">
+      <thead><tr><th>Tipo</th><th>Qtd. obras</th><th>Extensão total</th><th>CO₂e médio/obra</th><th>CO₂e total tipo</th></tr></thead>
+      <tbody>${tipos.map(t => {
+        const arr = OBRAS.filter(d => d.tipo === t);
+        const ext = arr.reduce((s, d) => s + (d.extensaoNum || 0), 0);
+        const co2arr = arr.map(d => calcCO2(d).tot);
+        const avg = co2arr.length ? co2arr.reduce((s, v) => s + v, 0) / co2arr.length : 0;
+        const tot = co2arr.reduce((s, v) => s + v, 0);
+        return `<tr><td><span class="badge-sm badge-${t}">${t}</span></td><td>${arr.length}</td><td>${(ext / 1000).toFixed(2)} km</td><td>${(avg / 1000).toFixed(1)} ktCO₂e</td><td>${(tot / 1000).toFixed(1)} ktCO₂e</td></tr>`;
+      }).join('')}</tbody>
+    </table>`;
+
+  // ── Materials Table ──
+  const matSorted = [...OBRAS].map(d => ({ d, c2: calcCO2(d) })).sort((a, b) => b.c2.cv - a.c2.cv);
+  document.getElementById('mat-table').innerHTML = `
+    <thead><tr><th>#</th><th>Obra</th><th>Tipo</th><th>Concreto C35 (m³)</th><th>Aço CA-50 (ton)</th><th>Coef. m³/m</th></tr></thead>
+    <tbody>${matSorted.map(({ d, c2 }, i) => `<tr>
+      <td style="color:var(--ink-faint);font-size:10px">${i + 1}</td>
+      <td style="font-size:11.5px">${d.nome}</td>
+      <td><span class="badge-sm badge-${d.tipo}">${d.tipo}</span></td>
+      <td style="font-weight:700;color:var(--ink)">${c2.cv.toLocaleString('pt-BR')}</td>
+      <td>${(c2.am / 1000).toFixed(1)}</td>
+      <td style="font-size:10px;color:var(--ink-faint)">${c2.cm3pm} m³/m</td>
+    </tr>`).join('')}</tbody>`;
+
+  // ── Cross Insights ──
+  const highCO2 = OBRAS.filter(d => calcCO2(d).cls === 'C');
+  const medCO2  = OBRAS.filter(d => calcCO2(d).cls === 'B');
+  const lowCO2  = OBRAS.filter(d => calcCO2(d).cls === 'A');
+  const execObras = OBRAS.filter(d => d.estagio === 'EM EXECUÇÃO' || d.estagio === 'A INICIAR');
+  document.getElementById('cross-insights').innerHTML = `
+    <div class="insight-card">
+      <h3>Distribuição por Classe CO₂e</h3>
+      <p>${highCO2.length} obras na Classe C (Alta, >15 ktCO₂e): ${highCO2.map(d => d.nome).join(', ')}. Estas obras são todas túneis com extensão ≥300 m, onde o elevado coeficiente de concreto (18,5 m³/m) amplifica o impacto proporcionalmente à extensão.</p>
+      <p>${medCO2.length} obras na Classe B (Média, 4–15 ktCO₂e): viadutos e pontes de porte médio (150–640 m). ${lowCO2.length} obras na Classe A (Baixa, <4 ktCO₂e): estruturas de menor porte ou extensão reduzida.</p>
+    </div>
+    <div class="insight-card">
+      <h3>Obras em Execução e a Iniciar — Impacto Futuro</h3>
+      <p>${execObras.length} obras ainda não concluídas: ${execObras.map(d => d.nome).join('; ')}. Quando concluídas, adicionarão aproximadamente <strong>${(execObras.reduce((s, d) => s + calcCO2(d).tot, 0) / 1000).toFixed(1)} ktCO₂e</strong> ao inventário total, um aumento de ${((execObras.reduce((s, d) => s + calcCO2(d).tot, 0) / totCO2) * 100).toFixed(1)}% sobre o catálogo atual.</p>
+    </div>
+    <div class="insight-card">
+      <h3>Implicações para Políticas Públicas</h3>
+      <p>A intensidade de carbono por metro de túnel (${(OBRAS.filter(d => d.tipo === 'tunel').reduce((s, d) => s + calcCO2(d).tot, 0) / OBRAS.filter(d => d.tipo === 'tunel').reduce((s, d) => s + (d.extensaoNum || 0), 0) * 1000).toFixed(0)} kgCO₂e/m) sugere que, para futuros projetos de mobilidade urbana em Fortaleza, a preferência por soluções de superfície (BRT em pista dedicada, corredores segregados) em detrimento de obras subterrâneas pode reduzir significativamente a pegada de carbono da infraestrutura, mantendo benefícios equivalentes de fluidez de tráfego.</p>
+      <p>O uso de <strong>cimento de baixo carbono</strong> (CP III-Blast Furnace Slag ou CP IV-Pozzolanic) em obras futuras poderia reduzir o fator de emissão do concreto de 0,159 para ~0,11–0,13 kgCO₂e/kg, representando uma redução de 18–31% nas emissões da fase de materiais. Combinado com aço reciclado (forno elétrico), o potencial de redução total é de 25–40%.</p>
+    </div>
+    <div class="nota-box">Análise de ${OBRAS.length} obras (${totExt.toFixed(2)} km). CO₂e: ICE v3 + SIDERC (±20–30%). ${comC.length} obras com custo real isolado; demais com média SEINFRA-CE (★). Tipos: ${OBRAS.filter(d => d.tipo === 'tunel').length} túneis · ${OBRAS.filter(d => d.tipo === 'viaduto').length} viadutos · ${OBRAS.filter(d => d.tipo === 'ponte').length} pontes. Última atualização: Abril 2026.</div>`;
+}
+
+panoramaBoot();
+</script>
+</body>
+</html>

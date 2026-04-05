@@ -1,0 +1,34 @@
+{
+  "ice": { "conc": 0.159, "aco": 1.46, "bet": 0.374 },
+  "mat": {
+    "tunel":   { "cm": 18.5, "am": 2220 },
+    "viaduto": { "cm": 6.2,  "am": 744  },
+    "ponte":   { "cm": 4.8,  "am": 576  }
+  },
+  "bench": {
+    "tunel":   { "med": 185000, "min": 95000,  "max": 310000 },
+    "viaduto": { "med": 95000,  "min": 55000,  "max": 180000 },
+    "ponte":   { "med": 72000,  "min": 28000,  "max": 140000 }
+  },
+  "co2Classes": {
+    "A": { "max": 4000,  "label": "Baixo", "css": "g" },
+    "B": { "max": 15000, "label": "Médio", "css": "o" },
+    "C": { "max": null,  "label": "Alto",  "css": "r" }
+  },
+  "tipoLabels":  { "tunel": "Túnel", "viaduto": "Viaduto", "ponte": "Ponte" },
+  "estagioLabels": { "FINALIZADO": "Finalizado", "EM EXECUÇÃO": "Em Execução", "A INICIAR": "A Iniciar" },
+  "estagioClasses": { "FINALIZADO": "s-ok", "EM EXECUÇÃO": "s-exec", "A INICIAR": "s-pend" },
+  "cores": { "tunel": "#1d4ed8", "viaduto": "#b45309", "ponte": "#166534" },
+  "fundacaoCores": {
+    "Estacas Hélice Contínua":                     "#eff6ff:#1d4ed8",
+    "Paredes Diafragma + Laje Subpressão":          "#f5f3ff:#7c3aed",
+    "Paredes Atirantadas + Estacas HC":             "#f5f3ff:#7c3aed",
+    "Tubulões a Céu Aberto":                        "#fffbeb:#b45309",
+    "Sapata Isolada + Tubulões":                    "#f0fdf4:#166534",
+    "Estacas Cravadas de Concreto":                 "#fef3c7:#92400e",
+    "Estacas Raiz (nova estrutura)":                "#f0fdf4:#166534",
+    "Pilares CA Originais (1920)":                  "#f8fafc:#64748b",
+    "Estacas HC + Laje Reforçada":                  "#eff6ff:#1d4ed8",
+    "A definir":                                    "#f8fafc:#64748b"
+  }
+}

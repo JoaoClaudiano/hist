@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin — Fortaleza Sub & Via</title>
+<link rel="stylesheet" href="css/shared.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+.adm-layout{display:grid;grid-template-columns:420px 1fr;gap:1.5rem;padding:80px 2rem 3rem;max-width:1400px;margin:0 auto;min-height:100vh}
+.adm-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;overflow-y:auto;max-height:calc(100vh - 100px)}
+.adm-map-wrap{border-radius:14px;overflow:hidden;border:1px solid var(--border);position:sticky;top:80px;height:calc(100vh - 100px);display:flex;flex-direction:column}
+#admin-map{flex:1}
+.adm-map-hint{font-size:11px;color:var(--ink-faint);padding:.6rem 1rem;background:var(--surface);border-top:1px solid var(--border)}
+.adm-title{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:1.2rem;color:var(--ink)}
+.adm-section-title{font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin:1.2rem 0 .6rem;display:flex;align-items:center;gap:8px}
+.adm-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.adm-field{margin-bottom:.7rem}
+.adm-field label{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:3px}
+.adm-field input,.adm-field select,.adm-field textarea{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;background:var(--bg);color:var(--ink);outline:none;transition:border-color .15s}
+.adm-field input:focus,.adm-field select:focus,.adm-field textarea:focus{border-color:var(--ink)}
+.adm-field textarea{resize:vertical;min-height:60px}
+.adm-grid2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.adm-btn{padding:6px 14px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--border);cursor:pointer;transition:all .15s}
+.adm-btn-primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.adm-btn-primary:hover{opacity:.85}
+.adm-btn-sec{background:var(--surface);color:var(--ink-mid)}
+.adm-btn-sec:hover{background:var(--bg)}
+.adm-btn-export{background:#166534;color:#fff;border-color:#166534}
+.adm-btn-export:hover{opacity:.85}
+.adm-btn-edit{background:var(--tunel-bg);color:var(--tunel);border-color:var(--tunel-bdr);font-size:10px;padding:3px 8px}
+.adm-btn-del{background:#fee2e2;color:#dc2626;border-color:rgba(220,38,38,.2);font-size:10px;padding:3px 8px}
+.adm-actions{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
+.adm-status{font-size:11px;color:#166534;font-weight:600;margin-top:.5rem;min-height:18px}
+.adm-error{font-size:11px;color:#dc2626;margin-top:3px;min-height:14px}
+.coord-row{display:flex;gap:.5rem;align-items:flex-end}
+.coord-row .adm-field{flex:1}
+#coord-status{font-size:10px;color:var(--ink-faint);margin-top:3px;font-style:italic}
+.edit-indicator{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--exec);padding:3px 10px;border-radius:6px;background:var(--exec-bg);border:1px solid rgba(124,58,237,.15);margin-bottom:.8rem}
+.adm-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:1.5rem}
+.adm-table-header{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.adm-table-header h3{font-family:'DM Serif Display',serif;font-size:1.1rem}
+.adm-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.adm-table th{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);text-align:left;padding:.6rem 1rem;border-bottom:1px solid var(--border);background:var(--bg)}
+.adm-table td{padding:.55rem 1rem;border-bottom:1px solid rgba(50,40,20,.05);vertical-align:middle}
+.adm-table tr:last-child td{border-bottom:none}
+.adm-table tr:hover td{background:rgba(50,40,20,.02)}
+.adm-badge{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+.adm-tunel{background:var(--tunel-bg);color:var(--tunel)}
+.adm-viaduto{background:var(--viaduto-bg);color:var(--viaduto)}
+.adm-ponte{background:var(--ponte-bg);color:var(--ponte)}
+.adm-estagio{background:var(--bg);color:var(--ink-faint)}
+.boot-error{background:#fee2e2;border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:1rem;color:#dc2626;font-size:12px;display:none;margin-bottom:1rem}
+.adm-note{font-size:11px;color:var(--ink-faint);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;margin-bottom:1rem;line-height:1.6}
+@media(max-width:900px){.adm-layout{grid-template-columns:1fr}.adm-map-wrap{height:350px;position:static}.adm-panel{max-height:none}}
+</style>
+</head>
+<body>
+<nav class="site-nav"></nav>
+
+<div class="adm-layout">
+  <!-- LEFT PANEL: FORM -->
+  <div class="adm-panel">
+    <h1 class="adm-title">🔧 Admin — Obras</h1>
+    <div class="adm-note">⚠️ <strong>Requer servidor local</strong> para carregar JSON via fetch. Execute <code>python -m http.server 8080</code> na raiz do projeto e acesse <code>http://localhost:8080/admin.html</code>.</div>
+    <div id="boot-error" class="boot-error"></div>
+
+    <div id="edit-indicator" class="edit-indicator">Nova obra</div>
+
+    <form id="obra-form" autocomplete="off">
+      <div class="adm-section-title">Identificação</div>
+      <div class="adm-grid2">
+        <div class="adm-field"><label>ID MAPP-FOR</label><input id="f-id" type="text" placeholder="id_mappfor_0000" required/></div>
+        <div class="adm-field"><label>Tipo</label>
+          <select id="f-tipo">
+            <option value="tunel">Túnel</option>
+            <option value="viaduto">Viaduto</option>
+            <option value="ponte">Ponte</option>
+          </select>
+        </div>
+      </div>
+      <div class="adm-field"><label>Estágio</label>
+        <select id="f-estagio">
+          <option value="FINALIZADO">Finalizado</option>
+          <option value="EM EXECUÇÃO">Em Execução</option>
+          <option value="A INICIAR">A Iniciar</option>
+        </select>
+      </div>
+      <div class="adm-field"><label>Nome oficial</label><input id="f-nome" type="text" required/></div>
+      <div class="adm-field"><label>Vulgo / nome popular</label><input id="f-vulgo" type="text"/></div>
+
+      <div class="adm-section-title">Coordenadas</div>
+      <div class="adm-grid2">
+        <div class="adm-field"><label>Latitude</label><input id="f-lat" type="number" step="any" placeholder="-3.7400"/></div>
+        <div class="adm-field"><label>Longitude</label><input id="f-lng" type="number" step="any" placeholder="-38.5200"/></div>
+      </div>
+      <div id="coord-status"></div>
+      <div id="coord-error" class="adm-error"></div>
+
+      <div class="adm-section-title">Extensão & Custo</div>
+      <div class="adm-grid2">
+        <div class="adm-field"><label>extensaoNum (metros)</label><input id="f-extensaoNum" type="number" step="1"/></div>
+        <div class="adm-field"><label>extensao (texto)</label><input id="f-extensao" type="text" placeholder="~200 m"/></div>
+        <div class="adm-field"><label>custoRaw (R$, ou vazio)</label><input id="f-custoRaw" type="number" step="1" placeholder="null se N/D"/></div>
+        <div class="adm-field"><label>custoTexto</label><input id="f-custoTexto" type="text"/></div>
+      </div>
+
+      <div class="adm-section-title">Dados Gerais</div>
+      <div class="adm-field"><label>Construtora / Executor</label><input id="f-construtora" type="text"/></div>
+      <div class="adm-grid2">
+        <div class="adm-field"><label>Início das obras</label><input id="f-inicio" type="text" placeholder="dd/mm/aaaa"/></div>
+        <div class="adm-field"><label>Inauguração / Conclusão</label><input id="f-inauguracao" type="text" placeholder="dd/mm/aaaa"/></div>
+      </div>
+      <div class="adm-field"><label>Bairro / Regional</label><input id="f-bairro" type="text"/></div>
+      <div class="adm-field"><label>Método construtivo</label><textarea id="f-metodo"></textarea></div>
+      <div class="adm-field"><label>Homenageado</label><textarea id="f-homenageado"></textarea></div>
+      <div class="adm-field"><label>Fonte</label><input id="f-fonte" type="text"/></div>
+
+      <div class="adm-section-title">Engenharia</div>
+      <div class="adm-grid2">
+        <div class="adm-field"><label>Gabarito vertical</label><input id="f-gabarito" type="text" placeholder="5,0 m"/></div>
+        <div class="adm-field"><label>Faixas por sentido (fps)</label><input id="f-fps" type="number" step="1" min="0"/></div>
+        <div class="adm-field"><label>Ciclovia / Passeio</label><input id="f-ciclo" type="text"/></div>
+        <div class="adm-field"><label>Drenagem — Tipo</label><input id="f-drenTipo" type="text"/></div>
+        <div class="adm-field"><label>Drenagem — Sistema</label><input id="f-drenSis" type="text"/></div>
+      </div>
+      <div class="adm-field"><label>Especificação hidrossanitária</label><textarea id="f-drenSpec"></textarea></div>
+      <div class="adm-field"><label>Fundação — Tipo</label><input id="f-fundTipo" type="text" placeholder="Estacas Hélice Contínua"/></div>
+      <div class="adm-grid2">
+        <div class="adm-field"><label>Profundidade estimada</label><input id="f-fundProf" type="text" placeholder="~16 m"/></div>
+        <div class="adm-field" style="align-self:center;padding-top:1.2rem">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+            <input id="f-isTunel" type="checkbox" style="width:auto"/>
+            <span>É túnel (isTunel)</span>
+          </label>
+        </div>
+      </div>
+      <div class="adm-field"><label>Observação geotécnica</label><textarea id="f-fundObs"></textarea></div>
+
+      <div class="adm-actions">
+        <button type="submit" class="adm-btn adm-btn-primary">💾 Salvar Obra</button>
+        <button type="button" id="btn-nova" class="adm-btn adm-btn-sec">+ Nova Obra</button>
+        <button type="button" id="btn-export" class="adm-btn adm-btn-export">⬇ Exportar obras.json</button>
+      </div>
+      <div id="save-status" class="adm-status"></div>
+    </form>
+  </div>
+
+  <!-- RIGHT PANEL: MAP -->
+  <div>
+    <div class="adm-map-wrap">
+      <div id="admin-map"></div>
+      <div class="adm-map-hint">🖱️ Clique no mapa para definir lat/lng da obra em edição. Pinos coloridos = obras existentes (clique para editar).</div>
+    </div>
+  </div>
+</div>
+
+<!-- OBRAS TABLE -->
+<div style="padding:0 2rem 3rem;max-width:1400px;margin:0 auto">
+  <div class="adm-table-wrap">
+    <div class="adm-table-header">
+      <h3>Catálogo de Obras</h3>
+      <button class="adm-btn adm-btn-export" onclick="exportObras()">⬇ Exportar obras.json</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="adm-table">
+        <thead><tr><th>ID</th><th>Tipo</th><th>Nome</th><th>Estágio</th><th>Extensão</th><th>Ações</th></tr></thead>
+        <tbody id="obras-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer"></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/components.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
