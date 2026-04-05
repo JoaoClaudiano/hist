@@ -12,7 +12,7 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
   function init() {
-    document.querySelectorAll('.reveal').forEach(function (el) {
+    document.querySelectorAll('.reveal:not(.revealed)').forEach(function (el) {
       observer.observe(el);
     });
   }
@@ -21,4 +21,7 @@
   } else {
     init();
   }
+
+  /* Public API: call window.FSVReveal.init() after dynamic DOM injection */
+  window.FSVReveal = { init: init };
 })();

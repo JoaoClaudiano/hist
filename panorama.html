@@ -365,8 +365,13 @@ async function panoramaBoot() {
     <div class="nota-box">Análise de ${OBRAS.length} obras (${totExt.toFixed(2)} km). CO₂e: ICE v3 + SIDERC (±20–30%). ${comC.length} obras com custo real isolado; demais com média SEINFRA-CE (★). Tipos: ${OBRAS.filter(d => d.tipo === 'tunel').length} túneis · ${OBRAS.filter(d => d.tipo === 'viaduto').length} viadutos · ${OBRAS.filter(d => d.tipo === 'ponte').length} pontes. Última atualização: Abril 2026.</div>`;
 }
 
-panoramaBoot();
+panoramaBoot().then(function () {
+  if (window.FSVReveal) window.FSVReveal.init();
+});
 </script>
 <script src="js/ui.js"></script>
+<button id="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 </body>
 </html>
