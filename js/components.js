@@ -35,13 +35,7 @@
     if (isIndex) {
       return `<a href="#mapa">Mapa</a><a href="#acervo">Acervo</a><a href="#analise">Análise</a>`;
     }
-    return [
-      navLink('index.html', 'Início'),
-      navLink('panorama.html', 'Panorama'),
-      navLink('metodologia.html', 'Metodologia'),
-      navLink('personalidades.html', 'Personalidades'),
-      navLink('sobre.html', 'Sobre'),
-    ].join('');
+    return navLink('index.html', 'Início');
   }
 
   /* ── Detectar tema atual ── */
