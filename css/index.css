@@ -228,16 +228,6 @@ footer strong{color:var(--ink-mid);font-weight:600}
 .oae-pin{cursor:pointer;transition:transform .18s cubic-bezier(.2,.9,.4,1.1)}
 .oae-pin:hover{transform:scale(1.45);z-index:9999!important}
 
-@media(max-width:900px){.charts-duo,.met-grid{grid-template-columns:1fr}.met-full{grid-column:1}}
-@media(max-width:768px){
-  nav{padding:0 1.2rem}.nav-links{display:none}
-  .hero{padding:76px 1.2rem 3rem}.stats{gap:1.2rem}
-  .section{padding-left:1.2rem;padding-right:1.2rem}
-  .cards-grid,.met-grid{grid-template-columns:1fr}
-  .sp-g2,.eng-grid,.co2-bk,.bench-kpis,.mat-grid{grid-template-columns:1fr 1fr}
-  .sp-dates{flex-direction:column}
-}
-
 /* ── Theme toggle & hamburger ── */
 .theme-toggle{width:34px;height:34px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:background-color .2s,border-color .2s,transform .15s;margin-left:.5rem}
 .theme-toggle:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);transform:scale(1.08)}
@@ -248,4 +238,17 @@ footer strong{color:var(--ink-mid);font-weight:600}
 .nav-mobile-menu a{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid);text-decoration:none;padding:.75rem .5rem;border-bottom:1px solid var(--border);transition:color .2s}
 .nav-mobile-menu a:last-child{border-bottom:none}
 .nav-mobile-menu a:hover{color:var(--viaduto)}
-@media(max-width:768px){.nav-hamburger{display:flex}.nav-links{display:none!important}}
+
+/* ── Reading Progress Bar ── */
+#reading-progress {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--viaduto);
+  z-index: 201;
+  transition: width .1s linear;
+  border-radius: 0 2px 2px 0;
+  pointer-events: none;
+}

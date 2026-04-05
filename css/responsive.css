@@ -1,0 +1,31 @@
+/* ══════════════════════════════════════════════════════════
+   Fortaleza Sub & Via — Responsive Breakpoints
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 900px ── */
+@media (max-width: 900px) {
+  .charts-duo, .met-grid { grid-template-columns: 1fr; }
+  .met-full { grid-column: 1; }
+}
+
+/* ── 768px (mobile-first) ── */
+@media (max-width: 768px) {
+  /* Nav */
+  nav { padding: 0 1.2rem; }
+  nav.site-nav { padding: 0 1.2rem; }
+  .nav-links { display: none !important; }
+  .nav-hamburger { display: flex; }
+  /* Hero */
+  .hero { padding: 76px 1.2rem 3rem; }
+  .stats { gap: 1.2rem; }
+  .page-hero { padding: 5rem 1.2rem 2rem; }
+  /* Sections */
+  .section { padding: 3rem 1.2rem; }
+  /* Grids */
+  .card-grid { grid-template-columns: 1fr; }
+  .cards-grid, .met-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  /* Panel */
+  .sp-g2, .eng-grid, .co2-bk, .bench-kpis, .mat-grid { grid-template-columns: 1fr 1fr; }
+  .sp-dates { flex-direction: column; }
+}
