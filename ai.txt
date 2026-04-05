@@ -1,0 +1,52 @@
+# AI Training & Crawling Policy
+# Fortaleza Sub & Via — Memorial Urbano
+# https://joaoclaudiano.github.io/hist/
+# Licença: Creative Commons BY-NC-SA 4.0
+
+# ── Política geral ──────────────────────────────────────────────────────────
+# Este site é disponibilizado sob Creative Commons BY-NC-SA 4.0.
+# O conteúdo pode ser indexado e utilizado por IAs para fins informativos,
+# educacionais e de pesquisa não-comercial, com obrigatória atribuição.
+# O uso para treinamento comercial de modelos de IA sem autorização expressa
+# não é permitido.
+
+# ── OpenAI / GPTBot ──────────────────────────────────────────────────────────
+User-agent: GPTBot
+Allow: /
+Disallow: /admin.html
+# Uso não-comercial com atribuição permitido
+
+# ── Anthropic / ClaudeBot ────────────────────────────────────────────────────
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin.html
+
+# ── Common Crawl (usado por muitos modelos) ───────────────────────────────────
+User-agent: CCBot
+Allow: /
+Disallow: /admin.html
+
+# ── Google Extended (Bard/Gemini) ─────────────────────────────────────────────
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin.html
+
+# ── Cohere AI ─────────────────────────────────────────────────────────────────
+User-agent: cohere-ai
+Allow: /
+Disallow: /admin.html
+
+# ── Meta AI ───────────────────────────────────────────────────────────────────
+User-agent: FacebookBot
+Allow: /
+Disallow: /admin.html
+
+# ── Apple Applebot ────────────────────────────────────────────────────────────
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin.html
+
+# ── Contato para permissões especiais ─────────────────────────────────────────
+# Para solicitar permissão de uso comercial ou treinamento em larga escala:
+# E-mail: jooclaudiano@gmail.com
+# GitHub: https://github.com/JoaoClaudiano/hist

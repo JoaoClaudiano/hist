@@ -1,0 +1,6 @@
+Contact: mailto:jooclaudiano@gmail.com
+Contact: https://github.com/JoaoClaudiano/hist/issues
+Preferred-Languages: pt-BR, en
+Canonical: https://joaoclaudiano.github.io/hist/.well-known/security.txt
+Policy: https://joaoclaudiano.github.io/hist/privacidade.html
+Expires: 2026-12-31T23:59:59.000Z

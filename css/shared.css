@@ -364,6 +364,10 @@ footer.site-footer strong {
   transform: scale(1.08);
 }
 
+#back-to-top:active {
+  transform: scale(.95);
+}
+
 /* ── Badges ── */
 .badge {
   display: inline-block;
@@ -449,6 +453,11 @@ footer.site-footer strong {
   transform: translateY(-1px);
 }
 
+.btn-primary:active {
+  transform: translateY(0) scale(.97);
+  box-shadow: none;
+}
+
 .btn-secondary {
   background: transparent;
   color: var(--ink);
@@ -460,6 +469,11 @@ footer.site-footer strong {
   color: var(--bg);
   border-color: var(--ink);
   transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0) scale(.97);
+  box-shadow: none;
 }
 
 .btn-full { width: 100%; justify-content: center; }

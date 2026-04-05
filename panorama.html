@@ -2,15 +2,21 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="robots" content="index, follow"/>
 <meta name="author" content="João Claudiano"/>
+<meta name="description" content="Análise quantitativa dos túneis, viadutos e pontes de Fortaleza/CE — gráficos de carbono incorporado, custo por metro e distribuição por tipo de obra."/>
   <link rel="canonical" href="https://joaoclaudiano.github.io/hist/panorama.html"/>
 <title>Panorama do Inventário — Fortaleza Sub & Via</title>
 <link rel="stylesheet" href="css/shared.css"/>
 <link rel="stylesheet" href="css/responsive.css"/>
 <meta name="theme-color" content="#18140c"/>
 <link rel="manifest" href="manifest.json"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Panorama do Inventário — Fortaleza Sub & Via","url":"https://joaoclaudiano.github.io/hist/panorama.html","description":"Análise quantitativa e gráficos sobre o inventário de túneis, viadutos e pontes de Fortaleza/CE.","inLanguage":"pt-BR","isPartOf":{"@type":"WebSite","name":"Fortaleza Sub & Via — Memorial Urbano","url":"https://joaoclaudiano.github.io/hist/"},"author":{"@type":"Person","name":"João Claudiano","url":"https://github.com/JoaoClaudiano"}}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 .pan-hero{padding:100px 2rem 4rem;max-width:1100px;margin:0 auto}
@@ -65,7 +71,7 @@
 <body>
 <nav class="site-nav"></nav>
 
-<div class="pan-hero">
+<div class="pan-hero reveal">
   <a href="index.html" class="back-link">← Ver mapa completo</a>
   <div class="eyebrow">Análise Estatística Comparativa</div>
   <h1>Panorama<br><em style="font-style:italic;color:var(--ink-mid)">do Inventário</em></h1>
@@ -137,7 +143,7 @@ async function panoramaBoot() {
 
   // Section 1: KPIs
   mc.innerHTML += `
-  <div class="pan-section">
+  <div class="pan-section reveal">
     <div class="pan-section-label">Indicadores Globais</div>
     <h2>Resumo do Catálogo</h2>
     <div class="kpis-row" id="pan-kpis"></div>
@@ -145,7 +151,7 @@ async function panoramaBoot() {
 
   // Section 2: CO2
   mc.innerHTML += `
-  <div class="pan-section">
+  <div class="pan-section reveal">
     <div class="pan-section-label">Seção 2 — Emissões</div>
     <h2>Análise de CO₂e Incorporado</h2>
     <p>O gráfico abaixo mostra a emissão incorporada estimada (tCO₂e) de cada obra catalogada, ordenada conforme o catálogo. Túneis (azul) aparecem consistentemente como as obras de maior intensidade, dado que a seção celular consome aproximadamente 3× mais concreto por metro linear que viadutos equivalentes.</p>
@@ -166,7 +172,7 @@ async function panoramaBoot() {
 
   // Section 3: Cost
   mc.innerHTML += `
-  <div class="pan-section">
+  <div class="pan-section reveal">
     <div class="pan-section-label">Seção 3 — Custo</div>
     <h2>Análise de Custo por Metro Linear</h2>
     <p>Valores reais (sólido escuro) foram obtidos de publicações em Diário Oficial ou notas de imprensa. Estimativas SEINFRA-CE (translúcido, marcadas ★) são usadas quando o custo isolado não é público. <strong>${comC.length} de ${OBRAS.length} obras</strong> possuem dado real.</p>
@@ -183,7 +189,7 @@ async function panoramaBoot() {
 
   // Section 4: By type
   mc.innerHTML += `
-  <div class="pan-section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding-top:3rem">
+  <div class="pan-section reveal" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding-top:3rem">
     <div class="pan-section-label">Seção 4 — Por Tipo</div>
     <h2>Análise por Tipo Construtivo</h2>
     <div class="insight-card" id="type-analysis"></div>
@@ -191,7 +197,7 @@ async function panoramaBoot() {
 
   // Section 5: Materials
   mc.innerHTML += `
-  <div class="pan-section">
+  <div class="pan-section reveal">
     <div class="pan-section-label">Seção 5 — Materiais</div>
     <h2>Análise de Consumo de Materiais</h2>
     <p>Concreto C35 (fck 35 MPa) calculado pelo coeficiente paramétrico m³/m × extensão. Aço CA-50 à taxa de 120 kg/m³ de concreto. Valores nominais — ver Metodologia para premissas.</p>
@@ -208,7 +214,7 @@ async function panoramaBoot() {
 
   // Section 6: Insights
   mc.innerHTML += `
-  <div class="pan-section">
+  <div class="pan-section reveal">
     <div class="pan-section-label">Seção 6 — Perspectivas</div>
     <h2>Perspectivas Cruzadas</h2>
     <div id="cross-insights"></div>
@@ -361,5 +367,6 @@ async function panoramaBoot() {
 
 panoramaBoot();
 </script>
+<script src="js/ui.js"></script>
 </body>
 </html>

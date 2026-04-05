@@ -2,15 +2,21 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="robots" content="index, follow"/>
 <meta name="author" content="João Claudiano"/>
+<meta name="description" content="Metodologia de cálculo de carbono incorporado e estimativas de custo para obras viárias de Fortaleza — coeficientes ICE v3, SINAPI 2024 e classificação CO₂e."/>
   <link rel="canonical" href="https://joaoclaudiano.github.io/hist/metodologia.html"/>
 <title>Metodologia & Referências — Fortaleza Sub & Via</title>
 <link rel="stylesheet" href="css/shared.css"/>
 <link rel="stylesheet" href="css/responsive.css"/>
 <meta name="theme-color" content="#18140c"/>
 <link rel="manifest" href="manifest.json"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Metodologia & Referências — Fortaleza Sub & Via","url":"https://joaoclaudiano.github.io/hist/metodologia.html","description":"Metodologia de cálculo de carbono incorporado e estimativas de custo para obras viárias de Fortaleza — coeficientes ICE v3, SINAPI 2024 e classificação CO₂e.","inLanguage":"pt-BR","isPartOf":{"@type":"WebSite","name":"Fortaleza Sub & Via — Memorial Urbano","url":"https://joaoclaudiano.github.io/hist/"},"author":{"@type":"Person","name":"João Claudiano","url":"https://github.com/JoaoClaudiano"}}
+</script>
 <style>
 .met-hero{padding:100px 2rem 4rem;max-width:860px;margin:0 auto}
 .met-hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);padding:5px 14px;border-radius:100px;border:1px solid var(--border-strong,rgba(50,40,20,.18));background:var(--surface);margin-bottom:1.5rem}
@@ -70,7 +76,7 @@
 <body>
 <nav class="site-nav"></nav>
 
-<div class="met-hero">
+<div class="met-hero reveal">
   <a href="index.html" class="back-link">← Voltar ao Mapa</a>
   <div class="eyebrow">Documentação Técnica Completa</div>
   <h1>Metodologia &<br><em style="font-style:italic;color:var(--ink-mid)">Referências Técnicas</em></h1>
@@ -93,7 +99,7 @@
 </div>
 
 <!-- SECTION 1 -->
-<section id="geo" class="met-section">
+<section id="geo" class="met-section reveal">
   <div class="met-section-label">Seção 1</div>
   <h2>Georreferenciamento</h2>
   <p>Todas as coordenadas do catálogo foram extraídas do <strong>MAPP-FOR</strong> — Sistema de Mapeamento de Obras e Infraestrutura da Prefeitura de Fortaleza, mantido pela Secretaria Municipal de Infraestrutura (SEINF). O sistema opera em datum <strong>SIRGAS 2000</strong>, projeção UTM Fuso 24S, com exportação disponível em GeoJSON e KML.</p>
@@ -114,7 +120,7 @@
 </section>
 
 <!-- SECTION 2 -->
-<section id="concreto" class="met-section">
+<section id="concreto" class="met-section reveal">
   <div class="met-section-label">Seção 2</div>
   <h2>Volume de Concreto — Abordagem Paramétrica</h2>
   <p>Na ausência de projetos executivos públicos, o volume de concreto estrutural é estimado por <strong>composições unitárias por metro linear (m³/m)</strong>, metodologia amplamente empregada em estudos de ACV na fase de viabilidade e diagnóstico. Os coeficientes foram calibrados com base na <em>Tabela SEINFRA-CE 27/27.1</em> e em projetos típicos de OAEs da Região Metropolitana de Fortaleza.</p>
@@ -148,7 +154,7 @@ Taxa de armadura CA-50: 120 kg/m³ de concreto
 </section>
 
 <!-- SECTION 3 -->
-<section id="carbono" class="met-section">
+<section id="carbono" class="met-section reveal">
   <div class="met-section-label">Seção 3</div>
   <h2>Carbono Incorporado — ICE v3 + SIDERC</h2>
   <p>O cálculo de emissões de CO₂ equivalente (CO₂e) segue a <strong>Avaliação do Ciclo de Vida (ACV) nas fases A1–A5</strong> da norma EN 15804:2022: extração de matérias-primas (A1), transporte até a fábrica (A2), fabricação (A3), transporte até a obra (A4) e construção (A5). As fases operacionais (B) e de fim de vida (C/D) estão <em>excluídas</em> do escopo.</p>
@@ -213,7 +219,7 @@ onde:
 </section>
 
 <!-- SECTION 4 -->
-<section id="bench" class="met-section">
+<section id="bench" class="met-section reveal">
   <div class="met-section-label">Seção 4</div>
   <h2>Benchmarking Econômico</h2>
   <p>Os custos de referência por metro linear (R$/m, preços 2023–2024) foram consolidados a partir da <strong>Tabela de Composições e Custos Unitários SEINFRA-CE nº 27/27.1</strong> e do <strong>SINAPI</strong> (Sistema Nacional de Pesquisa de Custos e Índices da Construção Civil — CEF/IBGE). Valores deflacionados pelo INCC-DI para base Dezembro/2024.</p>
@@ -252,7 +258,7 @@ onde:
 </section>
 
 <!-- SECTION 5 -->
-<section id="co2class" class="met-section">
+<section id="co2class" class="met-section reveal">
   <div class="met-section-label">Seção 5</div>
   <h2>Classificação CO₂e (A / B / C)</h2>
   <p>O sistema de classificação de três níveis foi calibrado especificamente para o inventário de OAEs de Fortaleza, com limiares baseados na distribuição observada de emissões paramétricas do catálogo.</p>
@@ -285,7 +291,7 @@ onde:
 </section>
 
 <!-- SECTION 6 -->
-<section id="limites" class="met-section">
+<section id="limites" class="met-section reveal">
   <div class="met-section-label">Seção 6</div>
   <h2>Limitações e Incertezas</h2>
 
@@ -321,7 +327,7 @@ onde:
 </section>
 
 <!-- SECTION 7 -->
-<section id="fontes" class="met-section">
+<section id="fontes" class="met-section reveal">
   <div class="met-section-label">Seção 7</div>
   <h2>Fontes de Dados de Obra</h2>
   <div class="met-card">
@@ -339,7 +345,7 @@ onde:
 </section>
 
 <!-- SECTION 8 -->
-<section id="refs" class="met-section">
+<section id="refs" class="met-section reveal">
   <div class="met-section-label">Seção 8</div>
   <h2>Referências Bibliográficas</h2>
   <div class="met-card">
