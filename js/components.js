@@ -149,7 +149,7 @@
   if (btnTop) {
     window.addEventListener('scroll', function () {
       btnTop.classList.toggle('visible', window.scrollY > 300);
-    });
+    }, { passive: true });
     btnTop.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
