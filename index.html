@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <link rel="canonical" href="https://joaoclaudiano.github.io/hist/index.html"/>
 <title>Fortaleza Sub & Via — Memorial Urbano</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -22,7 +23,6 @@
   <div class="nav-links" role="list">
     <a href="#mapa">Mapa</a><a href="#acervo">Acervo</a>
     <a href="#analise">Análise</a><a href="#metodologia">Metodologia</a>
-    <a href="panorama.html">Panorama</a><a href="sobre.html">Sobre</a>
   </div>
   <div style="display:flex;align-items:center;gap:.35rem">
     <button class="theme-toggle" id="theme-toggle-btn"
@@ -43,8 +43,6 @@
   <a href="#acervo">Acervo</a>
   <a href="#analise">Análise</a>
   <a href="#metodologia">Metodologia</a>
-  <a href="panorama.html">Panorama</a>
-  <a href="sobre.html">Sobre</a>
 </nav>
 
 <header class="hero">
@@ -229,23 +227,7 @@ Total (tCO₂e) = soma ÷ 1000</div>
   </div>
 </section>
 
-<footer>
-  <strong>Fortaleza Sub & Via v6 — Memorial Urbano</strong><br>
-  Coordenadas: MAPP-FOR · Dados: Seinfra-CE · SOP-CE · SEINF · Diário do Nordeste · O Povo
-  <nav class="footer-nav" aria-label="Páginas institucionais">
-    <a href="sobre.html">Sobre o Projeto</a>
-    <a href="personalidades.html">Personalidades</a>
-    <a href="panorama.html">Panorama</a>
-    <a href="metodologia.html">Metodologia</a>
-    <a href="apoio.html">Apoie</a>
-    <a href="contato.html">Contato</a>
-    <a href="licenca.html">Licença CC</a>
-    <a href="privacidade.html">Privacidade</a>
-    <a href="termos.html">Termos de Uso</a>
-  </nav>
-  CO₂e: ICE v3 (Univ. Bath) + SIDERC / IPCC AR6 · Custos: SEINFRA-CE tab.27 · SINAPI 2024<br>
-  Estimativas paramétricas ±20–30%. Não substitui ACV auditada. Última revisão: Abril 2026.
-</footer>
+<footer class="site-footer"></footer>
 
 <!-- SIDE PANEL -->
 <aside id="side-panel" role="dialog" aria-modal="true" aria-labelledby="sp-name">
@@ -381,5 +363,9 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 </script>
+<button id="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<script src="js/components.js"></script>
 </body>
 </html>

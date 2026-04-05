@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contato · Fortaleza Sub & Via</title>
   <meta name="description" content="Entre em contato com a equipe do Memorial Urbano Fortaleza Sub & Via — dúvidas, contribuições, correções e parcerias."/>
+  <link rel="canonical" href="https://joaoclaudiano.github.io/hist/contato.html"/>
   <meta name="theme-color" content="#18140c"/>
   <link rel="manifest" href="manifest.json"/>
   <link rel="stylesheet" href="css/shared.css"/>
@@ -35,6 +36,33 @@
     .assunto-option label{display:flex;align-items:center;gap:8px;padding:.7rem 1rem;border-radius:8px;background:var(--bg);border:1px solid var(--border-strong);font-size:12px;color:var(--ink-mid);cursor:pointer;transition:all .18s;font-weight:500}
     .assunto-option input[type=radio]:checked+label{background:var(--ink);color:var(--bg);border-color:var(--ink)}
     .assunto-option label:hover{border-color:var(--ink-mid)}
+
+    /* ── Tooltips ── */
+    .label-wrap{display:flex;align-items:center;gap:6px}
+    .tooltip-icon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--border-strong);color:var(--ink-faint);font-size:10px;font-weight:700;cursor:default;flex-shrink:0;line-height:1;user-select:none}
+    .tooltip-icon::before{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:11px;font-weight:400;line-height:1.45;white-space:normal;max-width:220px;padding:.45rem .65rem;border-radius:7px;pointer-events:none;opacity:0;transition:opacity .18s;z-index:300;text-align:left;width:max-content}
+    .tooltip-icon::after{content:'';position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--ink);opacity:0;transition:opacity .18s;pointer-events:none}
+    .tooltip-icon:hover::before,.tooltip-icon:focus::before,.tooltip-icon:hover::after,.tooltip-icon:focus::after{opacity:1}
+    .tooltip-icon:focus{outline:2px solid var(--viaduto);outline-offset:2px}
+
+    /* ── Form feedback ── */
+    .form-status{margin-top:1rem;padding:.85rem 1.1rem;border-radius:9px;font-size:13px;font-weight:500;line-height:1.55;display:none}
+    .form-status.success{display:block;background:var(--ponte-bg);border:1px solid rgba(22,101,52,.2);color:var(--ponte)}
+    .form-status.error{display:block;background:#fef2f2;border:1px solid rgba(220,38,38,.2);color:#b91c1c}
+    [data-theme="dark"] .form-status.error{background:#2a1010;color:#f87171;border-color:rgba(248,113,113,.2)}
+    .form-status.loading{display:block;background:var(--viaduto-bg);border:1px solid rgba(180,83,9,.2);color:var(--viaduto)}
+    .field-error{font-size:11px;color:#b91c1c;margin-top:3px;display:none}
+    [data-theme="dark"] .field-error{color:#f87171}
+    input.invalid,textarea.invalid{border-color:#b91c1c!important;outline:none}
+    [data-theme="dark"] input.invalid,[data-theme="dark"] textarea.invalid{border-color:#f87171!important}
+
+    /* ── Submit button loading state ── */
+    #btn-submit{transition:opacity .2s}
+    #btn-submit[aria-busy="true"]{opacity:.7;cursor:wait;pointer-events:none}
+
+    /* honeypot */
+    .hp-field{position:absolute;left:-9999px;top:-9999px;opacity:0;pointer-events:none}
+
     @media(max-width:768px){.contact-layout{grid-template-columns:1fr}.assunto-grid{grid-template-columns:1fr}.page-hero{padding:5rem 1.2rem 2rem}}
   </style>
 </head>
@@ -109,17 +137,40 @@
 
       <div class="form-card">
         <h3>Envie uma mensagem</h3>
-        <form action="mailto:jooclaudiano@gmail.com" method="POST" enctype="text/plain">
+        <form id="contact-form" novalidate>
+          <!-- Honeypot anti-spam: campo invisível que robôs preenchem automaticamente -->
+          <input class="hp-field" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"/>
+
           <div class="form-group">
-            <label for="nome">Seu nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Como prefere ser chamado(a)" required/>
+            <label for="nome" class="label-wrap">
+              Seu nome
+              <span class="tooltip-icon" role="tooltip" tabindex="0"
+                data-tip="Como você prefere ser identificado(a). Pode ser apenas o primeiro nome.">?</span>
+            </label>
+            <input type="text" id="nome" name="nome" placeholder="Como prefere ser chamado(a)"
+              required minlength="2" maxlength="100" autocomplete="name"
+              aria-describedby="nome-error"/>
+            <span class="field-error" id="nome-error" role="alert">Por favor, informe seu nome (mínimo 2 caracteres).</span>
           </div>
+
           <div class="form-group">
-            <label for="email">E-mail para retorno</label>
-            <input type="email" id="email" name="email" placeholder="seu@email.com" required/>
+            <label for="email" class="label-wrap">
+              E-mail para retorno
+              <span class="tooltip-icon" role="tooltip" tabindex="0"
+                data-tip="Usaremos este e-mail apenas para responder. Nunca compartilhamos seus dados.">?</span>
+            </label>
+            <input type="email" id="email" name="email" placeholder="seu@email.com"
+              required maxlength="254" autocomplete="email"
+              aria-describedby="email-error"/>
+            <span class="field-error" id="email-error" role="alert">Por favor, informe um e-mail válido (ex: nome@dominio.com).</span>
           </div>
+
           <div class="form-group">
-            <label>Assunto</label>
+            <label class="label-wrap">
+              Assunto
+              <span class="tooltip-icon" role="tooltip" tabindex="0"
+                data-tip="Selecione a categoria que melhor descreve sua mensagem.">?</span>
+            </label>
             <div class="assunto-grid">
               <div class="assunto-option"><input type="radio" name="assunto" id="a1" value="Contribuição de dados" checked/><label for="a1">📦 Contribuição de dados</label></div>
               <div class="assunto-option"><input type="radio" name="assunto" id="a2" value="Correção histórica"/><label for="a2">✏️ Correção histórica</label></div>
@@ -129,12 +180,25 @@
               <div class="assunto-option"><input type="radio" name="assunto" id="a6" value="Outro"/><label for="a6">💬 Outro</label></div>
             </div>
           </div>
+
           <div class="form-group">
-            <label for="msg">Mensagem</label>
-            <textarea id="msg" name="mensagem" placeholder="Descreva sua mensagem com o máximo de detalhes. Se for uma correção, inclua a fonte (link do Diário Oficial, artigo, livro...)." required></textarea>
+            <label for="msg" class="label-wrap">
+              Mensagem
+              <span class="tooltip-icon" role="tooltip" tabindex="0"
+                data-tip="Quanto mais detalhes incluir, mais rápido conseguimos ajudar. Para correções, cite a fonte.">?</span>
+            </label>
+            <textarea id="msg" name="mensagem"
+              placeholder="Descreva sua mensagem com o máximo de detalhes. Se for uma correção, inclua a fonte (link do Diário Oficial, artigo, livro...)."
+              required minlength="10" maxlength="4000"
+              aria-describedby="msg-error"></textarea>
+            <span class="field-error" id="msg-error" role="alert">Por favor, escreva sua mensagem (mínimo 10 caracteres).</span>
           </div>
-          <button type="submit" class="btn btn-primary btn-full">Enviar mensagem</button>
-          <p class="form-notice">Este formulário usa seu cliente de e-mail padrão. Se preferir, escreva diretamente para <strong>jooclaudiano@gmail.com</strong>. Toda contribuição recebe crédito na página correspondente.</p>
+
+          <button type="submit" id="btn-submit" class="btn btn-primary btn-full">Enviar mensagem</button>
+
+          <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+
+          <p class="form-notice">Sua mensagem será enviada com segurança via Formspree. Se preferir, escreva diretamente para <strong>jooclaudiano@gmail.com</strong>. Toda contribuição recebe crédito na página correspondente.</p>
         </form>
       </div>
     </div>
@@ -175,5 +239,146 @@
 </button>
 <script src="js/theme.js"></script>
 <script src="js/components.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var FORMSPREE_URL = 'https://formspree.io/f/mykbbnol';
+  /* Note: the form endpoint is intentionally public (client-side); rate limiting
+     and spam protection are managed on the Formspree dashboard. */
+
+  /* ── Sanitização: remove espaços em branco extras das bordas e internos ── */
+  function sanitize(str) {
+    return String(str).trim().replace(/\s+/g, ' ');
+  }
+
+  /* ── Validação de e-mail (RFC 5321 simplificado) ── */
+  /* Limita local-part a 64 chars, labels do domínio a 63 chars, TLD a 2-24 chars.
+     Validação definitiva é feita pelo Formspree no servidor. */
+  var EMAIL_RE = /^[^\s@]{1,64}@(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,24}$/;
+  function isValidEmail(v) { return EMAIL_RE.test(v); }
+
+  /* ── Referências DOM ── */
+  var form   = document.getElementById('contact-form');
+  var btnSub = document.getElementById('btn-submit');
+  var status = document.getElementById('form-status');
+
+  function showStatus(type, msg) {
+    status.className = 'form-status ' + type;
+    status.textContent = msg;
+    status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function clearStatus() {
+    status.className = 'form-status';
+    status.textContent = '';
+  }
+
+  function setFieldError(inputId, errorId, show) {
+    var inp = document.getElementById(inputId);
+    var err = document.getElementById(errorId);
+    if (!inp || !err) return;
+    if (show) {
+      inp.classList.add('invalid');
+      err.style.display = 'block';
+    } else {
+      inp.classList.remove('invalid');
+      err.style.display = 'none';
+    }
+  }
+
+  /* ── Limpar erros ao editar o campo ── */
+  ['nome', 'email', 'msg'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', function () {
+      el.classList.remove('invalid');
+      var errId = id === 'msg' ? 'msg-error' : id + '-error';
+      var err = document.getElementById(errId);
+      if (err) err.style.display = 'none';
+      clearStatus();
+    });
+  });
+
+  /* ── Validação local ── */
+  function validateForm(data) {
+    var ok = true;
+    if (!data.nome || data.nome.length < 2) {
+      setFieldError('nome', 'nome-error', true); ok = false;
+    } else {
+      setFieldError('nome', 'nome-error', false);
+    }
+    if (!data.email || !isValidEmail(data.email)) {
+      setFieldError('email', 'email-error', true); ok = false;
+    } else {
+      setFieldError('email', 'email-error', false);
+    }
+    if (!data.mensagem || data.mensagem.length < 10) {
+      setFieldError('msg', 'msg-error', true); ok = false;
+    } else {
+      setFieldError('msg', 'msg-error', false);
+    }
+    return ok;
+  }
+
+  /* ── Envio via Fetch (AJAX) — sem redirecionamento ── */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    /* Honeypot: campo oculto preenchido por bots — rejeitar silenciosamente */
+    var hp = form.querySelector('input[name="_gotcha"]');
+    if (hp && hp.value) { return; }
+
+    /* Coletar e sanitizar dados */
+    var data = {
+      nome:     sanitize(document.getElementById('nome').value),
+      email:    sanitize(document.getElementById('email').value).toLowerCase(),
+      assunto:  (form.querySelector('input[name="assunto"]:checked') || {}).value || 'Outro',
+      mensagem: sanitize(document.getElementById('msg').value),
+    };
+
+    /* Validação local antes de enviar */
+    if (!validateForm(data)) {
+      showStatus('error', '\u26a0\ufe0f Por favor, corrija os campos destacados antes de enviar.');
+      return;
+    }
+
+    /* Bloquear envio duplo e indicar loading */
+    btnSub.setAttribute('aria-busy', 'true');
+    btnSub.textContent = 'Enviando\u2026';
+    showStatus('loading', '\u23f3 Enviando sua mensagem\u2026');
+
+    fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    .then(function (res) {
+      btnSub.removeAttribute('aria-busy');
+      btnSub.textContent = 'Enviar mensagem';
+      if (res.ok) {
+        showStatus('success', '\u2705 Mensagem enviada com sucesso! Respondemos em at\u00e9 48 horas.');
+        form.reset();
+        var r1 = document.getElementById('a1');
+        if (r1) r1.checked = true;
+      } else {
+        return res.json().then(function (body) {
+          var msg = (body && body.errors && body.errors.length && body.errors[0].message)
+            ? body.errors[0].message
+            : 'Erro desconhecido';
+          showStatus('error', '\u274c N\u00e3o foi poss\u00edvel enviar: ' + msg + '. Tente novamente ou escreva para jooclaudiano@gmail.com.');
+        }).catch(function () {
+          showStatus('error', '\u274c Erro ao enviar. Tente novamente ou escreva para jooclaudiano@gmail.com.');
+        });
+      }
+    })
+    .catch(function () {
+      btnSub.removeAttribute('aria-busy');
+      btnSub.textContent = 'Enviar mensagem';
+      showStatus('error', '\u274c Falha na conex\u00e3o. Verifique sua internet e tente novamente, ou escreva diretamente para jooclaudiano@gmail.com.');
+    });
+  });
+})();
+</script>
 </body>
 </html>

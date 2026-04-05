@@ -34,10 +34,8 @@
       </a>
       <div class="nav-links" role="list">
         ${navLink('index.html', 'Mapa')}
-        ${navLink('sobre.html', 'Projeto')}
+        ${navLink('panorama.html', 'Panorama')}
         ${navLink('personalidades.html', 'Personalidades')}
-        ${navLink('apoio.html', 'Apoie')}
-        ${navLink('contato.html', 'Contato')}
       </div>
       <div style="display:flex;align-items:center;gap:.35rem">
         <button class="theme-toggle" id="theme-toggle-btn"
@@ -62,10 +60,8 @@
     mobileMenu.setAttribute('aria-hidden', 'true');
     mobileMenu.innerHTML = `
       ${navLink('index.html', 'Mapa')}
-      ${navLink('sobre.html', 'Projeto')}
+      ${navLink('panorama.html', 'Panorama')}
       ${navLink('personalidades.html', 'Personalidades')}
-      ${navLink('apoio.html', 'Apoie')}
-      ${navLink('contato.html', 'Contato')}
     `;
     navEl.insertAdjacentElement('afterend', mobileMenu);
 
@@ -106,6 +102,8 @@
       <nav class="footer-nav" aria-label="Links institucionais">
         <a href="${root}sobre.html">Sobre o Projeto</a>
         <a href="${root}personalidades.html">Personalidades</a>
+        <a href="${root}panorama.html">Panorama</a>
+        <a href="${root}metodologia.html">Metodologia</a>
         <a href="${root}apoio.html">Apoie</a>
         <a href="${root}contato.html">Contato</a>
         <a href="${root}licenca.html">Licença CC</a>
