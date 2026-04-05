@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://joaoclaudiano.github.io/hist/sitemap.xml

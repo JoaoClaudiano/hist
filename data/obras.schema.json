@@ -1,0 +1,123 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://joaoclaudiano.github.io/hist/data/obras.schema.json",
+  "title": "Obras de Arte Especiais — Fortaleza Sub & Via",
+  "description": "Schema de validação para os arquivos tuneis.json, viadutos.json e pontes.json",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id", "tipo", "estagio", "nome", "vulgo",
+      "lat", "lng", "extensaoNum", "extensao",
+      "custoRaw", "custoTexto", "construtora",
+      "inicio", "inauguracao", "bairro",
+      "metodo", "homenageado", "fonte", "eng"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 3,
+        "description": "Identificador único (ex: id_mappfor_2550, wikimapia_XXX)"
+      },
+      "tipo": {
+        "type": "string",
+        "enum": ["tunel", "viaduto", "ponte"],
+        "description": "Tipo da obra de arte especial"
+      },
+      "estagio": {
+        "type": "string",
+        "enum": ["FINALIZADO", "EM EXECUÇÃO", "A INICIAR"],
+        "description": "Estágio atual da obra"
+      },
+      "nome": {
+        "type": "string",
+        "minLength": 3,
+        "description": "Nome oficial da obra"
+      },
+      "vulgo": {
+        "type": "string",
+        "description": "Nome popular ou apelido da obra"
+      },
+      "lat": {
+        "type": "number",
+        "minimum": -3.9,
+        "maximum": -3.6,
+        "description": "Latitude (bbox Fortaleza)"
+      },
+      "lng": {
+        "type": "number",
+        "minimum": -38.7,
+        "maximum": -38.4,
+        "description": "Longitude (bbox Fortaleza)"
+      },
+      "extensaoNum": {
+        "type": ["number", "null"],
+        "minimum": 0,
+        "description": "Extensão em metros (numérico)"
+      },
+      "extensao": {
+        "type": "string",
+        "description": "Extensão formatada (ex: '~170 m')"
+      },
+      "custoRaw": {
+        "type": ["number", "null"],
+        "minimum": 0,
+        "description": "Custo total em reais (null se desconhecido)"
+      },
+      "custoTexto": {
+        "type": "string",
+        "description": "Descrição textual do custo"
+      },
+      "construtora": {
+        "type": "string",
+        "description": "Construtora ou órgão responsável"
+      },
+      "inicio": {
+        "type": "string",
+        "description": "Data de início das obras"
+      },
+      "inauguracao": {
+        "type": "string",
+        "description": "Data de inauguração ou conclusão"
+      },
+      "bairro": {
+        "type": "string",
+        "description": "Bairro(s) onde a obra está localizada"
+      },
+      "metodo": {
+        "type": "string",
+        "description": "Método construtivo adotado"
+      },
+      "homenageado": {
+        "type": "string",
+        "description": "Personalidade homenageada e breve histórico"
+      },
+      "fonte": {
+        "type": "string",
+        "description": "Fontes de dados e referências"
+      },
+      "eng": {
+        "type": "object",
+        "required": [
+          "gabarito", "fps", "ciclo",
+          "drenTipo", "drenSis", "drenSpec",
+          "fundTipo", "fundProf", "fundObs", "isTunel"
+        ],
+        "properties": {
+          "gabarito": { "type": "string", "description": "Gabarito vertical livre" },
+          "fps": { "type": "integer", "minimum": 0, "description": "Faixas por sentido" },
+          "ciclo": { "type": "string", "description": "Infraestrutura cicloviária" },
+          "drenTipo": { "type": "string", "description": "Tipo de drenagem" },
+          "drenSis": { "type": "string", "description": "Sistema de drenagem" },
+          "drenSpec": { "type": "string", "description": "Especificações de drenagem" },
+          "fundTipo": { "type": "string", "description": "Tipo de fundação" },
+          "fundProf": { "type": "string", "description": "Profundidade de fundação" },
+          "fundObs": { "type": "string", "description": "Observações sobre fundação" },
+          "isTunel": { "type": "boolean", "description": "Indica se é túnel (vs. viaduto/ponte)" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
+}

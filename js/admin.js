@@ -10,12 +10,18 @@ let editingId = null;
 
 async function adminBoot() {
   try {
-    const [cfgRes, obrasRes] = await Promise.all([
+    const [cfgRes, tuneisRes, viadutosRes, pontesRes] = await Promise.all([
       fetch('data/config.json'),
-      fetch('data/obras.json')
+      fetch('data/tuneis.json'),
+      fetch('data/viadutos.json'),
+      fetch('data/pontes.json')
     ]);
     cfg = await cfgRes.json();
-    obras = await obrasRes.json();
+    obras = [
+      ...(await tuneisRes.json()),
+      ...(await viadutosRes.json()),
+      ...(await pontesRes.json())
+    ];
     initAdminMap();
     renderObrasTable();
     renderMapPins();
@@ -205,14 +211,20 @@ function deleteObra(id) {
 }
 
 function exportObras() {
-  const json = JSON.stringify(obras, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'obras.json';
-  a.click();
-  URL.revokeObjectURL(url);
+  // Export each type as a separate file, matching the modular data structure
+  const tipos = ['tunel', 'viaduto', 'ponte'];
+  const nomes = { tunel: 'tuneis', viaduto: 'viadutos', ponte: 'pontes' };
+  tipos.forEach(tipo => {
+    const subset = obras.filter(o => o.tipo === tipo);
+    const json = JSON.stringify(subset, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = nomes[tipo] + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

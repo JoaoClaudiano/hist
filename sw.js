@@ -29,7 +29,9 @@ const PRECACHE = [
   './js/panel.js',
   './js/app.js',
   './data/config.json',
-  './data/obras.json',
+  './data/tuneis.json',
+  './data/viadutos.json',
+  './data/pontes.json',
 ];
 
 self.addEventListener('install', event => {

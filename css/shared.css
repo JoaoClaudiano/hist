@@ -572,4 +572,65 @@ footer.site-footer strong {
   .card-grid {
     grid-template-columns: 1fr;
   }
+
+  .two-col { grid-template-columns: 1fr; }
 }
+
+/* ── Page hero (usado em páginas institucionais) ── */
+.page-hero {
+  padding: 6rem 2rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 4px 13px;
+  border-radius: 100px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--viaduto);
+}
+
+.page-hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: .95;
+  letter-spacing: -.03em;
+  margin-bottom: 1.5rem;
+}
+
+.page-hero h1 em { font-style: italic; color: var(--ink-mid); }
+
+.page-hero p.lead {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink-mid);
+  max-width: 600px;
+}
+
+.section + .section { border-top: 1px solid var(--border); }
+
+/* ── Prosa editorial ── */
+.prose p { font-size: 14px; color: var(--ink-mid); line-height: 1.8; margin-bottom: 1.25rem; }
+.prose p:last-child { margin-bottom: 0; }
+.prose strong { color: var(--ink); font-weight: 600; }
+.prose a { color: var(--viaduto); text-decoration: none; }
+.prose a:hover { text-decoration: underline; }
+
+/* ── Layout de duas colunas ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
