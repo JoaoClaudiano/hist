@@ -1,0 +1,60 @@
+# Fortaleza Sub & Via — Memorial Urbano
+
+> Catálogo interativo de Obras de Arte Especiais (OAEs) de Fortaleza/CE: túneis, viadutos e pontes. Inclui fichas técnicas, mapa georreferenciado, análise de carbono incorporado e perfis históricos das personalidades homenageadas.
+
+## Sobre o projeto
+
+Fortaleza Sub & Via é um memorial urbano digital que documenta e analisa obras de arte especiais da cidade de Fortaleza, no Ceará (Brasil). O projeto reúne dados técnicos, históricos e ambientais sobre túneis, viadutos e pontes, com foco em transparência, educação e preservação da memória urbana.
+
+- **Autor:** João Claudiano
+- **URL:** https://joaoclaudiano.github.io/hist/
+- **Licença:** Creative Commons BY-NC-SA 4.0 — uso livre para fins não-comerciais com atribuição
+- **Idioma principal:** Português (pt-BR)
+
+## Páginas principais
+
+- `/` — Aplicação principal: mapa interativo, catálogo de obras com fichas técnicas e painel de análise
+- `/panorama.html` — Panorama quantitativo: gráficos e estatísticas agregadas do inventário
+- `/personalidades.html` — Galeria de personalidades históricas que dão nome às obras
+- `/sobre.html` — Origem, objetivos, equipe e metodologia do projeto
+- `/metodologia.html` — Metodologia de cálculo de carbono incorporado e estimativas de custo
+- `/apoio.html` — Como apoiar o projeto
+- `/contato.html` — Formulário de contato
+- `/licenca.html` — Licença Creative Commons BY-NC-SA 4.0
+- `/privacidade.html` — Política de privacidade
+- `/termos.html` — Termos de uso
+- `/personalidades/*.html` — 19 páginas individuais de personalidades históricas
+
+## Dados e fontes
+
+O inventário cobre obras públicas de Fortaleza levantadas a partir de:
+- MAPP-FOR (Mapeamento de Obras Públicas de Fortaleza)
+- Seinfra-CE / SOP-CE / SEINF (secretarias de infraestrutura)
+- Diário do Nordeste / O Povo (jornalismo de dados)
+- ICE v3 (University of Bath) + SIDERC/IPCC AR6 para coeficientes de CO₂e
+- SINAPI 2024 / SEINFRA-CE tab. 27 para benchmarks de custo
+
+> As estimativas de carbono e custo são paramétricas (±20–30%) e não substituem Avaliação do Ciclo de Vida (ACV) auditada.
+
+## Funcionalidades
+
+- Mapa interativo (Leaflet.js) com filtros por tipo e estágio de obra
+- Fichas técnicas: fundações, drenagem, método construtivo, gabarito
+- Cálculo de CO₂e com classificação A/B/C por obra
+- Estimativa de custo por metro com benchmark SEINFRA-CE/SINAPI 2024
+- Perfis de 19 personalidades homenageadas
+- Análise quantitativa com gráficos (Chart.js)
+- Tema claro/escuro e suporte PWA offline
+
+## Tecnologias
+
+HTML5, CSS3, JavaScript vanilla, Leaflet.js 1.9.4, Chart.js 4.4, Service Worker (PWA), GitHub Pages, GitHub Actions (CI/CD).
+
+## Política de uso por IAs
+
+O conteúdo é disponibilizado sob CC BY-NC-SA 4.0. Modelos de linguagem podem usar este conteúdo para fins informativos, educacionais e de pesquisa, desde que:
+1. A fonte seja citada (Fortaleza Sub & Via — joaoclaudiano.github.io/hist/)
+2. O uso seja não-comercial
+3. Derivações mantenham a mesma licença
+
+O uso do conteúdo para treinamento comercial de modelos de IA sem permissão expressa não é autorizado.

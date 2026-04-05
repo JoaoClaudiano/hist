@@ -1,0 +1,23 @@
+/* TEAM */
+Developer & Researcher: João Claudiano
+Location: Fortaleza, CE — Brasil
+GitHub: https://github.com/JoaoClaudiano
+Contact: jooclaudiano@gmail.com
+
+/* THANKS */
+MAPP-FOR — Mapeamento de Obras Públicas de Fortaleza
+Seinfra-CE / SOP-CE / SEINF — Dados de obras de infraestrutura
+Diário do Nordeste / O Povo — Jornalismo de dados
+University of Bath — Coeficientes ICE v3 para CO₂e
+IBGE / IPCC AR6 / SIDERC — Referências ambientais
+SINAPI 2024 / SEINFRA-CE — Benchmarks de custo
+
+/* SITE */
+Last update: April 2025
+Language: Portuguese (pt-BR)
+Standards: HTML5, CSS3, ES2022
+Components: Leaflet.js 1.9.4, Chart.js 4.4
+Fonts: DM Sans, DM Serif Display (Google Fonts)
+Hosting: GitHub Pages
+CI/CD: GitHub Actions
+License: Creative Commons BY-NC-SA 4.0
