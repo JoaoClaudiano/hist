@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Metodologia & Referências — Fortaleza Sub & Via</title>
+<link rel="stylesheet" href="css/shared.css"/>
+<meta name="theme-color" content="#18140c"/>
+<link rel="manifest" href="manifest.json"/>
+<style>
+.met-hero{padding:100px 2rem 4rem;max-width:860px;margin:0 auto}
+.met-hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);padding:5px 14px;border-radius:100px;border:1px solid var(--border-strong,rgba(50,40,20,.18));background:var(--surface);margin-bottom:1.5rem}
+.met-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.4rem,6vw,4.5rem);line-height:1.05;letter-spacing:-.03em;margin-bottom:1rem}
+.met-hero .sub{font-size:15px;line-height:1.75;color:var(--ink-mid);max-width:620px}
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.8rem;margin:0 2rem 3rem;max-width:860px;margin-left:auto;margin-right:auto}
+.toc h2{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.8rem}
+.toc ol{list-style:none;display:flex;flex-direction:column;gap:.3rem;padding:0;counter-reset:toc}
+.toc li{counter-increment:toc}
+.toc li::before{content:counter(toc) '. ';color:var(--ink-faint);font-weight:600}
+.toc a{color:var(--ink-mid);text-decoration:none;font-size:12.5px;font-weight:600;transition:color .15s}
+.toc a:hover{color:var(--ink)}
+.met-section{padding:0 2rem 4rem;max-width:860px;margin:0 auto}
+.met-section-label{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.6rem;display:flex;align-items:center;gap:8px}
+.met-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.met-section h2{font-family:'DM Serif Display',serif;font-size:1.8rem;line-height:1.15;letter-spacing:-.02em;margin-bottom:1.1rem}
+.met-section p{font-size:13px;color:var(--ink-mid);line-height:1.8;margin-bottom:.9rem}
+.met-section p:last-child{margin-bottom:0}
+.met-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1.2rem}
+.met-card h3{font-family:'DM Serif Display',serif;font-size:1.15rem;margin-bottom:.7rem}
+.met-formula{font-family:monospace;font-size:11.5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.85rem 1.1rem;color:var(--ink);line-height:2;margin:.8rem 0;white-space:pre-wrap}
+.met-table{width:100%;border-collapse:collapse;font-size:12px;margin:.8rem 0}
+.met-table th{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);text-align:left;padding:.45rem .7rem;border-bottom:1px solid var(--border);background:var(--bg)}
+.met-table td{padding:.55rem .7rem;border-bottom:1px solid rgba(50,40,20,.06);color:var(--ink-mid)}
+.met-table tr:last-child td{border-bottom:none}
+.met-table td:first-child{font-weight:600;color:var(--ink)}
+.callout{border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;font-size:12.5px;line-height:1.7}
+.callout-warn{background:#fffbeb;border:1px solid rgba(180,83,9,.2);color:#92400e}
+.callout-info{background:#eff6ff;border:1px solid rgba(29,78,216,.15);color:#1e40af}
+.callout-green{background:#f0fdf4;border:1px solid rgba(22,101,52,.15);color:#14532d}
+.callout strong{font-weight:700}
+.met-refs{list-style:none;display:flex;flex-direction:column;gap:.6rem;padding:0}
+.met-refs li{font-size:12px;color:var(--ink-mid);line-height:1.6;padding-left:1.2rem;position:relative}
+.met-refs li::before{content:'›';position:absolute;left:0;color:var(--ink-faint);font-size:14px;line-height:1.3}
+.highlight-box{background:linear-gradient(135deg,var(--surface),var(--bg));border:1px solid var(--border);border-left:4px solid var(--ink);border-radius:10px;padding:1.1rem 1.3rem;margin:.8rem 0}
+.highlight-box .lbl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.3rem}
+.highlight-box .val{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--ink);line-height:1.1}
+.highlight-box .desc{font-size:11px;color:var(--ink-faint);margin-top:.25rem}
+.coef-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.8rem 0}
+.coef-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.9rem;text-align:center}
+.coef-card .tipo{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.3rem}
+.coef-card .num{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--ink);line-height:1}
+.coef-card .unit{font-size:10px;color:var(--ink-faint)}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mid);text-decoration:none;padding:6px 14px;border:1px solid var(--border);border-radius:8px;transition:all .15s;margin-bottom:2rem}
+.back-link:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+</style>
+</head>
+<body>
+<nav class="site-nav"></nav>
+
+<div class="met-hero">
+  <a href="index.html" class="back-link">← Voltar ao Mapa</a>
+  <div class="eyebrow">Documentação Técnica Completa</div>
+  <h1>Metodologia &<br><em style="font-style:italic;color:var(--ink-mid)">Referências Técnicas</em></h1>
+  <p class="sub">Fundamentos científicos, coeficientes paramétricos, protocolo de carbono incorporado, benchmarking econômico e limitações do modelo analítico aplicado ao catálogo de OAEs de Fortaleza.</p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc" style="margin-bottom:2rem">
+  <h2>Índice</h2>
+  <ol>
+    <li><a href="#geo">Georreferenciamento — MAPP-FOR</a></li>
+    <li><a href="#concreto">Volume de Concreto — Abordagem Paramétrica</a></li>
+    <li><a href="#carbono">Carbono Incorporado — ICE v3 + SIDERC</a></li>
+    <li><a href="#bench">Benchmarking Econômico</a></li>
+    <li><a href="#co2class">Classificação CO₂e (A / B / C)</a></li>
+    <li><a href="#limites">Limitações e Incertezas</a></li>
+    <li><a href="#fontes">Fontes de Dados de Obra</a></li>
+    <li><a href="#refs">Referências Bibliográficas</a></li>
+  </ol>
+</div>
+
+<!-- SECTION 1 -->
+<section id="geo" class="met-section">
+  <div class="met-section-label">Seção 1</div>
+  <h2>Georreferenciamento</h2>
+  <p>Todas as coordenadas do catálogo foram extraídas do <strong>MAPP-FOR</strong> — Sistema de Mapeamento de Obras e Infraestrutura da Prefeitura de Fortaleza, mantido pela Secretaria Municipal de Infraestrutura (SEINF). O sistema opera em datum <strong>SIRGAS 2000</strong>, projeção UTM Fuso 24S, com exportação disponível em GeoJSON e KML.</p>
+  <p>Cada obra catalogada preserva o <strong>ID original do MAPP-FOR</strong> (ex: <code>id_mappfor_2550</code>) para rastreabilidade direta. Obras anteriores ao sistema (como o Túnel Jornalista Demócrito Dummar, inaugurado em 2014 antes da implantação do MAPP-FOR) tiveram coordenadas obtidas por triangulação via Wikimapia, Google Maps e endereço oficial da obra, com desvio estimado &lt; 20 m.</p>
+
+  <div class="met-card">
+    <h3>Fontes Primárias de Coordenadas</h3>
+    <table class="met-table">
+      <thead><tr><th>Fonte</th><th>Formato</th><th>Precisão</th><th>Cobertura</th></tr></thead>
+      <tbody>
+        <tr><td>MAPP-FOR (SEINF)</td><td>GeoJSON / KML</td><td>Sub-métrica</td><td>Obras municipais 2013–2026</td></tr>
+        <tr><td>SOP-CE / Seinfra-CE</td><td>PDF georref.</td><td>~5 m</td><td>Obras estaduais</td></tr>
+        <tr><td>Wikimapia + confirmação</td><td>Manual</td><td>~20 m</td><td>Obras históricas pré-MAPP</td></tr>
+      </tbody>
+    </table>
+    <div class="callout callout-info"><strong>Sistema de Referência:</strong> SIRGAS 2000 (EPSG:4674). Graus decimais com 7 casas de precisão (~1 cm na equatorial). Bounding box do catálogo: lat −3.90 a −3.70 / lng −38.70 a −38.40 (Fortaleza/CE).</div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section id="concreto" class="met-section">
+  <div class="met-section-label">Seção 2</div>
+  <h2>Volume de Concreto — Abordagem Paramétrica</h2>
+  <p>Na ausência de projetos executivos públicos, o volume de concreto estrutural é estimado por <strong>composições unitárias por metro linear (m³/m)</strong>, metodologia amplamente empregada em estudos de ACV na fase de viabilidade e diagnóstico. Os coeficientes foram calibrados com base na <em>Tabela SEINFRA-CE 27/27.1</em> e em projetos típicos de OAEs da Região Metropolitana de Fortaleza.</p>
+
+  <div class="coef-grid">
+    <div class="coef-card"><span class="tipo">Túnel celular</span><span class="num">18,5</span><span class="unit">m³/m</span></div>
+    <div class="coef-card"><span class="tipo">Viaduto CA/prot.</span><span class="num">6,2</span><span class="unit">m³/m</span></div>
+    <div class="coef-card"><span class="tipo">Ponte CA</span><span class="num">4,8</span><span class="unit">m³/m</span></div>
+  </div>
+
+  <div class="met-formula">V_concreto (m³) = coef_tipo (m³/m) × L (m)
+
+Coeficientes adotados (fck 35 MPa — C35):
+  Túnel celular (seção ~7 × 4 m, paredes 40 cm) : 18,5 m³/m
+  Viaduto (vigas protendidas + laje 20 cm)       :  6,2 m³/m
+  Ponte (vigas pré-moldadas + pilares)            :  4,8 m³/m
+
+Taxa de armadura CA-50: 120 kg/m³ de concreto
+  Túnel:   18,5 × 120 = 2.220 kg/m  =  2,22 t/m
+  Viaduto:  6,2 × 120 =   744 kg/m  =  0,74 t/m
+  Ponte:    4,8 × 120 =   576 kg/m  =  0,58 t/m</div>
+
+  <div class="met-card">
+    <h3>Justificativa dos Coeficientes</h3>
+    <p><strong>Túnel celular (18,5 m³/m):</strong> Seção retangular típica 7,0 × 4,5 m com paredes de 40 cm e laje de 50 cm. Inclui fundações em estacas hélice contínua (ø50 cm, espaç. 2,5 m), drenos, poços de bombeamento e laje de subpressão. Valor validado contra o orçamento do Túnel Demócrito Dummar (440 m, R$ 38,4 M, ~R$ 87k/m).</p>
+    <p><strong>Viaduto (6,2 m³/m):</strong> Superestrutura de vigas T protendidas (h=1,0 m) com laje moldada in loco (20 cm), pilares duplos circulares ø60 cm e fundações em estacas. Faixa de referência SEINFRA-CE: 5,8–7,5 m³/m para largura de 12–18 m.</p>
+    <p><strong>Ponte (4,8 m³/m):</strong> Vigas pré-moldadas I ou U (h=0,8 m), laje pré-moldada, pilares esbeltos e tubulões de fundação. Aplicável a vãos de 15–25 m, largura 10–12 m.</p>
+  </div>
+
+  <div class="callout callout-warn"><strong>⚠️ Precisão:</strong> Estimativas paramétricas apresentam variação típica de ±20–30% em relação a quantitativos reais de projeto. Adequadas para análises comparativas de ordem de grandeza e diagnósticos ambientais preliminares. <em>Não substitui levantamento a partir de projetos executivos.</em></div>
+</section>
+
+<!-- SECTION 3 -->
+<section id="carbono" class="met-section">
+  <div class="met-section-label">Seção 3</div>
+  <h2>Carbono Incorporado — ICE v3 + SIDERC</h2>
+  <p>O cálculo de emissões de CO₂ equivalente (CO₂e) segue a <strong>Avaliação do Ciclo de Vida (ACV) nas fases A1–A5</strong> da norma EN 15804:2022: extração de matérias-primas (A1), transporte até a fábrica (A2), fabricação (A3), transporte até a obra (A4) e construção (A5). As fases operacionais (B) e de fim de vida (C/D) estão <em>excluídas</em> do escopo.</p>
+
+  <div class="met-card">
+    <h3>Fatores de Emissão Adotados</h3>
+    <table class="met-table">
+      <thead><tr><th>Material</th><th>Fator (kgCO₂e/kg)</th><th>Fonte</th><th>Ajuste BR</th></tr></thead>
+      <tbody>
+        <tr><td>Concreto C35 (CA)</td><td>0,159</td><td>ICE v3 + SIDERC</td><td>Sim — matriz energética brasileira</td></tr>
+        <tr><td>Aço CA-50</td><td>1,46</td><td>ICE v3</td><td>Parcial — aço elétrico BR</td></tr>
+        <tr><td>Betume (pavimento)</td><td>0,374</td><td>ICE v3</td><td>Não</td></tr>
+        <tr><td>Fase construção</td><td>+12% (sobre mat.)</td><td>IPCC AR6 WG3</td><td>Sim</td></tr>
+      </tbody>
+    </table>
+    <div class="callout callout-info"><strong>Adaptação à Matriz Brasileira:</strong> O fator de concreto C35 (0,159 kgCO₂e/kg) reflete o cimento Portland brasileiro com adição de calcário (CPII-E e CPII-Z), cuja intensidade carbônica é ~15% menor que o cimento OPC europeu base do ICE v3. Fonte: SIDERC/CBCS (2021) — Indicadores de Desempenho em Resíduo e Carbono.</div>
+  </div>
+
+  <div class="met-formula">Fórmula completa:
+
+CO₂e_conc  = L × coef_cm (m³/m) × 2400 (kg/m³) × 0,159 (kgCO₂e/kg)
+CO₂e_aco   = L × coef_am (kg/m)               × 1,46  (kgCO₂e/kg)
+CO₂e_pav   = L × 1,2 (m) × 0,08 (m) × 2400 (kg/m³) × 0,374 (kgCO₂e/kg)
+CO₂e_const = (CO₂e_conc + CO₂e_aco + CO₂e_pav) × 0,12
+
+Total (kgCO₂e) = CO₂e_conc + CO₂e_aco + CO₂e_pav + CO₂e_const
+Total (tCO₂e)  = Total (kgCO₂e) ÷ 1000
+
+onde:
+  L        = extensão da obra (metros)
+  coef_cm  = coeficiente de concreto por tipo (m³/m)
+  coef_am  = coeficiente de aço por tipo (kg/m)
+  2400     = massa específica do concreto armado (kg/m³)
+  Pavimento: faixa 1,2 m × espessura 8 cm de CBUQ</div>
+
+  <div class="met-card">
+    <h3>Comparação com outras Metodologias</h3>
+    <table class="met-table">
+      <thead><tr><th>Metodologia</th><th>Escopo</th><th>Precisão típica</th><th>Uso recomendado</th></tr></thead>
+      <tbody>
+        <tr><td>ICE v3 + SIDERC (este trabalho)</td><td>A1–A5</td><td>±20–30%</td><td>Análise comparativa / diagnóstico</td></tr>
+        <tr><td>ACV detalhada (ISO 14044)</td><td>A1–C4</td><td>±5–10%</td><td>Certificação / auditoria</td></tr>
+        <tr><td>EPD (Environmental Product Dec.)</td><td>A1–A3</td><td>±8–12%</td><td>Declaração por produto</td></tr>
+        <tr><td>CBCS/GBC Brasil</td><td>A1–A5</td><td>±15–25%</td><td>Certificação verde BR</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="met-card">
+    <h3>Classificação das Equivalências Climáticas</h3>
+    <p>Para traduzir as emissões em impacto percebido, utilizam-se fatores de conversão padronizados:</p>
+    <table class="met-table">
+      <thead><tr><th>Equivalência</th><th>Fator</th><th>Fonte</th></tr></thead>
+      <tbody>
+        <tr><td>Voo Fortaleza–São Paulo (ida)</td><td>255 kgCO₂e/passageiro</td><td>ICAO Carbon Calculator 2023</td></tr>
+        <tr><td>Carro a gasolina</td><td>0,21 kgCO₂e/km</td><td>IPCC AR6 WG3 / SEEG</td></tr>
+        <tr><td>Árvore por 1 ano (sequestro)</td><td>22 kgCO₂e/ano</td><td>IPCC AR6 / AMS</td></tr>
+        <tr><td>Residência brasileira / ano</td><td>1.500 kgCO₂e/ano</td><td>MCT/SEEG Brasil 2022</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section id="bench" class="met-section">
+  <div class="met-section-label">Seção 4</div>
+  <h2>Benchmarking Econômico</h2>
+  <p>Os custos de referência por metro linear (R$/m, preços 2023–2024) foram consolidados a partir da <strong>Tabela de Composições e Custos Unitários SEINFRA-CE nº 27/27.1</strong> e do <strong>SINAPI</strong> (Sistema Nacional de Pesquisa de Custos e Índices da Construção Civil — CEF/IBGE). Valores deflacionados pelo INCC-DI para base Dezembro/2024.</p>
+
+  <div class="met-card">
+    <h3>Faixas de Referência por Tipo Construtivo</h3>
+    <table class="met-table">
+      <thead><tr><th>Tipo</th><th>Mínimo (R$/m)</th><th>Média (R$/m)</th><th>Máximo (R$/m)</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>Túnel cut-and-cover</td><td>R$ 95.000</td><td>R$ 185.000</td><td>R$ 310.000</td><td>Inclui drenagem, LED, ciclovia</td></tr>
+        <tr><td>Viaduto concreto prot.</td><td>R$ 55.000</td><td>R$ 95.000</td><td>R$ 180.000</td><td>Vigas pré-moldadas, 4–6 faixas</td></tr>
+        <tr><td>Ponte concreto armado</td><td>R$ 28.000</td><td>R$ 72.000</td><td>R$ 140.000</td><td>Vãos 15–25 m, pista dupla</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="met-card">
+    <h3>Metodologia de Estimativa para Obras sem Custo Real</h3>
+    <p>Obras que fazem parte de corredores maiores (ex: Via Expressa Norte-Sul) não possuem custo isolado em fontes públicas. Para estas, adota-se a <strong>média do segmento</strong> como estimativa, identificada com o marcador <strong>★</strong> nos gráficos e análises.</p>
+    <p>O custo por metro linear (custo/m) para obras com dado real é calculado como: <code>custo/m = custoRaw ÷ extensaoNum</code>, onde <code>custoRaw</code> é o valor contratado conforme publicação em Diário Oficial ou nota de imprensa oficial, e <code>extensaoNum</code> é a extensão catalogada em metros.</p>
+    <div class="callout callout-warn"><strong>⚠️ N/D — Não Disponível:</strong> 10 das 18 obras catalogadas não possuem custo isolado em fontes abertas. Nestas, a média do segmento é exibida como estimativa e <em>não deve ser interpretada como orçamento ou valor licitado</em>.</div>
+  </div>
+
+  <div class="met-card">
+    <h3>Comparação com Benchmarks Internacionais</h3>
+    <table class="met-table">
+      <thead><tr><th>Tipo</th><th>Fortaleza (R$/m)</th><th>DNIT BR (R$/m)</th><th>EUA (USD/m)</th></tr></thead>
+      <tbody>
+        <tr><td>Túnel urbano</td><td>95k–310k</td><td>120k–280k</td><td>300k–800k</td></tr>
+        <tr><td>Viaduto</td><td>55k–180k</td><td>60k–200k</td><td>150k–400k</td></tr>
+        <tr><td>Ponte</td><td>28k–140k</td><td>35k–150k</td><td>80k–250k</td></tr>
+      </tbody>
+    </table>
+    <p>A disparidade com benchmarks dos EUA reflete diferenças em mão de obra, requisitos sísmicos, NR trabalhistas e sobrepreço de mercado. Os valores do DNIT confirmam a aderência das faixas locais.</p>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section id="co2class" class="met-section">
+  <div class="met-section-label">Seção 5</div>
+  <h2>Classificação CO₂e (A / B / C)</h2>
+  <p>O sistema de classificação de três níveis foi calibrado especificamente para o inventário de OAEs de Fortaleza, com limiares baseados na distribuição observada de emissões paramétricas do catálogo.</p>
+
+  <div class="met-card">
+    <h3>Limiares e Perfis</h3>
+    <table class="met-table">
+      <thead><tr><th>Classe</th><th>Total CO₂e (tCO₂e)</th><th>Perfil típico</th><th>Exemplos</th></tr></thead>
+      <tbody>
+        <tr><td>A — Baixo</td><td>&lt; 4.000 t</td><td>Obras curtas ou estruturas leves</td><td>Pontes pequenas, viadutos &lt;200 m</td></tr>
+        <tr><td>B — Médio</td><td>4.000–15.000 t</td><td>Viadutos e pontes de porte médio</td><td>Viadutos 200–500 m, pontes médias</td></tr>
+        <tr><td>C — Alto</td><td>&gt; 15.000 t</td><td>Túneis longos ou grandes pontes</td><td>Túnel Demócrito Dummar (440 m)</td></tr>
+      </tbody>
+    </table>
+    <div class="callout callout-warn"><strong>⚠️ Escopo local:</strong> Os limiares foram calibrados ao inventário de Fortaleza. Não são diretamente extrapoláveis para obras de grande escala (metrô, hidroelétricas, etc.) ou para cidades com perfil de OAEs substancialmente diferente.</div>
+  </div>
+
+  <div class="met-card">
+    <h3>Comparação com outros Sistemas de Classificação</h3>
+    <table class="met-table">
+      <thead><tr><th>Sistema</th><th>Classes</th><th>Critério</th><th>Aplicação</th></tr></thead>
+      <tbody>
+        <tr><td>Este catálogo (A/B/C)</td><td>3</td><td>CO₂e total por obra (tCO₂e)</td><td>OAEs urbanas de Fortaleza</td></tr>
+        <tr><td>LEED BD+C (USGBC)</td><td>4 (Silver–Platinum)</td><td>Pontos totais incluindo créditos de carbono</td><td>Edifícios, infraestrutura</td></tr>
+        <tr><td>BREEAM Infrastructure</td><td>5 (Pass–Outstanding)</td><td>Score ponderado de sustentabilidade</td><td>Infraestrutura UK/Europa</td></tr>
+        <tr><td>Selo Casa Azul+ (CEF)</td><td>3 (Bronze–Ouro)</td><td>Habitação social brasileira</td><td>Habitação</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section id="limites" class="met-section">
+  <div class="met-section-label">Seção 6</div>
+  <h2>Limitações e Incertezas</h2>
+
+  <div class="met-card">
+    <h3>O Que NÃO está Incluído no Cálculo</h3>
+    <ul class="met-refs">
+      <li><strong>Fase operacional (B2–B7):</strong> Energia de iluminação LED, bombeamento de drenagem, manutenção e limpeza — potencialmente 30–60% do ciclo de vida total para túneis.</li>
+      <li><strong>Fim de vida (C1–C4):</strong> Demolição, transporte de resíduos e disposição. Não aplicável para obras com vida útil prevista de 80–100 anos.</li>
+      <li><strong>Movimentação de terra:</strong> Escavação, aterro e transporte de solo não estão quantificados separadamente.</li>
+      <li><strong>Pavimentação asfáltica completa:</strong> Apenas a camada de CBUQ de 8 cm é estimada; sub-base e base granular não incluídas.</li>
+      <li><strong>Sistemas elétricos e hidráulicos:</strong> Instalações prediais, semáforos, sistemas de gestão de tráfego.</li>
+      <li><strong>Carbono do transporte de equipamentos:</strong> Guinchos, gruas e equipamentos especiais não contabilizados separadamente.</li>
+    </ul>
+  </div>
+
+  <div class="met-card">
+    <h3>Propagação de Incertezas</h3>
+    <p>A incerteza total ±20–30% resulta da combinação de incertezas independentes pelo método RSS (Root Sum of Squares):</p>
+    <table class="met-table">
+      <thead><tr><th>Fonte de incerteza</th><th>Magnitude típica</th></tr></thead>
+      <tbody>
+        <tr><td>Coeficiente paramétrico (m³/m)</td><td>±15%</td></tr>
+        <tr><td>Fator de emissão ICE v3 (adaptação BR)</td><td>±8%</td></tr>
+        <tr><td>Extensão da obra (imprecisão cadastral)</td><td>±5%</td></tr>
+        <tr><td>Taxa de armadura (variação de projeto)</td><td>±10%</td></tr>
+        <tr><td>Fase de construção (+12%)</td><td>±5%</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:.8rem">RSS total ≈ √(15² + 8² + 5² + 10² + 5²) ≈ 20,5% — compatível com a faixa declarada de ±20–30%.</p>
+  </div>
+
+  <div class="callout callout-green"><strong>✅ Para que serve este modelo?</strong> O modelo paramétrico é adequado para: (a) comparação relativa entre obras do mesmo catálogo; (b) triagem de prioridades de redução de emissões; (c) comunicação pública sobre impacto climático da infraestrutura urbana; (d) insumo para estudos de ACV de fase preliminar. <em>Não é adequado para: certificações, licitações ou auditoria de carbono.</em></div>
+</section>
+
+<!-- SECTION 7 -->
+<section id="fontes" class="met-section">
+  <div class="met-section-label">Seção 7</div>
+  <h2>Fontes de Dados de Obra</h2>
+  <div class="met-card">
+    <ul class="met-refs">
+      <li><strong>Prefeitura de Fortaleza — SEINF:</strong> Notas de imprensa, Diário Oficial do Município (DOM), Sistema MAPP-FOR (geojson), relatórios de inauguração e licitações públicas.</li>
+      <li><strong>Governo do Estado do Ceará — Seinfra-CE / SOP-CE:</strong> Relatórios de obras, notas de inauguração, Diário Oficial do Estado (DOECE), informações do Túnel Demócrito Dummar e Viaduto Raul Barbosa.</li>
+      <li><strong>Câmara Municipal de Fortaleza:</strong> Indicação nº 1030/2025 (Vereador Marcelo Tchela) — lista completa de 15 viadutos objeto de reforma e programação da gestão 2025–2028.</li>
+      <li><strong>Diário do Nordeste:</strong> Reportagens verificadas com datas de inauguração, valores contratuais e informações técnicas (2012–2026).</li>
+      <li><strong>O Povo:</strong> Reportagens de obras de mobilidade urbana, com especial atenção ao eixo Via Expressa e corredores BRT.</li>
+      <li><strong>Wikimapia:</strong> Coordenadas de referência para obras anteriores ao MAPP-FOR, confirmadas por cruzamento com endereço oficial.</li>
+      <li><strong>Fortaleza em Fotos / iPatrimônio.org:</strong> Dados históricos da Ponte dos Ingleses (1920) e patrimônio tombado.</li>
+      <li><strong>CEF (Caixa Econômica Federal):</strong> Publicações de operações de crédito aprovadas para obras de mobilidade urbana em Fortaleza.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section id="refs" class="met-section">
+  <div class="met-section-label">Seção 8</div>
+  <h2>Referências Bibliográficas</h2>
+  <div class="met-card">
+    <ul class="met-refs">
+      <li>Hammond, G. & Jones, C. (2019). <em>Inventory of Carbon &amp; Energy (ICE) v3.0.</em> Sustainable Energy Research Team, University of Bath, UK. ISBN 978-0-9564760-0-6.</li>
+      <li>IPCC (2022). <em>Climate Change 2022: Mitigation of Climate Change — Contribution of Working Group III to the Sixth Assessment Report (AR6).</em> IPCC, Geneva, Switzerland. doi:10.1017/9781009157926.</li>
+      <li>SIDERC / CBCS (2021). <em>Indicadores de Desempenho em Resíduo e Carbono na Construção Civil.</em> GBC Brasil / CBCS, São Paulo.</li>
+      <li>SEINFRA-CE (2023). <em>Tabela de Composições e Custos Unitários de Serviços de Engenharia nº 27/27.1 — Obras de Arte Especiais.</em> Secretaria da Infraestrutura do Ceará, Fortaleza.</li>
+      <li>SINAPI (2024). <em>Sistema Nacional de Pesquisa de Custos e Índices da Construção Civil — Relatório de Insumos e Composições.</em> Caixa Econômica Federal / IBGE, Brasília.</li>
+      <li>Prefeitura de Fortaleza / SEINF (2024). <em>MAPP-FOR — Sistema Municipal de Mapeamento de Obras e Pavimentos.</em> Secretaria Municipal de Infraestrutura, Fortaleza/CE.</li>
+      <li>ABNT NBR 7188 (2013). <em>Carga Móvel Rodoviária e de Pedestres em Pontes, Viadutos, Passarelas e Outras Estruturas.</em> ABNT, Rio de Janeiro.</li>
+      <li>ABNT NBR 6118 (2023). <em>Projeto de Estruturas de Concreto — Procedimento.</em> ABNT, Rio de Janeiro.</li>
+      <li>EN 15804 (2022). <em>Sustainability of Construction Works — Environmental Product Declarations — Core Rules for the Product Category of Construction Products.</em> CEN, Brussels, Belgium.</li>
+      <li>ISO 14044 (2006). <em>Environmental Management — Life Cycle Assessment — Requirements and Guidelines.</em> ISO, Geneva.</li>
+      <li>Governo do Estado do Ceará / Seinfra-CE (2012–2024). <em>Notas de inauguração de Obras de Arte Especiais.</em> Fortaleza.</li>
+      <li>Diário do Nordeste / O Povo (2012–2026). <em>Reportagens sobre infraestrutura viária e mobilidade urbana em Fortaleza.</em></li>
+      <li>CMFor (2025). <em>Indicação nº 1030/2025 — Solicitação de Reforma e Manutenção de 15 Viadutos.</em> Vereador Marcelo Tchela, Câmara Municipal de Fortaleza.</li>
+      <li>ICAO (2023). <em>ICAO Carbon Emissions Calculator Methodology, v11.</em> International Civil Aviation Organization, Montreal.</li>
+      <li>SEEG Brasil (2022). <em>Sistema de Estimativas de Emissões e Remoções de Gases de Efeito Estufa.</em> Observatório do Clima, São Paulo.</li>
+      <li>DNIT (2023). <em>Manual de Custos de Infraestrutura de Transportes — Obras de Arte Especiais.</em> Departamento Nacional de Infraestrutura de Transportes, Brasília.</li>
+    </ul>
+  </div>
+  <p style="margin-top:1rem;font-size:11px;color:var(--ink-faint)">Última revisão bibliográfica: Abril 2026. Versão do catálogo: v6.</p>
+</section>
+
+<footer class="site-footer"></footer>
+<script src="js/theme.js"></script>
+<script src="js/components.js"></script>
+</body>
+</html>

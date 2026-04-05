@@ -1,0 +1,22 @@
+name: Bump SW Cache Version
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  bump-sw:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace BUILD_ID with git short SHA
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          sed -i "s/BUILD_ID = 'fsv-build-[^']*'/BUILD_ID = 'fsv-build-${SHORT_SHA}'/g" sw.js
+      - name: Commit updated sw.js
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "ci: bump SW cache version to ${{ github.sha }}"
+          file_pattern: sw.js
