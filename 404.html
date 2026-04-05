@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Página não encontrada · Fortaleza Sub & Via</title>
+  <meta name="description" content="A página que você procura não foi encontrada no Memorial Urbano Fortaleza Sub & Via."/>
+  <meta name="robots" content="noindex"/>
+  <link rel="canonical" href="https://joaoclaudiano.github.io/hist/404.html"/>
+  <meta name="theme-color" content="#18140c"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="css/shared.css"/>
+  <style>
+    .error-page{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;min-height:calc(100vh - 60px);padding:4rem 2rem;
+      max-width:640px;margin:0 auto;
+    }
+    .error-code{
+      font-family:'DM Serif Display',serif;font-size:clamp(5rem,20vw,10rem);
+      line-height:.9;letter-spacing:-.04em;color:var(--border-strong);
+      margin-bottom:1.5rem;
+    }
+    .error-page h1{
+      font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);
+      color:var(--ink);margin-bottom:1rem;line-height:1.1;
+    }
+    .error-page h1 em{font-style:italic;color:var(--ink-mid)}
+    .error-page p{
+      font-size:14px;color:var(--ink-mid);line-height:1.75;margin-bottom:2rem;max-width:480px;
+    }
+    .error-actions{display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center}
+    .error-suggestions{
+      margin-top:3rem;padding:1.5rem 2rem;background:var(--surface);
+      border:1px solid var(--border);border-radius:14px;text-align:left;width:100%;max-width:480px;
+    }
+    .error-suggestions h2{
+      font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--ink-faint);margin-bottom:1rem;
+    }
+    .error-suggestions ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+    .error-suggestions li a{
+      display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-mid);
+      text-decoration:none;transition:color .2s;
+    }
+    .error-suggestions li a:hover{color:var(--viaduto)}
+    .error-suggestions li a::before{content:'›';color:var(--viaduto);font-size:.85rem}
+    .error-icon{font-size:3.5rem;margin-bottom:1rem;opacity:.6}
+  </style>
+</head>
+<body>
+
+<nav class="site-nav"></nav>
+
+<main style="flex:1">
+  <div class="error-page">
+    <div class="error-icon">🗺️</div>
+    <div class="error-code" aria-hidden="true">404</div>
+    <h1>Página <em>não encontrada</em></h1>
+    <p>Parece que você tentou acessar uma rota que não existe no mapa. A URL pode estar incorreta, o conteúdo pode ter sido movido, ou nunca existiu por aqui.</p>
+    <div class="error-actions">
+      <a href="index.html" class="btn btn-primary">← Voltar ao mapa</a>
+      <a href="personalidades.html" class="btn btn-secondary">Personalidades</a>
+      <a href="contato.html" class="btn btn-secondary">Contato</a>
+    </div>
+    <div class="error-suggestions">
+      <h2>Páginas principais</h2>
+      <ul>
+        <li><a href="index.html">Mapa interativo — Túneis, Viadutos e Pontes</a></li>
+        <li><a href="personalidades.html">Personalidades homenageadas</a></li>
+        <li><a href="panorama.html">Panorama geral das obras</a></li>
+        <li><a href="sobre.html">Sobre o projeto</a></li>
+        <li><a href="apoio.html">Apoie o memorial</a></li>
+        <li><a href="contato.html">Entre em contato</a></li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer"></footer>
+<script src="js/theme.js"></script>
+<script src="js/components.js"></script>
+</body>
+</html>
