@@ -47,7 +47,7 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Only handle GET requests for same-origin or approved CDN resources
+  // Only handle GET requests for same-origin resources
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
