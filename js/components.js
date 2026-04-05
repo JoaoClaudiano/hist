@@ -5,6 +5,15 @@
 (function () {
   'use strict';
 
+  /* ── Data da última revisão (atualizar aqui quando o conteúdo for revisado) ── */
+  const LAST_REVISION = 'Abril 2026';
+
+  /* ── Páginas que NÃO exibem share bar (legais, admin, erro) ── */
+  const NO_SHARE = new Set(['admin.html', '404.html', 'termos.html', 'privacidade.html', 'licenca.html']);
+
+  /* ── Páginas que NÃO exibem extras (progress bar) ── */
+  const NO_PROGRESS = new Set(['admin.html', '404.html']);
+
   /* ── Detectar se estamos em subdiretório (personalidades/) ── */
   const path = window.location.pathname;
   const isSubdir = /\/personalidades\//.test(path);
@@ -19,12 +28,15 @@
     return `<a href="${root}${href}"${isActive ? ' class="ativo" aria-current="page"' : ''}>${label}</a>`;
   }
 
-  /* ── Links de navegação por contexto ── */
+  /* ── Links de navegação por contexto ──
+   * Nota: buildNavLinks() é chamado duas vezes — nav desktop e nav mobile.
+   * Ao adicionar/remover links, ambos os menus são atualizados automaticamente. */
   function buildNavLinks() {
     if (isIndex) {
       return `<a href="#mapa">Mapa</a><a href="#acervo">Acervo</a><a href="#analise">Análise</a>`;
     }
     return [
+      navLink('index.html', 'Início'),
       navLink('panorama.html', 'Panorama'),
       navLink('metodologia.html', 'Metodologia'),
       navLink('personalidades.html', 'Personalidades'),
@@ -42,11 +54,11 @@
   if (navEl) {
     navEl.setAttribute('aria-label', 'Navegação principal');
     navEl.innerHTML = `
-      <a class="nav-brand" href="${root}index.html" aria-label="Fortaleza Sub &amp; Via — página inicial">
+      <a class="nav-brand" href="${root}index.html"${isIndex ? ' aria-current="page"' : ''} aria-label="Fortaleza Sub &amp; Via — página inicial">
         <div class="nav-mark" aria-hidden="true">F|V</div>
         <span class="nav-title">Memorial Urbano · Fortaleza</span>
       </a>
-      <div class="nav-links" role="list">${buildNavLinks()}</div>
+      <div class="nav-links">${buildNavLinks()}</div>
       <div style="display:flex;align-items:center;gap:.35rem">
         <button class="theme-toggle" id="theme-toggle-btn"
           aria-label="${isDark() ? 'Mudar para tema claro' : 'Mudar para tema escuro'}"
@@ -102,45 +114,52 @@
   /* ── Injetar footer ── */
   const footerEl = document.querySelector('footer.site-footer');
   if (footerEl) {
-    /* Share bar — injected just before footer */
-    const shareBar = document.createElement('div');
-    shareBar.className = 'share-bar';
-    shareBar.setAttribute('aria-label', 'Compartilhar esta página');
-    const pageUrl = encodeURIComponent(window.location.href);
-    const pageTitle = encodeURIComponent(document.title);
-    shareBar.innerHTML = `
-      <span class="share-label">Compartilhar:</span>
-      <a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Facebook">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        <span>Facebook</span>
-      </a>
-      <a class="share-btn share-wa" href="https://wa.me/?text=${pageTitle}%20${pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no WhatsApp">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        <span>WhatsApp</span>
-      </a>
-      <a class="share-btn share-tw" href="https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no X (Twitter)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4l16 16M4 20 20 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M2 4l7 9-7 9h2.5l5.5-7 5.5 7H20l-7-9 7-9h-2.5L12 11 6.5 4z"/></svg>
-        <span>X</span>
-      </a>
-    `;
-    footerEl.insertAdjacentElement('beforebegin', shareBar);
+    /* Share bar — only on content pages, not on legal/admin/error pages */
+    if (!NO_SHARE.has(currentFile)) {
+      const shareBar = document.createElement('div');
+      shareBar.className = 'share-bar';
+      shareBar.setAttribute('aria-label', 'Compartilhar esta página');
+      const pageUrl = encodeURIComponent(window.location.href);
+      const pageTitle = encodeURIComponent(document.title);
+      shareBar.innerHTML = `
+        <span class="share-label">Compartilhar:</span>
+        <a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          <span>Facebook</span>
+        </a>
+        <a class="share-btn share-wa" href="https://wa.me/?text=${pageTitle}%20${pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="share-btn share-tw" href="https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no X (Twitter)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4l16 16M4 20 20 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M2 4l7 9-7 9h2.5l5.5-7 5.5 7H20l-7-9 7-9h-2.5L12 11 6.5 4z"/></svg>
+          <span>X</span>
+        </a>
+      `;
+      footerEl.insertAdjacentElement('beforebegin', shareBar);
+    }
+
+    function footerLink(href, label) {
+      const isActive = currentFile === href || (isIndex && href === 'index.html');
+      return `<a href="${root}${href}"${isActive ? ' class="ativo" aria-current="page"' : ''}>${label}</a>`;
+    }
 
     footerEl.innerHTML = `
       <strong>Fortaleza Sub &amp; Via — Memorial Urbano</strong><br>
       Coordenadas: MAPP-FOR · Dados: Seinfra-CE · SOP-CE · SEINF · Diário do Nordeste · O Povo
       <nav class="footer-nav" aria-label="Links institucionais">
-        <a href="${root}sobre.html">Sobre o Projeto</a>
-        <a href="${root}personalidades.html">Personalidades</a>
-        <a href="${root}panorama.html">Panorama</a>
-        <a href="${root}metodologia.html">Metodologia</a>
-        <a href="${root}apoio.html">Apoie</a>
-        <a href="${root}contato.html">Contato</a>
-        <a href="${root}licenca.html">Licença CC</a>
-        <a href="${root}privacidade.html">Privacidade</a>
-        <a href="${root}termos.html">Termos de Uso</a>
+        ${footerLink('sobre.html', 'Sobre o Projeto')}
+        ${footerLink('personalidades.html', 'Personalidades')}
+        ${footerLink('panorama.html', 'Panorama')}
+        ${footerLink('metodologia.html', 'Metodologia')}
+        ${footerLink('apoio.html', 'Apoie')}
+        ${footerLink('contato.html', 'Contato')}
+        ${footerLink('licenca.html', 'Licença CC')}
+        ${footerLink('privacidade.html', 'Privacidade')}
+        ${footerLink('termos.html', 'Termos de Uso')}
       </nav>
       CO₂e: ICE v3 (Univ. Bath) + SIDERC / IPCC AR6 · Custos: SEINFRA-CE tab.27 · SINAPI 2024<br>
-      Estimativas paramétricas ±20–30%. Não substitui ACV auditada. Última revisão: Abril 2026.
+      Estimativas paramétricas ±20–30%. Não substitui ACV auditada. Última revisão: ${LAST_REVISION}.
     `;
   }
 
@@ -170,20 +189,22 @@
       navigator.serviceWorker.register(root + 'sw.js').catch(function () {/* silently fail */});
     });
   }
-  /* ── Reading Progress Bar ── */
-  const _pb = document.createElement('div');
-  _pb.id = 'reading-progress';
-  _pb.setAttribute('role', 'progressbar');
-  _pb.setAttribute('aria-valuenow', '0');
-  _pb.setAttribute('aria-valuemin', '0');
-  _pb.setAttribute('aria-valuemax', '100');
-  _pb.setAttribute('aria-label', 'Progresso de leitura');
-  document.body.appendChild(_pb);
-  window.addEventListener('scroll', function () {
-    var _st = window.scrollY;
-    var _dh = document.documentElement.scrollHeight - window.innerHeight;
-    var _pct = _dh > 0 ? Math.round((_st / _dh) * 100) : 0;
-    _pb.style.width = _pct + '%';
-    _pb.setAttribute('aria-valuenow', _pct);
-  }, { passive: true });
+  /* ── Reading Progress Bar (not shown on admin/error pages) ── */
+  if (!NO_PROGRESS.has(currentFile)) {
+    const _pb = document.createElement('div');
+    _pb.id = 'reading-progress';
+    _pb.setAttribute('role', 'progressbar');
+    _pb.setAttribute('aria-valuenow', '0');
+    _pb.setAttribute('aria-valuemin', '0');
+    _pb.setAttribute('aria-valuemax', '100');
+    _pb.setAttribute('aria-label', 'Progresso de leitura');
+    document.body.appendChild(_pb);
+    window.addEventListener('scroll', function () {
+      var _st = window.scrollY;
+      var _dh = document.documentElement.scrollHeight - window.innerHeight;
+      var _pct = _dh > 0 ? Math.round((_st / _dh) * 100) : 0;
+      _pb.style.width = _pct + '%';
+      _pb.setAttribute('aria-valuenow', _pct);
+    }, { passive: true });
+  }
 })();
