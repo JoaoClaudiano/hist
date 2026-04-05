@@ -182,6 +182,9 @@
     window.addEventListener('load', function () {
       navigator.serviceWorker.register(root + 'sw.js').catch(function () {/* silently fail */});
     });
+    navigator.serviceWorker.addEventListener('message', function (event) {
+      if (event.data && event.data.type === 'SW_UPDATED') window.location.reload();
+    });
   }
   /* ── Reading Progress Bar (not shown on admin/error pages) ── */
   if (!NO_PROGRESS.has(currentFile)) {

@@ -61,9 +61,20 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
+    caches.keys().then(keys => {
+      const stale = keys.filter(k => k !== CACHE_NAME);
+      return Promise.all(stale.map(k => caches.delete(k)))
+        .then(() => self.clients.claim())
+        .then(() => {
+          // If stale caches existed this is an update (not a fresh install).
+          // Notify all open tabs so they reload and pick up the new assets.
+          if (stale.length > 0) {
+            return self.clients.matchAll({ type: 'window' }).then(clients =>
+              clients.forEach(c => c.postMessage({ type: 'SW_UPDATED' }))
+            );
+          }
+        });
+    })
   );
 });
 

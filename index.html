@@ -314,6 +314,9 @@ Total (tCO₂e) = soma ÷ 1000</div>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  navigator.serviceWorker.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SW_UPDATED') window.location.reload();
+  });
 }
 </script>
 <script src="js/components.js"></script>
