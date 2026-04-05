@@ -1,3 +1,4 @@
+@import url('fonts.css');
 :root{
   --bg:#f3f0e8;--surface:#fdfcf7;--border:rgba(50,40,20,.1);--border-strong:rgba(50,40,20,.18);
   --ink:#18140c;--ink-mid:#5a4e38;--ink-faint:#9e9078;
