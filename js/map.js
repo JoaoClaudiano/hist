@@ -4,7 +4,14 @@
 let map, mg;
 
 function initMap() {
-  map = L.map('map-container', { zoomControl: false }).setView([-3.745, -38.52], 12);
+  // Restrict map to ~500 km radius around Fortaleza (approx. bounding box)
+  const BOUNDS = L.latLngBounds([[-8.2, -43.0], [0.8, -34.0]]);
+  map = L.map('map-container', {
+    zoomControl: false,
+    maxBounds: BOUNDS,
+    maxBoundsViscosity: 1.0,
+    minZoom: 7
+  }).setView([-3.745, -38.52], 12);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, attribution: '© CartoDB' }).addTo(map);
   L.control.zoom({ position: 'topright' }).addTo(map);
   mg = L.layerGroup().addTo(map);

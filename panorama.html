@@ -2,8 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preload" href="fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="robots" content="index, follow"/>
 <meta name="author" content="João Claudiano"/>
@@ -17,7 +16,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Panorama do Inventário — Fortaleza Sub & Via","url":"https://joaoclaudiano.github.io/hist/panorama.html","description":"Análise quantitativa e gráficos sobre o inventário de túneis, viadutos e pontes de Fortaleza/CE.","inLanguage":"pt-BR","isPartOf":{"@type":"WebSite","name":"Fortaleza Sub & Via — Memorial Urbano","url":"https://joaoclaudiano.github.io/hist/"},"author":{"@type":"Person","name":"João Claudiano","url":"https://github.com/JoaoClaudiano"}}
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/vendor/chart.umd.min.js"></script>
 <style>
 .pan-hero{padding:100px 2rem 4rem;max-width:1100px;margin:0 auto}
 .pan-hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);padding:5px 14px;border-radius:100px;border:1px solid rgba(50,40,20,.18);background:var(--surface);margin-bottom:1.5rem}
@@ -365,8 +364,13 @@ async function panoramaBoot() {
     <div class="nota-box">Análise de ${OBRAS.length} obras (${totExt.toFixed(2)} km). CO₂e: ICE v3 + SIDERC (±20–30%). ${comC.length} obras com custo real isolado; demais com média SEINFRA-CE (★). Tipos: ${OBRAS.filter(d => d.tipo === 'tunel').length} túneis · ${OBRAS.filter(d => d.tipo === 'viaduto').length} viadutos · ${OBRAS.filter(d => d.tipo === 'ponte').length} pontes. Última atualização: Abril 2026.</div>`;
 }
 
-panoramaBoot();
+panoramaBoot().then(function () {
+  if (window.FSVReveal) window.FSVReveal.init();
+});
 </script>
 <script src="js/ui.js"></script>
+<button id="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 </body>
 </html>

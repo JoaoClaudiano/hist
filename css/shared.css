@@ -3,7 +3,7 @@
    Segue o padrão visual do index.html (DM Sans + DM Serif Display)
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('fonts.css');
 
 /* ── Tokens — Tema Claro ── */
 :root {
@@ -652,3 +652,50 @@ footer.site-footer strong {
 @media (prefers-reduced-motion: reduce) {
   .reveal, .reveal.revealed { opacity: 1; transform: none; transition: none; }
 }
+
+/* ── Share Bar ── */
+.share-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.share-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-right: .25rem;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .18s, color .18s, transform .15s;
+  border: 1px solid var(--border-strong);
+  color: var(--ink-mid);
+  background: var(--surface);
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  color: var(--bg);
+}
+
+.share-fb:hover  { background: #1877f2; border-color: #1877f2; }
+.share-wa:hover  { background: #25d366; border-color: #25d366; }
+.share-tw:hover  { background: #000;    border-color: #000; }
